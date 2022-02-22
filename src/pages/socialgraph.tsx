@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
+import FocusGraph from "../components/Graph/FocusGraphWrapper";
 
 const SocialGraph: NextPage = () => {
     return (
         //TODO: make our graph happen
         <div>
-            Hi, Bruce Please put your things here to test and try:
-            https://localhost:3000/socialgraph to see the updates! Have fun,
-            Lynch
+            <FocusGraph />
+            <div>sdsd</div>
         </div>
     );
 };
