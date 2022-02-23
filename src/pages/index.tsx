@@ -23,9 +23,9 @@ const Home: NextPage = () => {
             </Head>
 
             <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Welcome to <a href="https://nextjs.org">Next.js!</a>
-                </h1>
+                <p className={styles.subtitle}>HOW PEOPLE</p>
+                <h1 className={styles.title}>CYBERCONNECTED IN </h1>
+                <h1 className={styles.title}>METAVERSE</h1>
                 <WalletConnectButton />
             </main>
 
