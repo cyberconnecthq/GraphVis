@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
-import { CYBERCONNECT_ENDPOINT } from "../config/config";
+import { CYBERCONNECT_ENDPOINT } from "../../config/config";
 
 const client = new ApolloClient({
     uri: CYBERCONNECT_ENDPOINT,
