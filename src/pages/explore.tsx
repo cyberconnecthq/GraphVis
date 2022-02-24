@@ -15,7 +15,7 @@ import { Typography } from "@mui/material";
 import { DEFAULT_ADDRESS } from "../config/config";
 import { useQuery } from "@apollo/client";
 import { GET_IDENTITY } from "../graphql/queries/get_identity";
-import { Identity } from "../type/identity";
+import { Identity } from "../types/identity";
 
 const Explore: NextPage = () => {
     const [identity, setIdentity] = useState<Identity | null>(null);
