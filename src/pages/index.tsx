@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import client from "../graphql/client";
 import styles from "../../styles/Home.module.css";
 import { WalletConnectButton } from "@/components/WalletConnectButton";
+import { SearchBar } from "@/components/SearchBar";
 
 const Home: NextPage = () => {
     useEffect(() => {
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
                 <p className={styles.subtitle}>HOW PEOPLE</p>
                 <h1 className={styles.title}>CYBERCONNECTED IN </h1>
                 <h1 className={styles.title}>METAVERSE</h1>
+                <SearchBar />
                 <WalletConnectButton />
             </main>
 
