@@ -338,4 +338,14 @@ const data: GraphData & any = {
     ],
 };
 
+// const data: GraphData & any = {
+//     nodes: [
+//         {id: "cat", img: "cat.jpg", group: 1},
+//         {id: "dog", img: "dog.jpg", group: 2},
+//     ],
+//     links: [
+//         {source:"cat", target:"dog", value:3},
+//     ]
+// }
+
 export default data;
