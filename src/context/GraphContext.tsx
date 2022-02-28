@@ -1,6 +1,7 @@
 import { createContext, useState, useContext } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
+import { Identity } from "../utils/types";
 
 type GraphData = {
     nodes: {
@@ -17,6 +18,7 @@ type GraphData = {
 interface GraphContextInterface {
     data: GraphData | {};
     centerAddr: string;
+    identity: Identity | null;
     graphAddress: string;
     setGraphAddress: (address: string) => void;
 }
@@ -26,6 +28,7 @@ export const GraphContext = createContext<GraphContextInterface>({
     centerAddr: "",
     graphAddress: "",
     setGraphAddress: async () => undefined,
+    identity: null,
 });
 
 export const GraphContextProvider: React.FC = ({ children }) => {
