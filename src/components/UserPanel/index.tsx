@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { Identity } from "../../utils/types";
 
 import { DEFAULT_ADDRESS } from "../../config/config";
-import { Divider, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 import { margin } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
@@ -65,6 +65,85 @@ export const UserPanel: React.FC = ({ address }: { address: string }) => {
                     {identity?.address}
                 </Typography>
             </Typography>
+
+            <div className={styles.followStatus}>
+                <div className={styles.follow}>
+                    <Typography>{identity.followerCount}</Typography>
+                    <Typography color={"#989898"}>Followers</Typography>
+                </div>
+                <div className={styles.follow}>
+                    <Typography>{identity.followingCount}</Typography>
+                    <Typography color={"#989898"}>Followings</Typography>
+                </div>
+            </div>
+
+            {identity.social.twitter && (
+                <div className={styles.twitter}>
+                    <img src={"/icons/twitter.png"} alt={""} />
+                    <a
+                        href={"https://twitter.com/" + identity.social.twitter}
+                        target={"_blank"}
+                    >
+                        <Button className={styles.twitterButton}>
+                            {" "}
+                            {"@" + identity.social.twitter}
+                        </Button>
+                    </a>
+                </div>
+            )}
+
+            <div className={styles.social}>
+                <a
+                    href={"https://opensea.io/" + identity.address}
+                    target={"_blank"}
+                >
+                    <img
+                        src={"/icons/opensea.png"}
+                        alt={""}
+                        className={styles.socialIcon}
+                    />
+                </a>
+                <a
+                    href={"https://rarible.com/user/" + identity.address}
+                    target={"_blank"}
+                >
+                    <img
+                        src={"/icons/rarible.png"}
+                        alt={""}
+                        className={styles.socialIcon}
+                    />
+                </a>
+                <a
+                    href={"https://foundation.app/" + identity.address}
+                    target={"_blank"}
+                >
+                    <img
+                        src={"/icons/foundation.png"}
+                        alt={""}
+                        className={styles.socialIcon}
+                    />
+                </a>
+                <a
+                    href={"https://context.app/" + identity.address}
+                    target={"_blank"}
+                >
+                    <img
+                        src={"/icons/context.png"}
+                        alt={""}
+                        className={styles.socialIcon}
+                    />
+                </a>
+                <a
+                    href={"https://etherscan.io/address/" + identity.address}
+                    target={"_blank"}
+                >
+                    <img
+                        src={"/icons/etherscan.ico"}
+                        alt={""}
+                        className={styles.socialIcon}
+                    />
+                </a>
+            </div>
         </div>
     );
 };

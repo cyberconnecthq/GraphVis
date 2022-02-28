@@ -2,7 +2,7 @@
     background-color: rgb(0, 0, 0);
     color: white;
     width: 500px;
-    height: 1000px;
+    height: 1100px;
     position: fixed;
     z-index: 99;
     display: flex;
@@ -17,4 +17,40 @@
 .avatar {
     border-radius: 10px;
     margin: 20px 0;
+}
+
+.followStatus {
+    display: flex;
+}
+
+.follow {
+    margin: 0 20px;
+    padding: 5px 10px;
+    border: solid 1px;
+    text-align: center;
+}
+
+.twitter {
+    display: flex;
+    align-items: center;
+}
+
+.twitterButton {
+    background-color: #1da1f2;
+    color: white;
+    width: 280px;
+    height: 60px;
+    margin: 20px;
+    border-radius: 55px;
+}
+
+.twitterButton:hover {
+    background-color: #116ca5;
+}
+
+.socialIcon {
+    margin: 5px;
+    border: solid 2px white;
+    border-radius: 100%;
+    width: 50px;
 }
