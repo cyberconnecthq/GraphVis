@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+.image {
+    display: flex;
+    margin: 10px 30px;
+}
+
+.logo {
+    height: auto;
+}

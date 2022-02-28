@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import client from "../graphql/client";
 import styles from "../../styles/Home.module.css";
 import { WalletConnectButton } from "@/components/WalletConnectButton";
-import { SearchBar } from "@/components/SearchBar";
+import { NavBar } from "@/components/NavBar";
+import { UserPanel } from "@/components/UserPanel";
 
 const Home: NextPage = () => {
     useEffect(() => {
@@ -22,12 +23,13 @@ const Home: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            <NavBar />
             <main className={styles.main}>
                 <p className={styles.subtitle}>HOW PEOPLE</p>
                 <h1 className={styles.title}>CYBERCONNECTED IN </h1>
                 <h1 className={styles.title}>METAVERSE</h1>
-                <SearchBar />
+
+                <UserPanel />
                 <WalletConnectButton />
             </main>
 
