@@ -6,7 +6,6 @@ import client from "../graphql/client";
 import styles from "../../styles/Home.module.css";
 import { WalletConnectButton } from "@/components/WalletConnectButton";
 import { NavBar } from "@/components/NavBar";
-import { UserPanel } from "@/components/UserPanel";
 
 const Home: NextPage = () => {
     useEffect(() => {
@@ -28,8 +27,6 @@ const Home: NextPage = () => {
                 <p className={styles.subtitle}>HOW PEOPLE</p>
                 <h1 className={styles.title}>CYBERCONNECTED IN </h1>
                 <h1 className={styles.title}>METAVERSE</h1>
-
-                <UserPanel />
                 <WalletConnectButton />
             </main>
 

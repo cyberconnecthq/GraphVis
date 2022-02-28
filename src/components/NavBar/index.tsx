@@ -12,7 +12,7 @@ export const NavBar: React.FC = () => {
                 <Image
                     src="/CyberGraph-logo.png"
                     // layout="fill"
-                    width={200}
+                    width={230}
                     height={30}
                     className={styles.logo}
                     alt="Cyber Graph"
