@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { TextField } from "@mui/material";
 import styles from "./index.module.css";
 import { GraphContext } from "@/context/GraphContext";
-import { Web3Context } from "@/context/Web3Context";
 import { isValidAddr } from "@/utils/helper";
 
 export const SearchBar: React.FC = () => {
@@ -13,9 +12,8 @@ export const SearchBar: React.FC = () => {
     const handleInputChange = async (value: string) => {
         setSearchInput(value);
 
-        if (isValidAddr(value)) {
-            setGraphAddress(value);
-            console.log(searchInput);
+        if (isValidAddr(searchInput)) {
+            setGraphAddress(searchInput);
         }
     };
 

@@ -1,5 +1,7 @@
 .textField {
     background-color: aliceblue;
-    width: 30%;
-    border-radius: 10px;
+    width: 35%;
+    border-radius: 60px;
+    height: 60px;
+    margin-right: 20px;
 }

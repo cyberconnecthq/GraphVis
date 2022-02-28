@@ -1,3 +1,5 @@
+import { NavBar } from "@/components/NavBar";
+import { UserPanel } from "@/components/UserPanel";
 import { DEFAULT_ADDRESS } from "@/config/config";
 import { useQuery } from "@apollo/client";
 import type { NextPage } from "next";
@@ -8,8 +10,9 @@ const SocialGraph: NextPage = () => {
     return (
         //TODO: make our graph happen
         <div>
+            <NavBar />
+            <UserPanel />
             <FocusGraph />
-            <div>sdsd</div>
         </div>
     );
 };

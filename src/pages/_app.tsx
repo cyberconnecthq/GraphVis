@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material/styles";
 
 import theme from "../components/Graph/theme";
-import { Web3ContextProvider } from "@/context/web3Context";
+import { Web3ContextProvider } from "@/context/Web3Context";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/graphql/client";
 import { GraphContextProvider } from "@/context/GraphContext";
