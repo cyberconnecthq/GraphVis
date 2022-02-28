@@ -54,7 +54,7 @@ const FocusGraph = () => {
             nodeThreeObject={({ img }) => {
                 console.log(img);
                 const imgTexture = new THREE.TextureLoader().load(imgs[0]);
-                const geometry = new THREE.SphereGeometry(0.8, 100, 100);
+                const geometry = new THREE.SphereGeometry(2, 4, 4);
 
                 // Solution 1 - Ball
                 const material = new THREE.MeshBasicMaterial({
