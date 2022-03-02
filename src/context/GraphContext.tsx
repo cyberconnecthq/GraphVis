@@ -9,6 +9,12 @@ import { useQuery } from "@apollo/client";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
 import { Identity } from "../utils/types";
 import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
+import {
+    AllRecommendations,
+    AllSocialConnections,
+    SocialConnection,
+} from "@/types/AllSocialConnections";
+import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
 
 type GraphData = {
     nodes: {
@@ -26,34 +32,53 @@ type GraphData = {
 interface GraphContextInterface {
     graphAddress: string;
     selectAddress: string;
-    graphData: GraphData | {};
+    graphData: GraphData | undefined;
+    graphLoading: boolean;
 
     setGraphAddress: (address: string) => void;
     setSelectAddress: (address: string) => void;
-    setGraphData: (data: GraphData | {}) => void;
+    setGraphData: (data: GraphData | undefined) => void;
+    setGraphLoading: (loading: boolean) => void;
 }
 
 export const GraphContext = createContext<GraphContextInterface>({
     graphAddress: "",
     selectAddress: "",
-    graphData: {},
+    graphData: undefined,
+    graphLoading: true,
     setGraphAddress: async () => undefined,
     setSelectAddress: async () => undefined,
     setGraphData: async () => undefined,
+    setGraphLoading: async () => undefined,
 });
 
 export const GraphContextProvider: React.FC = ({ children }) => {
-    const [graphAddress, setGraphAddress] = useState<string>("");
+    // Cyberlab.eth default address
+    const [graphAddress, setGraphAddress] = useState<string>(
+        "0x148d59faf10b52063071eddf4aaf63a395f2d41c"
+    );
     const [selectAddress, setSelectAddress] = useState<string>("");
+    const [graphData, setGraphData] = useState<GraphData | undefined>(
+        undefined
+    );
+    const [graphLoading, setGraphLoading] = useState<boolean>(true);
 
-    const [graphData, setGraphData] = useState<GraphData | {}>({});
-
-    const identityData = useQuery(GET_IDENTITY, {
+    const { fetchMore } = useQuery(GET_ADDR_CONNECTION_QUERY, {
         variables: {
             address: graphAddress,
+            first: 50,
+            after: "-1",
+            namespace: "",
         },
-    }).data;
+    });
 
+    // let { fetchMore as fetchMoreRecommendation } = useQuery(GET_RECOMMENDATION, {
+    //     variables: {
+    //         address: graphAddress,
+    //     },
+    // });
+
+    // Not used for now
     const loadNodeConnections = async (addr: string) => {
         const { fetchMore } = useQuery(GET_ADDR_CONNECTION_QUERY, {
             variables: {
@@ -127,6 +152,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         }
     };
 
+    // Not used for now
     const loadGraphConnections = async () => {
         let stack = [],
             num = 0;
@@ -167,9 +193,160 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         }
     };
 
-    const loadGroupedConnections = useCallback(() => {
-        // useQuery()
-    }, [graphAddress]);
+    const loadGroupedConnections = async () => {
+        let hasNextPage = true;
+        let after = "-1";
+        let num = 0;
+
+        // Load Recommendation
+        // TODO:
+        // const { data as recommendationData } = await fetchMoreRecommendation({
+        //     variables: { address: graphAddress},
+        //     updateQuery: (prev: any, { fetchMoreResult }) => {
+        //         return fetchMoreResult;
+        //     }
+        // });
+
+        // Load Friendships
+        while (hasNextPage) {
+            num++;
+            const { data } = await fetchMore({
+                variables: {
+                    address: graphAddress,
+                    first: 50,
+                    after,
+                    namespace: "",
+                },
+                updateQuery: (prev: any, { fetchMoreResult }) => {
+                    return fetchMoreResult;
+                },
+            });
+
+            // TODO: Fetch paginated data source
+            console.log("Lynch Dev");
+            console.log(num);
+            console.log(data);
+
+            // Process Followers
+            setGraphData((preState: GraphData | undefined) => {
+                let followerList = (data as AllSocialConnections).identity
+                    .followers.list;
+                let followingList = (data as AllSocialConnections).identity
+                    .followings.list;
+                let friendList = (data as AllSocialConnections).identity.friends
+                    .list;
+                // TODO:
+                // let recommendationList = (recommendationData as AllRecommendations).recommendations.data.list;
+
+                let friendAddrList = friendList.map((item) => item.address);
+                followingList = followingList.filter(
+                    (item) => !friendAddrList.includes(item.address)
+                );
+                followerList = followerList.filter(
+                    (item) => !friendAddrList.includes(item.address)
+                );
+
+                let newState: GraphData = {
+                    nodes: [
+                        {
+                            id: graphAddress,
+                            img: (data as AllSocialConnections).identity.avatar,
+                            group: 0,
+                        },
+                        {
+                            id: "Followings",
+                            img: "",
+                            group: 1,
+                        },
+                        {
+                            id: "Followers",
+                            img: "",
+                            group: 2,
+                        },
+                        {
+                            id: "Friends",
+                            img: "",
+                            group: 3,
+                        },
+                        ...[...followingList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 1,
+                            };
+                        }),
+                        ...[...followerList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 2,
+                            };
+                        }),
+                        ...[...friendList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 3,
+                            };
+                        }),
+                        // TODO:
+                        // ...[...recommendationData].map((item: SocialConnection) => {
+                        //     return ({
+                        //         id: item.address,
+                        //         img: item.avatar,
+                        //         group: 4,
+                        //     });
+                        // }),
+                    ],
+                    links: [
+                        ...[...followingList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: "Followings",
+                                value: 1,
+                            };
+                        }),
+                        ...[...followerList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: "Followers",
+                                value: 2,
+                            };
+                        }),
+                        ...[...friendList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: "Friends",
+                                value: 3,
+                            };
+                        }),
+                        {
+                            source: graphAddress,
+                            target: "Friends",
+                            value: 0,
+                        },
+                        {
+                            source: graphAddress,
+                            target: "Followings",
+                            value: 0,
+                        },
+                        {
+                            source: graphAddress,
+                            target: "Followers",
+                            value: 0,
+                        },
+                    ],
+                };
+                return newState;
+            });
+
+            break;
+        }
+
+        setGraphLoading(false);
+    };
+
+    useEffect(() => {}, [selectAddress]);
 
     useEffect(() => {
         loadGroupedConnections();
@@ -181,9 +358,11 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                 graphData,
                 selectAddress,
                 graphAddress,
+                graphLoading,
                 setGraphData,
                 setSelectAddress,
                 setGraphAddress,
+                setGraphLoading,
             }}
         >
             {children}

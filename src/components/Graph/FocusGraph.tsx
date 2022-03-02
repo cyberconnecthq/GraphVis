@@ -3,6 +3,7 @@ import React, { useCallback, useRef } from "react";
 import * as THREE from "three";
 import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
 import data from "./data";
+import { useGraph } from "@/context/GraphContext";
 
 // const _ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
 // ssr: false
@@ -16,6 +17,8 @@ const ForwardGraph3D = forwardRef(
 */
 const FocusGraph = () => {
     const fgRef = useRef<ForceGraphMethods>();
+
+    const { graphData, setSelectAddress } = useGraph();
 
     const handleClick = useCallback(
         (node) => {
@@ -33,6 +36,9 @@ const FocusGraph = () => {
                     3000
                 );
             }
+            console.log("NODE!!!");
+            console.log(node);
+            setSelectAddress(node.id);
         },
         [fgRef]
     );
@@ -48,7 +54,6 @@ const FocusGraph = () => {
         "https://lh3.googleusercontent.com/kAUIhOwrsGefbciykjtRWwOVi3DJuoLgsjYfXxX5XwzbVQuXWlhxlSTu8OF2feNM-HO1PG9pzoWPwH-IA6xqqcdJKOwShGBJblYqkw=w600",
         "https://lh3.googleusercontent.com/grHDJSaUSH115KoRrevQIptDRWkbgvCBGhHeXSfik8p2a2YWCnYZRcoNqBErxvAXx37B8WjFvIbsEDYP8m0SFa5VyHtAHFZPdWtnrw=s128",
         "https://lh3.googleusercontent.com/R7iNrAYD7iNs1U7uo0mgZ_WPeGpZE2NFv6B7Byjw6lWDogpqRf7TGqsXUbKuujbuXdAeM6C6JAsWItUX6k9smfIZtFWnmFkH7v7j2u0=s128",
-        "https://anudit.dev/me.png",
         "https://lh3.googleusercontent.com/IWNUt93gg5kwF3VodiYiy1IoVvjI87gqKaf0BYiqzlVRTzUf8WJksJxsYoeEH4aguzv_o8JjphvDXL1DdnUKqXsbk4y6Whoy9PITag=s128",
         "https://lh3.googleusercontent.com/TpOqMje_vo4v688Ff8T2LVK4-J8vD06g8PENyHtx04RoA01gUMRJPdkqBXelgH8K2hPMoCBrZaORFtDBNuLawPVV0L_TU4Px4I32hw=w359",
         "https://lh3.googleusercontent.com/MgnHOIOyPhyWkVmFrFXJ3Sb88gvHH-K4CWadkEIQdDNF7K_93-gwiloxcKWSQJ0HuYtW2qSu79als_PRiDr4noq5rnIRoSqcoA4weww=s128",
@@ -65,23 +70,24 @@ const FocusGraph = () => {
     return (
         <ForceGraph3D
             ref={fgRef}
-            graphData={data}
+            graphData={graphData}
             nodeLabel="id"
             nodeAutoColorBy="group"
             onNodeClick={handleClick}
             linkColor="#458888"
             linkWidth={0.5}
-            nodeThreeObject={({ img }) => {
-                console.log(img);
+            nodeThreeObject={(node: any) => {
+                // const imgUrl = node.img || 'https://st2.depositphotos.com/1006318/5909/v/450/depositphotos_59094961-stock-illustration-businesswoman-profile-icon.jpg'
                 const imgTexture = new THREE.TextureLoader().load(
-                    imgs[getRandomInt(imgs.length)]
+                    node.img
+                    // Randomly give one
+                    // ||imgs[getRandomInt(imgs.length)]
                 );
                 const geometry = new THREE.SphereGeometry(2, 6, 6);
 
                 // Solution 1 - Ball
                 const material = new THREE.MeshBasicMaterial({
                     map: imgTexture,
-                    overdraw: 0.1,
                 });
                 const mesh = new THREE.Mesh(geometry, material);
                 return mesh;

@@ -1,19 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const GET_ADDR_CONNECTION_QUERY = gql`
-    enum Network {
-        ETH
-        SOLANA
-    }
     query identity(
         $address: String!
-        $network: Network
-        $after: String
         $first: Int
         $after: String
         $namespace: String
     ) {
-        identity(address: $address, network: $network) {
+        identity(address: $address, network: ETH) {
+            avatar
             followings(
                 namespace: $namespace
                 type: FOLLOW
@@ -25,6 +20,7 @@ export const GET_ADDR_CONNECTION_QUERY = gql`
                 }
                 list {
                     address
+                    avatar
                 }
             }
             followers(
@@ -38,6 +34,21 @@ export const GET_ADDR_CONNECTION_QUERY = gql`
                 }
                 list {
                     address
+                    avatar
+                }
+            }
+            friends(
+                namespace: $namespace
+                type: FOLLOW
+                first: $first
+                after: $after
+            ) {
+                pageInfo {
+                    hasNextPage
+                }
+                list {
+                    address
+                    avatar
                 }
             }
         }

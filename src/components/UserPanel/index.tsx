@@ -12,19 +12,19 @@ import { margin } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
 
 export const UserPanel: React.FC = ({ address }: { address: string }) => {
-    const graphAddress = "0x148d59faf10b52063071eddf4aaf63a395f2d41c";
+    // const graphAddress = "0x148d59faf10b52063071eddf4aaf63a395f2d41c";
+    const { selectAddress } = useGraph();
     const [identity, setIdentity] = useState<Identity | null>(null);
 
     const identityData = useQuery(GET_IDENTITY, {
         variables: {
-            address: graphAddress,
+            address: selectAddress,
         },
     }).data;
 
     useEffect(() => {
         if (identityData) {
             setIdentity(identityData.identity);
-            console.log(identityData);
         }
     }, [identityData]);
 
