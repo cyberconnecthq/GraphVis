@@ -6,12 +6,15 @@ import client from "../graphql/client";
 import styles from "../../styles/Home.module.css";
 import { WalletConnectButton } from "@/components/WalletConnectButton";
 import { NavBar } from "@/components/NavBar";
+import { LoadingButton } from "@mui/lab";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
     useEffect(() => {
         client;
     }, []);
 
+    const router = useRouter();
     return (
         <div className={styles.container}>
             <Head>
@@ -27,26 +30,13 @@ const Home: NextPage = () => {
                 <p className={styles.subtitle}>HOW PEOPLE</p>
                 <h1 className={styles.title}>CYBERCONNECTED IN </h1>
                 <h1 className={styles.title}>METAVERSE</h1>
-                <WalletConnectButton />
-            </main>
-
-            <footer className={styles.footer}>
-                <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <LoadingButton
+                    sx={{ bgcolor: "white", width: "300px" }}
+                    onClick={() => router.push("/socialgraph")}
                 >
-                    Powered by{" "}
-                    <span className={styles.logo}>
-                        <Image
-                            src="/vercel.svg"
-                            alt="Vercel Logo"
-                            width={72}
-                            height={16}
-                        />
-                    </span>
-                </a>
-            </footer>
+                    Let's jump in!
+                </LoadingButton>
+            </main>
         </div>
     );
 };

@@ -3,14 +3,21 @@
     color: white;
     width: 500px;
     height: 1100px;
+    margin-top: 150px;
+    margin-left: 20px;
     position: fixed;
     z-index: 99;
+    border: solid 2px;
+}
+
+.upcontainer {
+    color: white;
+    width: 500px;
+    max-height: 700px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: solid 2px;
-    margin-top: 150px;
-    margin-left: 20px;
+
     /* justify-content: center; */
 }
 
@@ -46,6 +53,10 @@
 
 .twitterButton:hover {
     background-color: #116ca5;
+}
+
+.social {
+    margin-top: 20px;
 }
 
 .socialIcon {

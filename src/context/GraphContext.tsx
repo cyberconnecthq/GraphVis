@@ -15,6 +15,7 @@ import {
     SocialConnection,
 } from "@/types/AllSocialConnections";
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
+import data from "@/components/Graph/data";
 
 type GraphData = {
     nodes: {
@@ -34,6 +35,7 @@ interface GraphContextInterface {
     selectAddress: string;
     graphData: GraphData | undefined;
     graphLoading: boolean;
+    connections: AllSocialConnections | null;
 
     setGraphAddress: (address: string) => void;
     setSelectAddress: (address: string) => void;
@@ -46,6 +48,8 @@ export const GraphContext = createContext<GraphContextInterface>({
     selectAddress: "",
     graphData: undefined,
     graphLoading: true,
+    connections: null,
+
     setGraphAddress: async () => undefined,
     setSelectAddress: async () => undefined,
     setGraphData: async () => undefined,
@@ -62,6 +66,10 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         undefined
     );
     const [graphLoading, setGraphLoading] = useState<boolean>(true);
+
+    const [connections, setConnections] = useState<AllSocialConnections | null>(
+        null
+    );
 
     const { fetchMore } = useQuery(GET_ADDR_CONNECTION_QUERY, {
         variables: {
@@ -126,6 +134,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             });
 
             const identity = data.identity;
+            setConnections(data);
 
             hasNextPage =
                 identity.followers.pageInfo.hasNextPage ||
@@ -363,6 +372,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                 setSelectAddress,
                 setGraphAddress,
                 setGraphLoading,
+                connections,
             }}
         >
             {children}
