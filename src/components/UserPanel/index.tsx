@@ -11,9 +11,13 @@ import { alignProperty } from "@mui/material/styles/cssUtils";
 import { margin } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
 
-export const UserPanel: React.FC = ({ address }: { address: string }) => {
+export const UserPanel: React.FC<{ address: string }> = ({
+    address,
+}: {
+    address: string;
+}) => {
     // const graphAddress = "0x148d59faf10b52063071eddf4aaf63a395f2d41c";
-    const { selectAddress } = useGraph();
+    const { selectAddress, setGraphAddress } = useGraph();
     const [identity, setIdentity] = useState<Identity | null>(null);
 
     const identityData = useQuery(GET_IDENTITY, {
@@ -51,6 +55,12 @@ export const UserPanel: React.FC = ({ address }: { address: string }) => {
             <Typography variant="h4">{identity.ens}</Typography>
             <LoadingButton sx={{ backgroundColor: "white" }}>
                 Follow
+            </LoadingButton>
+            <LoadingButton
+                sx={{ backgroundColor: "white" }}
+                onClick={() => setGraphAddress(selectAddress)}
+            >
+                Check this one!!
             </LoadingButton>
             <Typography
                 variant="h5"

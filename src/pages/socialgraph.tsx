@@ -33,7 +33,7 @@ const SocialGraph: NextPage = () => {
                             fontSize: "28px",
                         }}
                     >
-                        Thank you for using CyberConnect!!
+                        Thank you for using CyberConnect :)
                     </p>
                     <br />
                     <p

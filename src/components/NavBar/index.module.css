@@ -3,7 +3,7 @@
     padding: 20px;
     position: fixed;
     z-index: 100;
-    background-color: black;
+    background-color: transparent;
     width: 100vw;
     display: flex;
     justify-content: space-around;
