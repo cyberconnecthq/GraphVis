@@ -260,7 +260,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                         },
                         {
                             id: "Followers",
-                            img: "",
+                            img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fhotpot.ai%2Fcolorize-picture&psig=AOvVaw0LGfAtY4jm1qGvtp93Wh59&ust=1646331326777000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMivj5-EqPYCFQAAAAAdAAAAABAF",
                             group: 2,
                         },
                         {

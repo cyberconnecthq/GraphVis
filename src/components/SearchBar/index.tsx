@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import styles from "./index.module.css";
 import { GraphContext } from "@/context/GraphContext";
@@ -11,6 +11,7 @@ export const SearchBar: React.FC = () => {
 
     const handleInputChange = async (value: string) => {
         setSearchInput(value);
+        console.log("searchInput", searchInput);
 
         if (isValidAddr(searchInput)) {
             setGraphAddress(searchInput);
@@ -18,7 +19,7 @@ export const SearchBar: React.FC = () => {
     };
 
     return (
-        <TextField
+        <input
             className={styles.textField}
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder="Search by ENS / address"
