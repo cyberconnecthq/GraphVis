@@ -1,11 +1,8 @@
 .textField {
-    background-color: transparent;
-    color: white;
-    text-decoration-color: white;
-    width: 500px;
-    border-radius: 60px;
-    height: 60px;
-    margin-right: 20px;
     border: solid white 2px;
-    padding-left: 40px;
+    border-radius: 50px;
+    height: 60px;
+    background-color: aliceblue;
+    width: 500px;
+    padding: 0 30px;
 }

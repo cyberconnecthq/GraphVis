@@ -8,6 +8,7 @@
     position: fixed;
     z-index: 99;
     border: solid 2px;
+    border-radius: 50px;
 }
 
 .upcontainer {
