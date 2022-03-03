@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
-import { Identity } from "../utils/types";
+import { Identity } from "../types/identity";
 import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
 import {
     AllRecommendations,
@@ -15,7 +15,6 @@ import {
     SocialConnection,
 } from "@/types/AllSocialConnections";
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
-import data from "@/components/Graph/data";
 
 export type GraphNode = {
     id: string;
@@ -47,6 +46,7 @@ interface GraphContextInterface {
     graphData: GraphData | undefined;
     graphLoading: boolean;
     connections: AllSocialConnections | null;
+    identity: Identity | null;
     appMode: AppMode;
     count: number;
 
@@ -62,6 +62,7 @@ export const GraphContext = createContext<GraphContextInterface>({
     selectAddress: "",
     graphData: undefined,
     graphLoading: true,
+    identity: null,
     connections: null,
     appMode: AppMode.CyberMode,
     count: 0,
@@ -84,10 +85,24 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         undefined
     );
     const [graphLoading, setGraphLoading] = useState<boolean>(true);
+    const [identity, setIdentity] = useState<Identity | null>(null);
     const [connections, setConnections] = useState<AllSocialConnections | null>(
         null
     );
     const [appMode, setAppMode] = useState<AppMode>(AppMode.CyberMode);
+
+    //Fetch IdentityData: followers following num
+    const identityData = useQuery(GET_IDENTITY, {
+        variables: {
+            address: selectAddress,
+        },
+    }).data;
+
+    useEffect(() => {
+        if (identityData) {
+            setIdentity(identityData.identity);
+        }
+    }, [identityData]);
 
     const { fetchMore } = useQuery(GET_ADDR_CONNECTION_QUERY, {
         variables: {
@@ -103,6 +118,20 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             address: graphAddress,
         },
     });
+
+    //Fetch ConnectionsData
+    const fetchConnectionsData = async (targetAddr: string) => {
+        const { data } = await useQuery(GET_ADDR_CONNECTION_QUERY, {
+            variables: {
+                address: targetAddr,
+                first: 50,
+                after: -1,
+                namespace: "",
+            },
+        }).data;
+        setConnections(data as AllSocialConnections);
+        console.log("connections", connections);
+    };
 
     // Fetch Recommendations
     const fetchRecommendations = async (targetAddr: string) => {
@@ -378,7 +407,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         let newGraphData = await loadGraphConnections(graphAddress);
         await setGraphData(newGraphData);
         await setGraphLoading(false);
-        console.log(newGraphData);
+        console.log("newGraphData:", newGraphData);
     }, [graphAddress]);
 
     // For Focus Mode
@@ -387,15 +416,15 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         await setGraphData({ nodes: [], links: [] });
         let recommendGD = await fetchRecommendations(graphAddress);
         let threeFsGD = await fetch3Fs(graphAddress, true);
-        console.log(recommendGD);
-        console.log(threeFsGD);
+        console.log("recommendGD:", recommendGD);
+        console.log("threeFsGD", threeFsGD);
 
         await setGraphData({
             nodes: [...recommendGD.nodes, ...threeFsGD.nodes],
             links: [...recommendGD.links, ...threeFsGD.links],
         });
         await setGraphLoading(false);
-        console.log(graphData);
+        console.log("graphData:", graphData);
     }, [graphAddress]);
 
     // Using when mode or graphAddress changed
@@ -407,6 +436,11 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         }
     }, [graphAddress, appMode]);
 
+    //Using when selectedAddress chnaged
+    useEffect(() => {
+        fetchConnectionsData(selectAddress);
+    }, [selectAddress]);
+
     return (
         <GraphContext.Provider
             value={{
@@ -415,6 +449,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                 selectAddress,
                 graphAddress,
                 graphLoading,
+                identity,
                 connections,
                 appMode,
                 // setters

@@ -2,21 +2,17 @@ import { GraphContext, useGraph } from "@/context/GraphContext";
 import { useQuery } from "@apollo/client";
 import styles from "./index.module.css";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
-import { useContext, useEffect, useState } from "react";
-import { Identity } from "../../utils/types";
-
-import { DEFAULT_ADDRESS } from "../../config/config";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Identity } from "../../types/identity";
 import { Button, Divider, Switch, Typography } from "@mui/material";
-import { alignProperty } from "@mui/material/styles/cssUtils";
-import { margin } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
 import { TabsPanel } from "../TabsPanel";
 import { useWeb3 } from "@/context/web3Context";
 
 export const UserPanel: React.FC = () => {
-    // const graphAddress = "0x148d59faf10b52063071eddf4aaf63a395f2d41c";
-    const { selectAddress, setSelectAddress, setGraphAddress } = useGraph();
-    const [identity, setIdentity] = useState<Identity | null>(null);
+    const { selectAddress, identity, setSelectAddress, setGraphAddress } =
+        useGraph();
+
     const { address } = useWeb3();
 
     useEffect(() => {
@@ -26,17 +22,9 @@ export const UserPanel: React.FC = () => {
         }
     }, [address]);
 
-    const identityData = useQuery(GET_IDENTITY, {
-        variables: {
-            address: selectAddress,
-        },
-    }).data;
-
-    useEffect(() => {
-        if (identityData) {
-            setIdentity(identityData.identity);
-        }
-    }, [identityData]);
+    const handleGraphChange = useCallback(() => {
+        setGraphAddress(selectAddress);
+    }, [selectAddress]);
 
     if (!identity) return null;
     return (
@@ -74,7 +62,7 @@ export const UserPanel: React.FC = () => {
                     <Typography variant="h4">{identity.ens}</Typography>
                     <LoadingButton
                         sx={{ backgroundColor: "white", marginTop: "10px" }}
-                        onClick={() => setGraphAddress(selectAddress)}
+                        onClick={handleGraphChange}
                     >
                         EXPLORE this one!!
                     </LoadingButton>
