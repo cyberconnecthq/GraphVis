@@ -79,6 +79,7 @@ export const UserPanel: React.FC = () => {
                 >
                     Check this one!!
                 </LoadingButton>
+                <Divider sx={{ color: "gray" }} />
                 <Typography
                     variant="h5"
                     padding={2}

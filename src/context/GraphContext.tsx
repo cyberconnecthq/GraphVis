@@ -134,7 +134,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             });
 
             const identity = data.identity;
-            setConnections(data);
 
             hasNextPage =
                 identity.followers.pageInfo.hasNextPage ||
@@ -156,6 +155,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                 hasNextPage = false;
             }
             if (!hasNextPage) {
+                setConnections(data);
+                console.log("connections", connections);
                 return data;
             }
         }

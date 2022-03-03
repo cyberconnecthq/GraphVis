@@ -3,31 +3,35 @@ import { Button, TextField } from "@mui/material";
 import styles from "./index.module.css";
 import { GraphContext } from "@/context/GraphContext";
 import { isValidAddr } from "@/utils/helper";
+import { useWeb3 } from "@/context/web3Context";
 
-export const SearchBar: React.FC = () => {
+export const SearchBar: React.FC<SearchBar> = () => {
     const { graphAddress, setGraphAddress } = useContext(GraphContext);
+    const { getAddressByEns } = useWeb3();
+    const [value, setValue] = useState("");
 
-    const [searchInput, setSearchInput] = useState<string>("");
-
-    const handleInputChange = () => {
-        if (isValidAddr(searchInput)) {
-            setGraphAddress(searchInput);
+    const handleInputChange = async (e: { target: { value: string } }) => {
+        const newValue = e.target.value;
+        setValue(newValue);
+        if (newValue != "" && newValue.length < 64) {
+            try {
+                const ens = await getAddressByEns(newValue);
+                if (ens) {
+                    setGraphAddress(ens);
+                } else if (newValue.length == 42) {
+                    setGraphAddress(newValue);
+                }
+            } catch (error) {}
         }
     };
 
-    useEffect(() => {
-        handleInputChange;
-    }, [graphAddress]);
-
     return (
-        <form onSubmit={handleInputChange}>
-            <input
-                className={styles.textField}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search by ENS / address"
-                value={searchInput}
-            />
-        </form>
+        <TextField
+            className={styles.textField}
+            onChange={handleInputChange}
+            placeholder="Search by ENS / address"
+            sx={{ color: "white" }}
+        />
     );
 };
 

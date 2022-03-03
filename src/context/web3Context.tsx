@@ -8,6 +8,7 @@ interface Web3ContextInterface {
     address: string;
     ens: string | null;
     cyberConnect: CyberConnect | null;
+    getAddressByEns: (ens: string) => Promise<string | null>;
 }
 
 export const Web3Context = React.createContext<Web3ContextInterface>({
@@ -15,6 +16,7 @@ export const Web3Context = React.createContext<Web3ContextInterface>({
     address: "",
     ens: "",
     cyberConnect: null,
+    getAddressByEns: async () => null,
 });
 
 export const Web3ContextProvider: React.FC = ({ children }) => {
@@ -58,6 +60,13 @@ export const Web3ContextProvider: React.FC = ({ children }) => {
         initCyberConnect(provider.provider);
     }, [initCyberConnect]);
 
+    async function getAddressByEns(ens: string) {
+        const address = await ethers.providers
+            .getDefaultProvider()
+            .resolveName(ens);
+        return address;
+    }
+
     return (
         <Web3Context.Provider
             value={{
@@ -65,6 +74,7 @@ export const Web3ContextProvider: React.FC = ({ children }) => {
                 address,
                 ens,
                 cyberConnect,
+                getAddressByEns,
             }}
         >
             {children}
