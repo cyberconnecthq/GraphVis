@@ -66,7 +66,7 @@ export const TabsPanel: React.FC = () => {
             <TabPanel value={value} index={0}>
                 {connections?.identity.followers.list.map((user) => {
                     return (
-                        <Typography>
+                        <Typography key={""}>
                             {connections?.identity.followers.list}
                         </Typography>
                     );
@@ -74,7 +74,7 @@ export const TabsPanel: React.FC = () => {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 {connections?.identity.followings.list.map((user) => {
-                    return <Typography>{user.address}</Typography>;
+                    return <Typography key={""}>{user.address}</Typography>;
                 })}
             </TabPanel>
             <TabPanel value={value} index={2}>

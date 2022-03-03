@@ -5,7 +5,7 @@ import { GraphContext } from "@/context/GraphContext";
 import { isValidAddr } from "@/utils/helper";
 import { useWeb3 } from "@/context/web3Context";
 
-export const SearchBar: React.FC<SearchBar> = () => {
+export const SearchBar: React.FC = () => {
     const { graphAddress, setGraphAddress } = useContext(GraphContext);
     const { getAddressByEns } = useWeb3();
     const [value, setValue] = useState("");

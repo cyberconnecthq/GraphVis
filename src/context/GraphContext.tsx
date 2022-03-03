@@ -39,7 +39,7 @@ export enum AppMode {
     FocusMode,
 }
 
-export const DEFAULT_QUOTA = 7;
+export const DEFAULT_QUOTA = 10;
 
 interface GraphContextInterface {
     graphAddress: string;

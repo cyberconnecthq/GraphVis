@@ -34,7 +34,7 @@ const Home: NextPage = () => {
                     sx={{ bgcolor: "white", width: "300px" }}
                     onClick={() => router.push("/socialgraph")}
                 >
-                    Let's jump in!
+                    Let`&apos;`s jump in!
                 </LoadingButton>
             </main>
         </div>

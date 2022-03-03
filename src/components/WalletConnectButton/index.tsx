@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useWeb3 } from "@/context/Web3Context";
+import { useWeb3 } from "@/context/web3Context";
 import { formatAddress } from "@/utils/helper";
 import styles from "./index.module.css";
 

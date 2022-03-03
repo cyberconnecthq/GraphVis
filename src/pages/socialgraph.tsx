@@ -1,11 +1,7 @@
 import { NavBar } from "@/components/NavBar";
 import { UserPanel } from "@/components/UserPanel";
-import { DEFAULT_ADDRESS } from "@/config/config";
 import { DEFAULT_QUOTA, useGraph } from "@/context/GraphContext";
-import { useWeb3 } from "@/context/Web3Context";
-import { useQuery } from "@apollo/client";
 import type { NextPage } from "next";
-import { useState } from "react";
 import ReactLoading from "react-loading";
 import FocusGraph from "../components/Graph/FocusGraphWrapper";
 

@@ -11,7 +11,7 @@ import { alignProperty } from "@mui/material/styles/cssUtils";
 import { margin } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
 import { TabsPanel } from "../TabsPanel";
-import { useWeb3 } from "@/context/Web3Context";
+import { useWeb3 } from "@/context/web3Context";
 
 export const UserPanel: React.FC = () => {
     // const graphAddress = "0x148d59faf10b52063071eddf4aaf63a395f2d41c";
@@ -45,6 +45,7 @@ export const UserPanel: React.FC = () => {
                 <div className={styles.upcontainer}>
                     {identity.avatar ? (
                         <a
+                            rel="noreferrer"
                             href={
                                 "https://app.cyberconnect.me/address/" +
                                 identity?.address
@@ -116,6 +117,7 @@ export const UserPanel: React.FC = () => {
                                     identity.social.twitter
                                 }
                                 target={"_blank"}
+                                rel="noreferrer"
                             >
                                 <Button className={styles.twitterButton}>
                                     {" "}
@@ -130,6 +132,7 @@ export const UserPanel: React.FC = () => {
                         <a
                             href={"https://opensea.io/" + identity.address}
                             target={"_blank"}
+                            rel="noreferrer"
                         >
                             <img
                                 src={"/icons/opensea.png"}
@@ -142,6 +145,7 @@ export const UserPanel: React.FC = () => {
                                 "https://rarible.com/user/" + identity.address
                             }
                             target={"_blank"}
+                            rel="noreferrer"
                         >
                             <img
                                 src={"/icons/rarible.png"}
@@ -152,6 +156,7 @@ export const UserPanel: React.FC = () => {
                         <a
                             href={"https://foundation.app/" + identity.address}
                             target={"_blank"}
+                            rel="noreferrer"
                         >
                             <img
                                 src={"/icons/foundation.png"}
@@ -162,6 +167,7 @@ export const UserPanel: React.FC = () => {
                         <a
                             href={"https://context.app/" + identity.address}
                             target={"_blank"}
+                            rel="noreferrer"
                         >
                             <img
                                 src={"/icons/context.png"}
@@ -175,6 +181,7 @@ export const UserPanel: React.FC = () => {
                                 identity.address
                             }
                             target={"_blank"}
+                            rel="noreferrer"
                         >
                             <img
                                 src={"/icons/etherscan.ico"}
