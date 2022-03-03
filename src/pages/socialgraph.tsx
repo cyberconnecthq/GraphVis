@@ -1,7 +1,7 @@
 import { NavBar } from "@/components/NavBar";
 import { UserPanel } from "@/components/UserPanel";
 import { DEFAULT_ADDRESS } from "@/config/config";
-import { useGraph } from "@/context/GraphContext";
+import { DEFAULT_QUOTA, useGraph } from "@/context/GraphContext";
 import { useWeb3 } from "@/context/Web3Context";
 import { useQuery } from "@apollo/client";
 import type { NextPage } from "next";
@@ -10,7 +10,7 @@ import ReactLoading from "react-loading";
 import FocusGraph from "../components/Graph/FocusGraphWrapper";
 
 const SocialGraph: NextPage = () => {
-    const { graphLoading } = useGraph();
+    const { graphLoading, count } = useGraph();
 
     return (
         <div
@@ -44,6 +44,15 @@ const SocialGraph: NextPage = () => {
                         }}
                     >
                         CyberGraph is fetching latest data ...
+                    </p>
+                    <br />
+                    <p
+                        style={{
+                            color: "white",
+                            fontSize: "28px",
+                        }}
+                    >
+                        Loading {(100 * count) / DEFAULT_QUOTA} %
                     </p>
                 </div>
             )}

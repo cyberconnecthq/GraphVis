@@ -17,18 +17,29 @@ import {
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
 import data from "@/components/Graph/data";
 
-type GraphData = {
-    nodes: {
-        id: string;
-        img: string;
-        group: number;
-    }[];
-    links: {
-        source: string;
-        target: string;
-        value: number;
-    }[];
+export type GraphNode = {
+    id: string;
+    img: string;
+    group: number;
 };
+
+export type GraphLink = {
+    source: string;
+    target: string;
+    value: number;
+};
+
+export type GraphData = {
+    nodes: GraphNode[];
+    links: GraphLink[];
+};
+
+export enum AppMode {
+    CyberMode = 1,
+    FocusMode,
+}
+
+export const DEFAULT_QUOTA = 7;
 
 interface GraphContextInterface {
     graphAddress: string;
@@ -36,11 +47,14 @@ interface GraphContextInterface {
     graphData: GraphData | undefined;
     graphLoading: boolean;
     connections: AllSocialConnections | null;
+    appMode: AppMode;
+    count: number;
 
     setGraphAddress: (address: string) => void;
     setSelectAddress: (address: string) => void;
     setGraphData: (data: GraphData | undefined) => void;
     setGraphLoading: (loading: boolean) => void;
+    setAppMode: (mode: AppMode) => void;
 }
 
 export const GraphContext = createContext<GraphContextInterface>({
@@ -49,12 +63,16 @@ export const GraphContext = createContext<GraphContextInterface>({
     graphData: undefined,
     graphLoading: true,
     connections: null,
+    appMode: AppMode.CyberMode,
+    count: 0,
 
     setGraphAddress: async () => undefined,
     setSelectAddress: async () => undefined,
     setGraphData: async () => undefined,
     setGraphLoading: async () => undefined,
+    setAppMode: async () => undefined,
 });
+let count = 0;
 
 export const GraphContextProvider: React.FC = ({ children }) => {
     // Cyberlab.eth default address
@@ -66,10 +84,10 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         undefined
     );
     const [graphLoading, setGraphLoading] = useState<boolean>(true);
-
     const [connections, setConnections] = useState<AllSocialConnections | null>(
         null
     );
+    const [appMode, setAppMode] = useState<AppMode>(AppMode.CyberMode);
 
     const { fetchMore } = useQuery(GET_ADDR_CONNECTION_QUERY, {
         variables: {
@@ -80,148 +98,59 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         },
     });
 
-    // let { fetchMore as fetchMoreRecommendation } = useQuery(GET_RECOMMENDATION, {
-    //     variables: {
-    //         address: graphAddress,
-    //     },
-    // });
+    let { fetchMore: fetchMoreRecommendation } = useQuery(GET_RECOMMENDATION, {
+        variables: {
+            address: graphAddress,
+        },
+    });
 
-    // Not used for now
-    const loadNodeConnections = async (addr: string) => {
-        const { fetchMore } = useQuery(GET_ADDR_CONNECTION_QUERY, {
-            variables: {
-                address: "",
-                network: "ETH",
-                after: "0",
-                first: 50,
-                namespace: "",
+    // Fetch Recommendations
+    const fetchRecommendations = async (targetAddr: string) => {
+        const { data: recommendationData } = await fetchMoreRecommendation({
+            variables: { address: targetAddr },
+            updateQuery: (prev: any, { fetchMoreResult }) => {
+                return fetchMoreResult;
             },
         });
+        let recommendationList = (recommendationData as AllRecommendations)
+            .recommendations.data?.list;
+        if (!recommendationList) {
+            return { nodes: [], links: [] };
+        }
+        // console.log(re)
+        // Return recommendation list as GraphNode[]
+        let retGraphData: GraphData = { nodes: [], links: [] };
+        retGraphData.nodes = [
+            ...[...recommendationList].map((item: SocialConnection) => {
+                return {
+                    id: item.address,
+                    img: item.avatar,
+                    group: 4,
+                };
+            }),
+        ];
 
-        let hasNextPage = true;
-        let offset = "0";
+        return retGraphData;
+    };
 
+    // Fetch friends, followings, followers
+    const fetch3Fs = async (targetAddr: string, isFocusMode: boolean) => {
+        let hasNextPage = true,
+            after = "-1";
+        let followerList: SocialConnection[],
+            followingList: SocialConnection[],
+            friendList: SocialConnection[];
+        followerList = [];
+        followingList = [];
+        friendList = [];
+
+        let allData;
+        // TODO: Paginated fetching
+        // Currently only load one batch
         while (hasNextPage) {
             const { data } = await fetchMore({
                 variables: {
-                    address: addr,
-                    network: "ETH",
-                    after: offset,
-                    first: 50,
-                    namespace: "",
-                },
-                updateQuery: (prev: any, { fetchMoreResult }) => {
-                    if (
-                        prev.identity === undefined ||
-                        prev.identity.followers === undefined
-                    ) {
-                        return fetchMoreResult;
-                    }
-                    fetchMoreResult.identity.followers.list =
-                        prev.identity.followers.list.concat(
-                            fetchMoreResult.identity.followers.list
-                        );
-                    fetchMoreResult.identity.followings.list =
-                        prev.identity.followings.list.concat(
-                            fetchMoreResult.identity.followings.list
-                        );
-                    fetchMoreResult.identity.friends.list =
-                        prev.identity.friends.list.concat(
-                            fetchMoreResult.identity.friends.list
-                        );
-                    return fetchMoreResult;
-                },
-            });
-
-            const identity = data.identity;
-            setConnections(data);
-
-            hasNextPage =
-                identity.followers.pageInfo.hasNextPage ||
-                identity.followings.pageInfo.hasNextPage ||
-                identity.friends.pageInfo.hasNextPage;
-            offset = Math.max(
-                +identity.followers.pageInfo.endCursor,
-                +identity.followings.pageInfo.endCursor,
-                +identity.friends.pageInfo.endCursor
-            ).toString();
-
-            if (
-                Math.max(
-                    identity.followers.list.length,
-                    identity.followings.list.length,
-                    identity.friends.list.length
-                ) >= 500
-            ) {
-                hasNextPage = false;
-            }
-            if (!hasNextPage) {
-                return data;
-            }
-        }
-    };
-
-    // Not used for now
-    const loadGraphConnections = async () => {
-        let stack = [],
-            num = 0;
-        let set = new Set();
-        let retGraph = {
-            nodes: [],
-            links: [],
-        };
-        const MAX_NUM = 30,
-            MAX_DEPTH = 1;
-
-        stack.push({
-            num: num,
-            depth: 0,
-            addr: graphAddress,
-        });
-        set.add(graphAddress);
-
-        while (stack.length) {
-            let headNode = stack.shift();
-            let headDepth = headNode?.depth;
-            let headAddr = headNode?.addr;
-            let headNum = headNode?.num;
-
-            const toAddrList = await loadNodeConnections(headAddr);
-            for (const toAddr of toAddrList) {
-                // Add Node
-                retGraph.nodes.push({
-                    id: headNum?.toString(),
-                });
-                // Add Edge
-
-                // Add to stack
-                if (num < MAX_NUM) {
-                    num++;
-                }
-            }
-        }
-    };
-
-    const loadGroupedConnections = async () => {
-        let hasNextPage = true;
-        let after = "-1";
-        let num = 0;
-
-        // Load Recommendation
-        // TODO:
-        // const { data as recommendationData } = await fetchMoreRecommendation({
-        //     variables: { address: graphAddress},
-        //     updateQuery: (prev: any, { fetchMoreResult }) => {
-        //         return fetchMoreResult;
-        //     }
-        // });
-
-        // Load Friendships
-        while (hasNextPage) {
-            num++;
-            const { data } = await fetchMore({
-                variables: {
-                    address: graphAddress,
+                    address: targetAddr,
                     first: 50,
                     after,
                     namespace: "",
@@ -231,148 +160,270 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                 },
             });
 
-            // TODO: Fetch paginated data source
-            console.log("Lynch Dev");
-            console.log(num);
-            console.log(data);
-
             // Process Followers
-            setGraphData((preState: GraphData | undefined) => {
-                let followerList = (data as AllSocialConnections).identity
-                    .followers.list;
-                let followingList = (data as AllSocialConnections).identity
-                    .followings.list;
-                let friendList = (data as AllSocialConnections).identity.friends
-                    .list;
-                // TODO:
-                // let recommendationList = (recommendationData as AllRecommendations).recommendations.data.list;
+            followerList = (data as AllSocialConnections).identity.followers
+                .list;
+            followingList = (data as AllSocialConnections).identity.followings
+                .list;
+            friendList = (data as AllSocialConnections).identity.friends.list;
 
-                let friendAddrList = friendList.map((item) => item.address);
-                followingList = followingList.filter(
-                    (item) => !friendAddrList.includes(item.address)
-                );
-                followerList = followerList.filter(
-                    (item) => !friendAddrList.includes(item.address)
-                );
-
-                let newState: GraphData = {
-                    nodes: [
-                        {
-                            id: graphAddress,
-                            img: (data as AllSocialConnections).identity.avatar,
-                            group: 0,
-                        },
-                        {
-                            id: "Followings",
-                            img: "",
-                            group: 1,
-                        },
-                        {
-                            id: "Followers",
-                            img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fhotpot.ai%2Fcolorize-picture&psig=AOvVaw0LGfAtY4jm1qGvtp93Wh59&ust=1646331326777000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMivj5-EqPYCFQAAAAAdAAAAABAF",
-                            group: 2,
-                        },
-                        {
-                            id: "Friends",
-                            img: "",
-                            group: 3,
-                        },
-                        ...[...followingList].map((item: SocialConnection) => {
-                            return {
-                                id: item.address,
-                                img: item.avatar,
-                                group: 1,
-                            };
-                        }),
-                        ...[...followerList].map((item: SocialConnection) => {
-                            return {
-                                id: item.address,
-                                img: item.avatar,
-                                group: 2,
-                            };
-                        }),
-                        ...[...friendList].map((item: SocialConnection) => {
-                            return {
-                                id: item.address,
-                                img: item.avatar,
-                                group: 3,
-                            };
-                        }),
-                        // TODO:
-                        // ...[...recommendationData].map((item: SocialConnection) => {
-                        //     return ({
-                        //         id: item.address,
-                        //         img: item.avatar,
-                        //         group: 4,
-                        //     });
-                        // }),
-                    ],
-                    links: [
-                        ...[...followingList].map((item: SocialConnection) => {
-                            return {
-                                source: item.address,
-                                target: "Followings",
-                                value: 1,
-                            };
-                        }),
-                        ...[...followerList].map((item: SocialConnection) => {
-                            return {
-                                source: item.address,
-                                target: "Followers",
-                                value: 2,
-                            };
-                        }),
-                        ...[...friendList].map((item: SocialConnection) => {
-                            return {
-                                source: item.address,
-                                target: "Friends",
-                                value: 3,
-                            };
-                        }),
-                        {
-                            source: graphAddress,
-                            target: "Friends",
-                            value: 0,
-                        },
-                        {
-                            source: graphAddress,
-                            target: "Followings",
-                            value: 0,
-                        },
-                        {
-                            source: graphAddress,
-                            target: "Followers",
-                            value: 0,
-                        },
-                    ],
-                };
-                return newState;
-            });
-
+            allData = data;
             break;
         }
 
-        setGraphLoading(false);
+        // Three lists filter out redundant elements
+        let friendAddrList = friendList.map((item) => item.address);
+        followingList = followingList.filter(
+            (item) => !friendAddrList.includes(item.address)
+        );
+        followerList = followerList.filter(
+            (item) => !friendAddrList.includes(item.address)
+        );
+
+        // Construct Returning GraphData
+        let retGraphData: GraphData;
+        if (isFocusMode) {
+            retGraphData = {
+                nodes: [
+                    {
+                        id: targetAddr,
+                        img: (allData as AllSocialConnections).identity.avatar,
+                        group: 0,
+                    },
+                    {
+                        id: "Followings",
+                        img: "",
+                        group: 1,
+                    },
+                    {
+                        id: "Followers",
+                        img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fhotpot.ai%2Fcolorize-picture&psig=AOvVaw0LGfAtY4jm1qGvtp93Wh59&ust=1646331326777000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMivj5-EqPYCFQAAAAAdAAAAABAF",
+                        group: 2,
+                    },
+                    {
+                        id: "Friends",
+                        img: "",
+                        group: 3,
+                    },
+                    ...[...followingList].map((item: SocialConnection) => {
+                        return {
+                            id: item.address,
+                            img: item.avatar,
+                            group: 1,
+                        };
+                    }),
+                    ...[...followerList].map((item: SocialConnection) => {
+                        return {
+                            id: item.address,
+                            img: item.avatar,
+                            group: 2,
+                        };
+                    }),
+                    ...[...friendList].map((item: SocialConnection) => {
+                        return {
+                            id: item.address,
+                            img: item.avatar,
+                            group: 3,
+                        };
+                    }),
+                ],
+                links: [
+                    ...[...followingList].map((item: SocialConnection) => {
+                        return {
+                            source: item.address,
+                            target: "Followings",
+                            value: 1,
+                        };
+                    }),
+                    ...[...followerList].map((item: SocialConnection) => {
+                        return {
+                            source: item.address,
+                            target: "Followers",
+                            value: 2,
+                        };
+                    }),
+                    ...[...friendList].map((item: SocialConnection) => {
+                        return {
+                            source: item.address,
+                            target: "Friends",
+                            value: 3,
+                        };
+                    }),
+                    {
+                        source: targetAddr,
+                        target: "Friends",
+                        value: 0,
+                    },
+                    {
+                        source: targetAddr,
+                        target: "Followings",
+                        value: 0,
+                    },
+                    {
+                        source: targetAddr,
+                        target: "Followers",
+                        value: 0,
+                    },
+                ],
+            };
+        } else {
+            retGraphData = {
+                nodes: [
+                    {
+                        id: targetAddr,
+                        img: (allData as AllSocialConnections).identity.avatar,
+                        group: 0,
+                    },
+                    ...[...followingList].map((item: SocialConnection) => {
+                        return {
+                            id: item.address,
+                            img: item.avatar,
+                            group: 1,
+                        };
+                    }),
+                    ...[...followerList].map((item: SocialConnection) => {
+                        return {
+                            id: item.address,
+                            img: item.avatar,
+                            group: 2,
+                        };
+                    }),
+                    ...[...friendList].map((item: SocialConnection) => {
+                        return {
+                            id: item.address,
+                            img: item.avatar,
+                            group: 3,
+                        };
+                    }),
+                ],
+                links: [
+                    ...[...followingList].map((item: SocialConnection) => {
+                        return {
+                            source: item.address,
+                            target: targetAddr,
+                            value: 1,
+                        };
+                    }),
+                    ...[...followerList].map((item: SocialConnection) => {
+                        return {
+                            source: item.address,
+                            target: targetAddr,
+                            value: 2,
+                        };
+                    }),
+                    ...[...friendList].map((item: SocialConnection) => {
+                        return {
+                            source: item.address,
+                            target: targetAddr,
+                            value: 3,
+                        };
+                    }),
+                ],
+            };
+        }
+        return retGraphData;
     };
 
-    useEffect(() => {}, [selectAddress]);
+    const loadGraphConnections = async (addr: string) => {
+        // queue is to do BFS, set is a hashMap record appeared addresses
+        let bfsQueue = [];
+        let set = new Set();
+        let retGraphData: GraphData = {
+            nodes: [],
+            links: [],
+        };
 
-    useEffect(() => {
-        loadGroupedConnections();
+        bfsQueue.push(graphAddress);
+        set.add(graphAddress);
+        count = 0;
+
+        while (count < DEFAULT_QUOTA) {
+            console.log(count);
+            let headAddr = bfsQueue.shift();
+            if (headAddr == undefined) {
+                continue;
+            }
+            let recommendGD = await fetchRecommendations(headAddr);
+            let threeFsGD = await fetch3Fs(headAddr, false);
+            retGraphData = {
+                nodes: [
+                    ...retGraphData.nodes,
+                    ...recommendGD.nodes,
+                    ...threeFsGD.nodes,
+                ],
+                links: [
+                    ...retGraphData.links,
+                    ...recommendGD.links,
+                    ...threeFsGD.links,
+                ],
+            };
+
+            // Expand BFS search
+            for (const toNode of retGraphData.nodes) {
+                if (!set.has(toNode.id)) {
+                    set.add(toNode.id);
+                    bfsQueue.push(toNode.id);
+                }
+            }
+            count++;
+        }
+
+        return retGraphData;
+    };
+
+    // For Cyber Mode
+    const loadCyberModeConnections = useCallback(async () => {
+        await setGraphLoading(true);
+        await setGraphData({ nodes: [], links: [] });
+        let newGraphData = await loadGraphConnections(graphAddress);
+        await setGraphData(newGraphData);
+        await setGraphLoading(false);
+        console.log(newGraphData);
     }, [graphAddress]);
+
+    // For Focus Mode
+    const loadFocusModeConnections = useCallback(async () => {
+        await setGraphLoading(true);
+        await setGraphData({ nodes: [], links: [] });
+        let recommendGD = await fetchRecommendations(graphAddress);
+        let threeFsGD = await fetch3Fs(graphAddress, true);
+        console.log(recommendGD);
+        console.log(threeFsGD);
+
+        await setGraphData({
+            nodes: [...recommendGD.nodes, ...threeFsGD.nodes],
+            links: [...recommendGD.links, ...threeFsGD.links],
+        });
+        await setGraphLoading(false);
+        console.log(graphData);
+    }, [graphAddress]);
+
+    // Using when mode or graphAddress changed
+    useEffect(() => {
+        if (appMode == AppMode.CyberMode) {
+            loadCyberModeConnections();
+        } else {
+            loadFocusModeConnections();
+        }
+    }, [graphAddress, appMode]);
 
     return (
         <GraphContext.Provider
             value={{
+                // values
                 graphData,
                 selectAddress,
                 graphAddress,
                 graphLoading,
+                connections,
+                appMode,
+                // setters
                 setGraphData,
                 setSelectAddress,
                 setGraphAddress,
                 setGraphLoading,
-                connections,
+                setAppMode,
+                count,
             }}
         >
             {children}

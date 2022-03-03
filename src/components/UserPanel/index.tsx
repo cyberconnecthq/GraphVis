@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { Identity } from "../../utils/types";
 
 import { DEFAULT_ADDRESS } from "../../config/config";
-import { Button, Divider, Typography } from "@mui/material";
+import { Button, Divider, Switch, Typography } from "@mui/material";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 import { margin } from "@mui/system";
 import { LoadingButton } from "@mui/lab";
@@ -40,144 +40,154 @@ export const UserPanel: React.FC = () => {
 
     if (!identity) return null;
     return (
-        <div className={styles.container}>
-            <div className={styles.upcontainer}>
-                {identity.avatar ? (
-                    <a
-                        href={
-                            "https://app.cyberconnect.me/address/" +
-                            identity?.address
-                        }
-                        target={"_blank"}
-                    >
+        <>
+            <div className={styles.container}>
+                <div className={styles.upcontainer}>
+                    {identity.avatar ? (
+                        <a
+                            href={
+                                "https://app.cyberconnect.me/address/" +
+                                identity?.address
+                            }
+                            target={"_blank"}
+                        >
+                            <img
+                                src={identity.avatar}
+                                alt={""}
+                                width={200}
+                                height={200}
+                                className={styles.avatar}
+                            />
+                        </a>
+                    ) : (
                         <img
-                            src={identity.avatar}
+                            src={
+                                "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-7.jpg"
+                            }
                             alt={""}
                             width={200}
                             height={200}
                             className={styles.avatar}
                         />
-                    </a>
-                ) : (
-                    <img
-                        src={
-                            "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-7.jpg"
-                        }
-                        alt={""}
-                        width={200}
-                        height={200}
-                        className={styles.avatar}
-                    />
-                )}
-                <Typography variant="h4">{identity.ens}</Typography>
-                <LoadingButton sx={{ backgroundColor: "white" }}>
-                    Follow
-                </LoadingButton>
-                <LoadingButton
-                    sx={{ backgroundColor: "white", marginTop: "10px" }}
-                    onClick={() => setGraphAddress(selectAddress)}
-                >
-                    Check this one!!
-                </LoadingButton>
-                <Typography
-                    variant="h5"
-                    padding={2}
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
-                    Address:{" "}
-                    <Typography paddingLeft={2} sx={{ color: "gray" }}>
-                        {identity?.address}
+                    )}
+                    <Typography variant="h4">{identity.ens}</Typography>
+                    <LoadingButton
+                        sx={{ backgroundColor: "white", marginTop: "10px" }}
+                        onClick={() => setGraphAddress(selectAddress)}
+                    >
+                        EXPLORE this one!!
+                    </LoadingButton>
+
+                    <Typography
+                        variant="h5"
+                        padding={2}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        Address:{" "}
+                        <Typography paddingLeft={2} sx={{ color: "gray" }}>
+                            {identity?.address}
+                        </Typography>
                     </Typography>
-                </Typography>
 
-                <div className={styles.followStatus}>
-                    <div className={styles.follow}>
-                        <Typography>{identity.followerCount}</Typography>
-                        <Typography color={"#989898"}>Followers</Typography>
+                    {/* Followings & Followers Section */}
+                    <div className={styles.followStatus}>
+                        <div className={styles.follow}>
+                            <Typography>{identity.followerCount}</Typography>
+                            <Typography color={"#989898"}>Followers</Typography>
+                        </div>
+                        <div className={styles.follow}>
+                            <Typography>{identity.followingCount}</Typography>
+                            <Typography color={"#989898"}>
+                                Followings
+                            </Typography>
+                        </div>
                     </div>
-                    <div className={styles.follow}>
-                        <Typography>{identity.followingCount}</Typography>
-                        <Typography color={"#989898"}>Followings</Typography>
-                    </div>
-                </div>
 
-                {identity.social.twitter && (
-                    <div className={styles.twitter}>
-                        <img src={"/icons/twitter.png"} alt={""} />
+                    {/* Twitter Section */}
+                    {identity.social.twitter && (
+                        <div className={styles.twitter}>
+                            <img src={"/icons/twitter.png"} alt={""} />
+                            <a
+                                href={
+                                    "https://twitter.com/" +
+                                    identity.social.twitter
+                                }
+                                target={"_blank"}
+                            >
+                                <Button className={styles.twitterButton}>
+                                    {" "}
+                                    {"@" + identity.social.twitter}
+                                </Button>
+                            </a>
+                        </div>
+                    )}
+
+                    {/* Social Section */}
+                    <div className={styles.social}>
+                        <a
+                            href={"https://opensea.io/" + identity.address}
+                            target={"_blank"}
+                        >
+                            <img
+                                src={"/icons/opensea.png"}
+                                alt={""}
+                                className={styles.socialIcon}
+                            />
+                        </a>
                         <a
                             href={
-                                "https://twitter.com/" + identity.social.twitter
+                                "https://rarible.com/user/" + identity.address
                             }
                             target={"_blank"}
                         >
-                            <Button className={styles.twitterButton}>
-                                {" "}
-                                {"@" + identity.social.twitter}
-                            </Button>
+                            <img
+                                src={"/icons/rarible.png"}
+                                alt={""}
+                                className={styles.socialIcon}
+                            />
+                        </a>
+                        <a
+                            href={"https://foundation.app/" + identity.address}
+                            target={"_blank"}
+                        >
+                            <img
+                                src={"/icons/foundation.png"}
+                                alt={""}
+                                className={styles.socialIcon}
+                            />
+                        </a>
+                        <a
+                            href={"https://context.app/" + identity.address}
+                            target={"_blank"}
+                        >
+                            <img
+                                src={"/icons/context.png"}
+                                alt={""}
+                                className={styles.socialIcon}
+                            />
+                        </a>
+                        <a
+                            href={
+                                "https://etherscan.io/address/" +
+                                identity.address
+                            }
+                            target={"_blank"}
+                        >
+                            <img
+                                src={"/icons/etherscan.ico"}
+                                alt={""}
+                                className={styles.socialIcon}
+                            />
                         </a>
                     </div>
-                )}
-
-                <div className={styles.social}>
-                    <a
-                        href={"https://opensea.io/" + identity.address}
-                        target={"_blank"}
-                    >
-                        <img
-                            src={"/icons/opensea.png"}
-                            alt={""}
-                            className={styles.socialIcon}
-                        />
-                    </a>
-                    <a
-                        href={"https://rarible.com/user/" + identity.address}
-                        target={"_blank"}
-                    >
-                        <img
-                            src={"/icons/rarible.png"}
-                            alt={""}
-                            className={styles.socialIcon}
-                        />
-                    </a>
-                    <a
-                        href={"https://foundation.app/" + identity.address}
-                        target={"_blank"}
-                    >
-                        <img
-                            src={"/icons/foundation.png"}
-                            alt={""}
-                            className={styles.socialIcon}
-                        />
-                    </a>
-                    <a
-                        href={"https://context.app/" + identity.address}
-                        target={"_blank"}
-                    >
-                        <img
-                            src={"/icons/context.png"}
-                            alt={""}
-                            className={styles.socialIcon}
-                        />
-                    </a>
-                    <a
-                        href={
-                            "https://etherscan.io/address/" + identity.address
-                        }
-                        target={"_blank"}
-                    >
-                        <img
-                            src={"/icons/etherscan.ico"}
-                            alt={""}
-                            className={styles.socialIcon}
-                        />
-                    </a>
                 </div>
+                {/* Follower & Followings Tab Section */}
+                <TabsPanel />
             </div>
-            <TabsPanel />
-        </div>
+        </>
     );
 };
 

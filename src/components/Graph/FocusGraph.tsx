@@ -36,8 +36,6 @@ const FocusGraph = () => {
                     3000
                 );
             }
-            console.log("NODE!!!");
-            console.log(node);
             setSelectAddress(node.id);
         },
         [fgRef]
@@ -46,6 +44,14 @@ const FocusGraph = () => {
     function getRandomInt(max: number) {
         return Math.floor(Math.random() * max);
     }
+
+    const localImgs = [
+        "/red.jpg",
+        "/blue.png",
+        "/brown.png",
+        "/green.png",
+        "/grey.png",
+    ];
 
     return (
         <ForceGraph3D
@@ -56,21 +62,12 @@ const FocusGraph = () => {
             onNodeClick={handleClick}
             linkColor="#458888"
             linkWidth={0.5}
+            backgroundColor="#000000"
             nodeThreeObject={(node: any) => {
-                // const imgUrl = node.img || 'https://st2.depositphotos.com/1006318/5909/v/450/depositphotos_59094961-stock-illustration-businesswoman-profile-icon.jpg'
-                if (node.img) {
-                    const imgTexture = new THREE.TextureLoader().load(
-                        node.img
-                        // Randomly give one
-                        // ||imgs[getRandomInt(imgs.length)]
-                    );
-                } else {
-                    const imgTexture = new THREE.TextureLoader().load(
-                        "https://m.media-amazon.com/images/I/31fKBXVsahL._AC_.jpg"
-                        // Randomly give one
-                        // ||imgs[getRandomInt(imgs.length)]
-                    );
-                }
+                const imgTexture = new THREE.TextureLoader().load(
+                    node.img || localImgs[getRandomInt(localImgs.length)]
+                    // Randomly give one
+                );
                 const geometry = new THREE.SphereGeometry(2, 6, 6);
 
                 // Solution 1 - Ball
