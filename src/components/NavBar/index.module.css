@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    padding: 20px;
+    position: fixed;
+    z-index: 100;
+    background-color: transparent;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.image {
+    display: flex;
+    margin: 10px 30px;
+}
+
+.logo {
+    height: auto;
+}
+
+.rightPanel {
+    display: flex;
+}

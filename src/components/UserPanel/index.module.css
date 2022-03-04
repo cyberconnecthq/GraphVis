@@ -1,0 +1,100 @@
+.container {
+    background-color: black;
+    color: white;
+    width: 700px;
+    height: 700px;
+    margin-top: 350px;
+    margin-left: 20px;
+    position: fixed;
+    z-index: 99;
+    border: solid 3px;
+    border-radius: 20px;
+}
+
+.userInfoSection {
+    display: flex;
+    padding: 10px;
+    margin: 20px 20px;
+    border-bottom: #535353 solid 1px;
+}
+
+.userName {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    justify-content: center;
+}
+
+.avatarSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar {
+    border-radius: 50px;
+    margin-top: 5px;
+}
+
+.followSection {
+    display: flex;
+    border-bottom: #272727 solid 1px;
+    padding: 10px;
+    margin: 10px 20px;
+    justify-content: center;
+}
+
+.follow {
+    padding: 5px 80px;
+    text-align: center;
+}
+
+.balanceSection {
+    margin: 20px 20px;
+    border-bottom: #272727 solid 1px;
+}
+
+.twitter {
+    display: flex;
+    align-items: center;
+}
+
+.twitterButton {
+    background-color: #1da1f2;
+    color: white;
+    width: 280px;
+    height: 60px;
+    margin: 10px 5px;
+    border-radius: 55px;
+}
+
+.twitterButton:hover {
+    background-color: #116ca5;
+}
+
+/* .socialSection {
+    border-bottom: #535353 solid 1px;
+} */
+
+.social {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+}
+
+.socialIcon {
+    margin: 2px;
+    border: solid 2px white;
+    border-radius: 100%;
+    width: 50px;
+}
+
+.followButton {
+    border: solid white 3px;
+    color: white;
+    width: 600px;
+    height: 70px;
+    font-size: x-large;
+    border-radius: 20px;
+    margin-left: 50px;
+}
