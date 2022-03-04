@@ -64,7 +64,7 @@ export const TabsPanel: React.FC = () => {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                {connections?.identity.followers.list.map((user) => {
+                {connections?.identity.followers.list.map((user: any) => {
                     return (
                         <Typography key={user.address}>
                             {user.address}
@@ -74,7 +74,7 @@ export const TabsPanel: React.FC = () => {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <div className="infoPanel">
-                    {connections?.identity.followings.list.map((user) => {
+                    {connections?.identity.followings.list.map((user: any) => {
                         return (
                             <Typography key={user.address}>
                                 {user.address}
