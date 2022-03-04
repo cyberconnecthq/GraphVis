@@ -151,34 +151,35 @@ export const GraphContextProvider: React.FC = ({ children }) => {
     };
 
     //Fetch ConnectionsData
-    const fetchConnectionsData = async (targetAddr: string) => {
-        let hasNextPage = true,
-            after = "-1";
+    // const fetchConnectionsData = async (targetAddr: string) => {
+    //     let hasNextPage = true,
+    //         after = "-1";
 
-        let allData;
-        // TODO: Paginated fetching
-        // Currently only load one batch
-        // while (hasNextPage) {
-        const { data } = await fetchMore({
-            variables: {
-                address: targetAddr,
-                first: 50,
-                after,
-                namespace: "",
-            },
-            updateQuery: (prev: any, { fetchMoreResult }) => {
-                return fetchMoreResult;
-            },
-        });
+    //     let allData;
+    //     // TODO: Paginated fetching
+    //     // Currently only load one batch
+    //     // while (hasNextPage) {
+    //     const { data } = await fetchMore({
+    //         variables: {
+    //             address: targetAddr,
+    //             first: 50,
+    //             after,
+    //             namespace: "",
+    //         },
+    //         updateQuery: (prev: any, { fetchMoreResult }) => {
+    //             return fetchMoreResult;
+    //         },
+    //     });
 
-        allData = data;
-        console.log("allData", allData);
+    //     allData = data;
+    //     console.log("allData", allData);
 
-        //     break;
-        // }
-        // setConnections(allData);
-        return allData;
-    };
+    //     //     break;
+    //     // }
+    //     // setConnections(allData);
+    //     return allData;
+    // };
+
     // Fetch friends, followings, followers
     const fetch3Fs = async (targetAddr: string, isFocusMode: boolean) => {
         let hasNextPage = true,
@@ -453,16 +454,16 @@ export const GraphContextProvider: React.FC = ({ children }) => {
     }, [graphAddress, appMode]);
 
     //Using when selectedAddress chnaged
-    const loadConnections = useCallback(async () => {
-        const ConnectionsData = await fetchConnectionsData(selectAddress);
-        console.log("ConnectionsData", ConnectionsData);
-        console.log("selected", selectAddress);
-        setConnections(ConnectionsData);
-    }, [selectAddress]);
+    // const loadConnections = useCallback(async () => {
+    //     const ConnectionsData = await fetchConnectionsData(selectAddress);
+    //     console.log("ConnectionsData", ConnectionsData);
+    //     console.log("selected", selectAddress);
+    //     setConnections(ConnectionsData);
+    // }, [selectAddress]);
 
-    useEffect(() => {
-        loadConnections();
-    }, [selectAddress]);
+    // useEffect(() => {
+    //     loadConnections();
+    // }, [selectAddress]);
 
     return (
         <GraphContext.Provider
