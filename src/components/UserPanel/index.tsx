@@ -28,6 +28,23 @@ export const UserPanel: React.FC = () => {
         setGraphAddress(selectAddress);
     }, [selectAddress]);
 
+    const [userBalance, setUserBalance] = useState(0.0);
+
+    useEffect(() => {
+        const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=WYXGU2Z8IYBK317X2V24IU5KHKBHP4RT41`;
+
+        // console.log(etherscanAPI);
+
+        (async () => {
+            const a = await fetch(etherscanAPI).then((res) => {
+                return res.json();
+            });
+            // console.log(1.0 * a.result/1000000000000000000);
+            setUserBalance((1.0 * a.result) / 1000000000000000000);
+        })();
+        // .then(res => res.json()).then(result => console.log(result));
+    }, [selectAddress]);
+
     if (!identity) return null;
     return (
         <>
@@ -117,7 +134,7 @@ export const UserPanel: React.FC = () => {
                         margin={2}
                         sx={{ fontWeight: "bold", textAlign: "center" }}
                     >
-                        0.0000 ETH
+                        {userBalance.toFixed(4)} ETH
                     </Typography>
                 </div>
                 {/* Social Section */}

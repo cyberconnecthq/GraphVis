@@ -26,6 +26,7 @@ export const WalletConnectButton: React.FC = () => {
                             color: "#ffffff",
                         },
                     }}
+                    disabled={true}
                 >
                     Connect Wallet
                 </LoadingButton>
