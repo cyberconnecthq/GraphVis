@@ -17,3 +17,7 @@
 .logo {
     height: auto;
 }
+
+.rightPanel {
+    display: flex;
+}

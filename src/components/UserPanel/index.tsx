@@ -34,34 +34,42 @@ export const UserPanel: React.FC = () => {
             <div className={styles.container}>
                 {/* userInfoSection */}
                 <div className={styles.userInfoSection}>
-                    {identity.avatar ? (
-                        <a
-                            rel="noreferrer"
-                            href={
-                                "https://app.cyberconnect.me/address/" +
-                                identity?.address
-                            }
-                            target={"_blank"}
-                        >
+                    <div className={styles.avatarSection}>
+                        {identity.avatar ? (
+                            <a
+                                rel="noreferrer"
+                                href={
+                                    "https://app.cyberconnect.me/address/" +
+                                    identity?.address
+                                }
+                                target={"_blank"}
+                            >
+                                <img
+                                    src={identity.avatar}
+                                    alt={""}
+                                    width={100}
+                                    height={100}
+                                    className={styles.avatar}
+                                />
+                            </a>
+                        ) : (
                             <img
-                                src={identity.avatar}
+                                src={
+                                    "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-7.jpg"
+                                }
                                 alt={""}
                                 width={100}
                                 height={100}
                                 className={styles.avatar}
                             />
-                        </a>
-                    ) : (
-                        <img
-                            src={
-                                "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-7.jpg"
-                            }
-                            alt={""}
-                            width={100}
-                            height={100}
-                            className={styles.avatar}
-                        />
-                    )}
+                        )}
+                        {/* <LoadingButton
+                            sx={{ backgroundColor: "white", marginTop: "10px" }}
+                            onClick={() => setGraphAddress(selectAddress)}
+                        >
+                            EXPLORE this one!!
+                        </LoadingButton> */}
+                    </div>
 
                     <div className={styles.userName}>
                         {identity.ens ? (
@@ -201,7 +209,18 @@ export const UserPanel: React.FC = () => {
                     </div>
                 </div>
                 {/* Follower & Followings Tab Section */}
-                <FollowButton />
+                <LoadingButton
+                    // loading={loading}
+                    className={styles.followButton}
+                    onClick={() => setGraphAddress(selectAddress)}
+                    sx={{
+                        ":hover": {
+                            bgcolor: "#555",
+                        },
+                    }}
+                >
+                    EXPLORE ME!
+                </LoadingButton>
                 {/* <TabsPanel /> */}
             </div>
         </>

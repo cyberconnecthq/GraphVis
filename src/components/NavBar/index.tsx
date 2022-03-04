@@ -38,7 +38,7 @@ export const NavBar: React.FC = () => {
                 />
             </div>
             <SearchBar />
-            <div>
+            <div className={styles.rightPanel}>
                 <Button
                     id="basic-button"
                     aria-controls={open ? "basic-menu" : undefined}
