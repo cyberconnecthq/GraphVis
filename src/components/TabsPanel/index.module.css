@@ -9,3 +9,9 @@
     min-height: 300px;
     overflow: auto;
 }
+
+.infoPanel {
+    width: 100px;
+    height: 50px;
+    background-color: white;
+}

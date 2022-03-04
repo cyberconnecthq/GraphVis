@@ -42,6 +42,7 @@ function a11yProps(index: number) {
 export const TabsPanel: React.FC = () => {
     const [value, setValue] = React.useState(0);
     const { connections } = useGraph();
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -58,27 +59,35 @@ export const TabsPanel: React.FC = () => {
                 >
                     <Tab label="Followers" {...a11yProps(0)} />
                     <Tab label="Followings" {...a11yProps(1)} />
-                    <Tab label="Assets" {...a11yProps(2)} />
-                    <Tab label="Assets" {...a11yProps(3)} />
-                    <Tab label="Assets" {...a11yProps(4)} />
+                    <Tab label="Tokens" {...a11yProps(2)} />
+                    <Tab label="NFTs" {...a11yProps(3)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
                 {connections?.identity.followers.list.map((user) => {
                     return (
-                        <Typography key={""}>
-                            {connections?.identity.followers.list}
+                        <Typography key={user.address}>
+                            {user.address}
                         </Typography>
                     );
                 })}
             </TabPanel>
             <TabPanel value={value} index={1}>
-                {connections?.identity.followings.list.map((user) => {
-                    return <Typography key={""}>{user.address}</Typography>;
-                })}
+                <div className="infoPanel">
+                    {connections?.identity.followings.list.map((user) => {
+                        return (
+                            <Typography key={user.address}>
+                                {user.address}
+                            </Typography>
+                        );
+                    })}
+                </div>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                <Typography>Item Onesssss</Typography>
+                <Typography>Coming soon!</Typography>
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                <Typography>Coming soon!</Typography>
             </TabPanel>
         </Box>
     );

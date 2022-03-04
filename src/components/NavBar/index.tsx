@@ -38,47 +38,50 @@ export const NavBar: React.FC = () => {
                 />
             </div>
             <SearchBar />
-            <Button
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-            >
-                <SettingsIcon
-                    style={{
-                        color: "FFFFFF",
-                        fontSize: "40px",
-                    }}
-                />
-            </Button>
-            <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                }}
-            >
-                <MenuItem
-                    onClick={() => {
-                        setAnchorEl(null);
-                        setAppMode(AppMode.CyberMode);
+            <div>
+                <Button
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                >
+                    <SettingsIcon
+                        style={{
+                            color: "FFFFFF",
+                            fontSize: "40px",
+                        }}
+                    />
+                </Button>
+
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                        "aria-labelledby": "basic-button",
                     }}
                 >
-                    <Typography fontSize={24}>USE CYBER MODE</Typography>
-                </MenuItem>
-                <MenuItem
-                    onClick={() => {
-                        setAnchorEl(null);
-                        setAppMode(AppMode.FocusMode);
-                    }}
-                >
-                    <Typography fontSize={24}>USE FOCUS MODE</Typography>
-                </MenuItem>
-            </Menu>
-            <WalletConnectButton />
+                    <MenuItem
+                        onClick={() => {
+                            setAnchorEl(null);
+                            setAppMode(AppMode.CyberMode);
+                        }}
+                    >
+                        <Typography fontSize={24}>USE CYBER MODE</Typography>
+                    </MenuItem>
+                    <MenuItem
+                        onClick={() => {
+                            setAnchorEl(null);
+                            setAppMode(AppMode.FocusMode);
+                        }}
+                    >
+                        <Typography fontSize={24}>USE FOCUS MODE</Typography>
+                    </MenuItem>
+                </Menu>
+                <WalletConnectButton />
+            </div>
         </div>
     );
 };
