@@ -17,6 +17,7 @@ import {
 } from "@/types/AllSocialConnections";
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
 import { ConstructionOutlined } from "@mui/icons-material";
+import { useWeb3 } from "./web3Context";
 
 export type GraphNode = {
     id: string;
@@ -92,6 +93,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         null
     );
     const [appMode, setAppMode] = useState<AppMode>(AppMode.CyberMode);
+
+    const { address } = useWeb3();
 
     //Fetch IdentityData: followers following num
     const identityData = useQuery(GET_IDENTITY, {
@@ -452,6 +455,13 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             loadFocusModeConnections();
         }
     }, [graphAddress, appMode]);
+
+    useEffect(() => {
+        if (address) {
+            setSelectAddress(address);
+            setGraphAddress(address);
+        }
+    }, [address]);
 
     //Using when selectedAddress chnaged
     // const loadConnections = useCallback(async () => {

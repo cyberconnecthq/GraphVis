@@ -15,19 +15,6 @@ export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setSelectAddress, setGraphAddress } =
         useGraph();
 
-    const { address } = useWeb3();
-
-    useEffect(() => {
-        if (address) {
-            setSelectAddress(address);
-            setGraphAddress(address);
-        }
-    }, [address]);
-
-    const handleGraphChange = useCallback(() => {
-        setGraphAddress(selectAddress);
-    }, [selectAddress]);
-
     if (!identity) return null;
     return (
         <>
