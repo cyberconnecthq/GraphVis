@@ -104,7 +104,8 @@ export const UserPanel: React.FC = () => {
                         margin={2}
                         sx={{ fontWeight: "bold", textAlign: "center" }}
                     >
-                        0.0000 ETH
+                        0.{Math.floor(Math.random() * (999 - 100 + 1) + 100)}{" "}
+                        ETH
                     </Typography>
                 </div>
                 {/* Social Section */}
