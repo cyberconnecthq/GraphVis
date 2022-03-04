@@ -147,6 +147,22 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             }),
         ];
 
+        function getRandomInt(max: number) {
+            return Math.floor(Math.random() * max);
+        }
+
+        for (let i = 0; i < retGraphData.nodes.length / 2; i++) {
+            retGraphData.links.push({
+                source: retGraphData.nodes[
+                    getRandomInt(retGraphData.nodes.length)
+                ].id,
+                target: retGraphData.nodes[
+                    getRandomInt(retGraphData.nodes.length)
+                ].id,
+                value: 0,
+            });
+        }
+
         return retGraphData;
     };
 
