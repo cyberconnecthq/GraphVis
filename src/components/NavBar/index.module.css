@@ -6,7 +6,7 @@
     background-color: transparent;
     width: 100vw;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .image {

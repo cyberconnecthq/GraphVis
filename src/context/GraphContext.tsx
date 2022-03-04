@@ -4,6 +4,7 @@ import {
     useContext,
     useCallback,
     useEffect,
+    useMemo,
 } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
@@ -15,6 +16,7 @@ import {
     SocialConnection,
 } from "@/types/AllSocialConnections";
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 export type GraphNode = {
     id: string;
@@ -45,7 +47,7 @@ interface GraphContextInterface {
     selectAddress: string;
     graphData: GraphData | undefined;
     graphLoading: boolean;
-    connections: AllSocialConnections | null;
+    connections: any;
     identity: Identity | null;
     appMode: AppMode;
     count: number;
@@ -119,20 +121,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         },
     });
 
-    //Fetch ConnectionsData
-    const fetchConnectionsData = async (targetAddr: string) => {
-        const { data } = await useQuery(GET_ADDR_CONNECTION_QUERY, {
-            variables: {
-                address: targetAddr,
-                first: 50,
-                after: -1,
-                namespace: "",
-            },
-        }).data;
-        setConnections(data as AllSocialConnections);
-        console.log("connections", connections);
-    };
-
     // Fetch Recommendations
     const fetchRecommendations = async (targetAddr: string) => {
         const { data: recommendationData } = await fetchMoreRecommendation({
@@ -162,6 +150,35 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         return retGraphData;
     };
 
+    //Fetch ConnectionsData
+    const fetchConnectionsData = async (targetAddr: string) => {
+        let hasNextPage = true,
+            after = "-1";
+
+        let allData;
+        // TODO: Paginated fetching
+        // Currently only load one batch
+        // while (hasNextPage) {
+        const { data } = await fetchMore({
+            variables: {
+                address: targetAddr,
+                first: 50,
+                after,
+                namespace: "",
+            },
+            updateQuery: (prev: any, { fetchMoreResult }) => {
+                return fetchMoreResult;
+            },
+        });
+
+        allData = data;
+        console.log("allData", allData);
+
+        //     break;
+        // }
+        // setConnections(allData);
+        return allData;
+    };
     // Fetch friends, followings, followers
     const fetch3Fs = async (targetAddr: string, isFocusMode: boolean) => {
         let hasNextPage = true,
@@ -195,7 +212,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             followingList = (data as AllSocialConnections).identity.followings
                 .list;
             friendList = (data as AllSocialConnections).identity.friends.list;
-
             allData = data;
             break;
         }
@@ -437,8 +453,15 @@ export const GraphContextProvider: React.FC = ({ children }) => {
     }, [graphAddress, appMode]);
 
     //Using when selectedAddress chnaged
+    const loadConnections = useCallback(async () => {
+        const ConnectionsData = await fetchConnectionsData(selectAddress);
+        console.log("ConnectionsData", ConnectionsData);
+        console.log("selected", selectAddress);
+        setConnections(ConnectionsData);
+    }, [selectAddress]);
+
     useEffect(() => {
-        fetchConnectionsData(selectAddress);
+        loadConnections();
     }, [selectAddress]);
 
     return (

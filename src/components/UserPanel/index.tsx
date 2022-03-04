@@ -8,6 +8,8 @@ import { Button, Divider, Switch, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { TabsPanel } from "../TabsPanel";
 import { useWeb3 } from "@/context/web3Context";
+import { ClassNames } from "@emotion/react";
+import { FollowButton } from "../FollowButton";
 
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setSelectAddress, setGraphAddress } =
@@ -30,7 +32,8 @@ export const UserPanel: React.FC = () => {
     return (
         <>
             <div className={styles.container}>
-                <div className={styles.upcontainer}>
+                {/* userInfoSection */}
+                <div className={styles.userInfoSection}>
                     {identity.avatar ? (
                         <a
                             rel="noreferrer"
@@ -43,8 +46,8 @@ export const UserPanel: React.FC = () => {
                             <img
                                 src={identity.avatar}
                                 alt={""}
-                                width={200}
-                                height={200}
+                                width={100}
+                                height={100}
                                 className={styles.avatar}
                             />
                         </a>
@@ -54,69 +57,86 @@ export const UserPanel: React.FC = () => {
                                 "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-7.jpg"
                             }
                             alt={""}
-                            width={200}
-                            height={200}
+                            width={100}
+                            height={100}
                             className={styles.avatar}
                         />
                     )}
-                    <Typography variant="h4">{identity.ens}</Typography>
-                    <LoadingButton
-                        sx={{ backgroundColor: "white", marginTop: "10px" }}
-                        onClick={handleGraphChange}
-                    >
-                        EXPLORE this one!!
-                    </LoadingButton>
 
-                    <Typography
-                        variant="h5"
-                        padding={2}
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                        }}
-                    >
-                        Address:{" "}
-                        <Typography paddingLeft={2} sx={{ color: "gray" }}>
+                    <div className={styles.userName}>
+                        {identity.ens ? (
+                            <Typography
+                                variant="h3"
+                                sx={{ margin: "10px 20px" }}
+                            >
+                                {identity.ens}
+                            </Typography>
+                        ) : (
+                            <Typography variant="h3"></Typography>
+                        )}
+                        <Typography
+                            variant="h6"
+                            paddingLeft={2}
+                            sx={{ color: "gray" }}
+                        >
                             {identity?.address}
                         </Typography>
-                    </Typography>
-
-                    {/* Followings & Followers Section */}
-                    <div className={styles.followStatus}>
-                        <div className={styles.follow}>
-                            <Typography>{identity.followerCount}</Typography>
-                            <Typography color={"#989898"}>Followers</Typography>
-                        </div>
-                        <div className={styles.follow}>
-                            <Typography>{identity.followingCount}</Typography>
-                            <Typography color={"#989898"}>
-                                Followings
-                            </Typography>
-                        </div>
                     </div>
-
-                    {/* Twitter Section */}
-                    {identity.social.twitter && (
-                        <div className={styles.twitter}>
-                            <img src={"/icons/twitter.png"} alt={""} />
-                            <a
-                                href={
-                                    "https://twitter.com/" +
-                                    identity.social.twitter
-                                }
-                                target={"_blank"}
-                                rel="noreferrer"
-                            >
-                                <Button className={styles.twitterButton}>
-                                    {" "}
-                                    {"@" + identity.social.twitter}
-                                </Button>
-                            </a>
-                        </div>
-                    )}
-
-                    {/* Social Section */}
+                </div>
+                {/* Followings & Followers Section */}
+                <div className={styles.followSection}>
+                    <div className={styles.follow}>
+                        <Typography variant="h3">
+                            {identity.followerCount}
+                        </Typography>
+                        <Typography color={"#989898"}>Followers</Typography>
+                    </div>
+                    <div className={styles.follow}>
+                        <Typography variant="h3">
+                            {identity.followingCount}
+                        </Typography>
+                        <Typography color={"#989898"}>Followings</Typography>
+                    </div>
+                </div>
+                {/* Balance Sections */}
+                <div className={styles.balanceSection}>
+                    <Typography color={"#989898"} margin={1}>
+                        Balance
+                    </Typography>
+                    <Typography
+                        color={"white"}
+                        variant={"h2"}
+                        margin={2}
+                        sx={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                        0.0000 ETH
+                    </Typography>
+                </div>
+                {/* Social Section */}
+                <div className={styles.socialSection}>
+                    <Typography color={"#989898"} marginLeft={2}>
+                        External Links
+                    </Typography>
                     <div className={styles.social}>
+                        {identity.social.twitter && (
+                            <div className={styles.twitter}>
+                                <img src={"/icons/twitter.png"} alt={""} />
+                                <a
+                                    href={
+                                        "https://twitter.com/" +
+                                        identity.social.twitter
+                                    }
+                                    target={"_blank"}
+                                    rel="noreferrer"
+                                >
+                                    <Button className={styles.twitterButton}>
+                                        {" "}
+                                        {"@" + identity.social.twitter}
+                                    </Button>
+                                </a>
+                            </div>
+                        )}
+
                         <a
                             href={"https://opensea.io/" + identity.address}
                             target={"_blank"}
@@ -128,6 +148,7 @@ export const UserPanel: React.FC = () => {
                                 className={styles.socialIcon}
                             />
                         </a>
+
                         <a
                             href={
                                 "https://rarible.com/user/" + identity.address
@@ -180,7 +201,8 @@ export const UserPanel: React.FC = () => {
                     </div>
                 </div>
                 {/* Follower & Followings Tab Section */}
-                <TabsPanel />
+                <FollowButton />
+                {/* <TabsPanel /> */}
             </div>
         </>
     );
