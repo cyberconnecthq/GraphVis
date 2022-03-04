@@ -1,6 +1,7 @@
 .container {
     padding: 0 2rem;
     height: 100vh;
+    display: flex;
 }
 
 .main {
@@ -59,4 +60,14 @@
         width: 100%;
         flex-direction: column;
     }
+}
+
+.jumpButton {
+    border: solid white 3px;
+    color: white;
+    width: 400px;
+    height: 70px;
+    font-size: x-large;
+    border-radius: 20px;
+    margin: 20px 5px;
 }

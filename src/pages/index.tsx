@@ -1,13 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect } from "react";
 import client from "../graphql/client";
 import styles from "../../styles/Home.module.css";
-import { WalletConnectButton } from "@/components/WalletConnectButton";
 import { NavBar } from "@/components/NavBar";
 import { LoadingButton } from "@mui/lab";
 import { useRouter } from "next/router";
+import FocusGraph from "@/components/Graph/FocusGraphWrapper";
 
 const Home: NextPage = () => {
     useEffect(() => {
@@ -31,12 +30,19 @@ const Home: NextPage = () => {
                 <h1 className={styles.title}>CYBERCONNECTED IN </h1>
                 <h1 className={styles.title}>METAVERSE</h1>
                 <LoadingButton
-                    sx={{ bgcolor: "white", width: "300px" }}
+                    // loading={loading}
+                    className={styles.jumpButton}
                     onClick={() => router.push("/socialgraph")}
+                    sx={{
+                        ":hover": {
+                            bgcolor: "#555",
+                        },
+                    }}
                 >
-                    Let`&apos;`s jump in!
+                    Let&apos;s jump in!
                 </LoadingButton>
             </main>
+            <FocusGraph />
         </div>
     );
 };

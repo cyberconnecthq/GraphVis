@@ -2,7 +2,8 @@
     background-color: black;
     color: white;
     width: 700px;
-    height: 700px;
+    min-height: 700px;
+    max-height: 800px;
     margin-top: 350px;
     margin-left: 20px;
     position: fixed;

@@ -17,6 +17,7 @@ import {
 } from "@/types/AllSocialConnections";
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
 import { ConstructionOutlined } from "@mui/icons-material";
+import { useWeb3 } from "./web3Context";
 
 export type GraphNode = {
     id: string;
@@ -78,6 +79,8 @@ export const GraphContext = createContext<GraphContextInterface>({
 let count = 0;
 
 export const GraphContextProvider: React.FC = ({ children }) => {
+    const { address } = useWeb3();
+
     // Cyberlab.eth default address
     const [graphAddress, setGraphAddress] = useState<string>(
         "0x148d59faf10b52063071eddf4aaf63a395f2d41c"
@@ -480,6 +483,13 @@ export const GraphContextProvider: React.FC = ({ children }) => {
     // useEffect(() => {
     //     loadConnections();
     // }, [selectAddress]);
+
+    useEffect(() => {
+        if (address) {
+            setSelectAddress(address);
+            setGraphAddress(address);
+        }
+    }, [address]);
 
     return (
         <GraphContext.Provider
