@@ -25,6 +25,11 @@
     justify-content: center;
 }
 
+.avatarSection {
+    display: flex;
+    flex-direction: column;
+}
+
 .avatar {
     border-radius: 50px;
     margin-top: 5px;
@@ -82,4 +87,14 @@
     border: solid 2px white;
     border-radius: 100%;
     width: 50px;
+}
+
+.followButton {
+    border: solid white 3px;
+    color: white;
+    width: 600px;
+    height: 70px;
+    font-size: x-large;
+    border-radius: 20px;
+    margin-left: 50px;
 }
