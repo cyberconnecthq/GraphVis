@@ -82,7 +82,6 @@ const Home: NextPage = () => {
             )}
             {!graphLoading && (
                 <>
-                    {/* <UserPanel /> */}
                     <FocusGraph />
                 </>
             )}
