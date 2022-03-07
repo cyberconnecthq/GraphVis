@@ -4,18 +4,33 @@ import styles from "./index.module.css";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Identity } from "../../types/identity";
-import { Button, Divider, Switch, Typography } from "@mui/material";
+import { Box, Button, Divider, Switch, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { TabsPanel } from "../TabsPanel";
 import { useWeb3 } from "@/context/web3Context";
 import { ClassNames } from "@emotion/react";
 import { FollowButton } from "../FollowButton";
+import Popper from "@mui/material/Popper";
 
 export const UserPanel: React.FC = () => {
-    const { selectAddress, identity, setSelectAddress, setGraphAddress } =
-        useGraph();
+    const {
+        selectAddress,
+        identity,
+        setSelectAddress,
+        setGraphAddress,
+        connections,
+    } = useGraph();
 
     const [userBalance, setUserBalance] = useState(0.0);
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? "simple-popper" : undefined;
 
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=WYXGU2Z8IYBK317X2V24IU5KHKBHP4RT41`;
@@ -101,13 +116,83 @@ export const UserPanel: React.FC = () => {
                         <Typography variant="h3">
                             {identity.followerCount}
                         </Typography>
-                        <Typography color={"#989898"}>Followers</Typography>
+                        <Box sx={{ color: "white" }}>
+                            {" "}
+                            <Button
+                                aria-describedby={id}
+                                type="button"
+                                onClick={handleClick}
+                                className={styles.followList}
+                            >
+                                Followers
+                            </Button>
+                            <Popper id={id} open={open} anchorEl={anchorEl}>
+                                <Box
+                                    sx={{
+                                        border: 1,
+                                        p: 1,
+                                        color: "black",
+                                        backgroundColor: "white",
+                                        position: "relative",
+                                    }}
+                                >
+                                    <div className="infoPanel">
+                                        {connections?.identity.followers.list.map(
+                                            (user: any) => {
+                                                return (
+                                                    <Typography
+                                                        key={user.address}
+                                                    >
+                                                        {user.address}
+                                                    </Typography>
+                                                );
+                                            }
+                                        )}
+                                    </div>
+                                </Box>
+                            </Popper>
+                        </Box>
                     </div>
                     <div className={styles.follow}>
                         <Typography variant="h3">
                             {identity.followingCount}
                         </Typography>
-                        <Typography color={"#989898"}>Followings</Typography>
+                        <Box sx={{ color: "white" }}>
+                            {" "}
+                            <Button
+                                aria-describedby={id}
+                                type="button"
+                                onClick={handleClick}
+                                className={styles.followList}
+                            >
+                                Followings
+                            </Button>
+                            <Popper id={id} open={open} anchorEl={anchorEl}>
+                                <Box
+                                    sx={{
+                                        border: 1,
+                                        p: 1,
+                                        color: "black",
+                                        backgroundColor: "white",
+                                        position: "relative",
+                                    }}
+                                >
+                                    <div className="infoPanel">
+                                        {connections?.identity.followings.list.map(
+                                            (user: any) => {
+                                                return (
+                                                    <Typography
+                                                        key={user.address}
+                                                    >
+                                                        {user.address}
+                                                    </Typography>
+                                                );
+                                            }
+                                        )}
+                                    </div>
+                                </Box>
+                            </Popper>
+                        </Box>
                     </div>
                 </div>
                 {/* Balance Sections */}

@@ -1,19 +1,33 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import client from "../graphql/client";
 import styles from "../../styles/Home.module.css";
 import { NavBar } from "@/components/NavBar";
 import { LoadingButton } from "@mui/lab";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import FocusGraph from "@/components/Graph/FocusGraphWrapper";
+import { UserPanel } from "@/components/UserPanel";
+import { useWeb3 } from "@/context/web3Context";
+import { DEFAULT_QUOTA, useGraph } from "@/context/GraphContext";
+import ReactLoading from "react-loading";
 
 const Home: NextPage = () => {
+    const [exploreMode, setExploreMode] = useState(false);
+    const { address } = useWeb3();
+    const { graphLoading, count } = useGraph();
+
+    useEffect(() => {
+        if (address) {
+            setExploreMode(true);
+        }
+    }, [address]);
+
     useEffect(() => {
         client;
     }, []);
 
-    const router = useRouter();
+    // const router = useRouter();
     return (
         <div className={styles.container}>
             <Head>
@@ -25,24 +39,53 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <NavBar />
-            <main className={styles.main}>
-                <p className={styles.subtitle}>HOW PEOPLE</p>
-                <h1 className={styles.title}>CYBERCONNECTED IN </h1>
-                <h1 className={styles.title}>METAVERSE</h1>
-                <LoadingButton
-                    // loading={loading}
-                    className={styles.jumpButton}
-                    onClick={() => router.push("/socialgraph")}
-                    sx={{
-                        ":hover": {
-                            bgcolor: "#555",
-                        },
+            <div className={styles.loadingSection}>
+                {count != 10 && (
+                    <ReactLoading
+                        type="bars"
+                        color="#FFFFFF"
+                        className={styles.loadingIcon}
+                    />
+                )}
+                <div
+                    className={styles.loadingText}
+                    style={{
+                        color: "white",
+                        fontSize: "28px",
                     }}
                 >
-                    Let&apos;s jump in!
-                </LoadingButton>
-            </main>
-            <FocusGraph />
+                    {" "}
+                    Loading {(100 * count) / DEFAULT_QUOTA} %
+                </div>
+            </div>
+            {!exploreMode ? (
+                <main className={styles.main}>
+                    <p className={styles.subtitle}>HOW PEOPLE</p>
+                    <h1 className={styles.title}>CYBERCONNECTED IN </h1>
+                    <h1 className={styles.title}>METAVERSE</h1>
+
+                    <LoadingButton
+                        // loading={loading}
+                        className={styles.jumpButton}
+                        onClick={() => setExploreMode(true)}
+                        sx={{
+                            ":hover": {
+                                bgcolor: "#555",
+                            },
+                        }}
+                    >
+                        Let&apos;s jump in!
+                    </LoadingButton>
+                </main>
+            ) : (
+                <UserPanel />
+            )}
+            {!graphLoading && (
+                <>
+                    {/* <UserPanel /> */}
+                    <FocusGraph />
+                </>
+            )}
         </div>
     );
 };

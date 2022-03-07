@@ -31,9 +31,25 @@
 .jumpButton {
     border: solid white 3px;
     color: white;
-    width: 400px;
+    width: 250px;
     height: 70px;
     font-size: x-large;
     border-radius: 20px;
     margin: 20px 5px;
+}
+
+.loadingSection {
+    position: fixed;
+    display: flex;
+    padding: 80px 50px;
+}
+
+.loadingIcon {
+    margin-right: 10px;
+}
+
+.loadingText {
+    margin-top: 10px;
+    color: "white";
+    font-size: 20px;
 }

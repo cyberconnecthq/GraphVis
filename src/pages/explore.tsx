@@ -16,6 +16,7 @@ import { DEFAULT_ADDRESS } from "../config/config";
 import { useQuery } from "@apollo/client";
 import { GET_IDENTITY } from "../graphql/queries/get_identity";
 import { Identity } from "../types/identity";
+import Popper from "@mui/material/Popper";
 
 const Explore: NextPage = () => {
     const [identity, setIdentity] = useState<Identity | null>(null);
@@ -24,6 +25,15 @@ const Explore: NextPage = () => {
             address: DEFAULT_ADDRESS,
         },
     }).data;
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(anchorEl ? null : event.currentTarget);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? "simple-popper" : undefined;
 
     useEffect(() => {
         if (identityData) {
@@ -46,6 +56,21 @@ const Explore: NextPage = () => {
                     <Avatar>0x</Avatar>
                 </Toolbar>
             </AppBar>
+            <Box sx={{ color: "white" }}>
+                {" "}
+                <button
+                    aria-describedby={id}
+                    type="button"
+                    onClick={handleClick}
+                >
+                    Toggle Popper
+                </button>
+                <Popper id={id} open={open} anchorEl={anchorEl}>
+                    <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
+                        The content of the Popper.
+                    </Box>
+                </Popper>
+            </Box>
         </Box>
     );
 };
