@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { useState } from "react";
 import styles from "./index.module.css";
-import { GraphContext, useGraph } from "@/context/GraphContext";
+import { useGraph } from "@/context/GraphContext";
 import { isValidAddr } from "@/utils/helper";
 import { useWeb3 } from "@/context/web3Context";
 
 export const SearchBar: React.FC = () => {
-    const { graphAddress, setGraphAddress, setSelectAddress } = useGraph();
+    const { setGraphAddress, setSelectAddress } = useGraph();
     const { getAddressByEns } = useWeb3();
     const [value, setValue] = useState("");
 
