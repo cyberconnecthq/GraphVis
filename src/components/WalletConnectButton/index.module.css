@@ -24,16 +24,3 @@
     color: #ffffff;
     background-color: rgb(0, 0, 0);
 }
-
-.avatar {
-    border-radius: 50px;
-    margin-top: 5px;
-    border: solid 2px white;
-    background-color: white;
-    cursor: pointer;
-}
-
-.userInfo {
-    display: flex;
-    align-items: center;
-}
