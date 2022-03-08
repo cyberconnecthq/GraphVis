@@ -1,16 +1,16 @@
+// import { useRouter } from "next/router";
+import FocusGraph from "@/components/Graph/FocusGraphWrapper";
+import { NavBar } from "@/components/NavBar";
+import { UserPanel } from "@/components/UserPanel";
+import { DEFAULT_QUOTA, useGraph } from "@/context/GraphContext";
+import { useWeb3 } from "@/context/web3Context";
+import { LoadingButton } from "@mui/lab";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import client from "../graphql/client";
-import styles from "../../styles/Home.module.css";
-import { NavBar } from "@/components/NavBar";
-import { LoadingButton } from "@mui/lab";
-// import { useRouter } from "next/router";
-import FocusGraph from "@/components/Graph/FocusGraphWrapper";
-import { UserPanel } from "@/components/UserPanel";
-import { useWeb3 } from "@/context/web3Context";
-import { DEFAULT_QUOTA, useGraph } from "@/context/GraphContext";
 import ReactLoading from "react-loading";
+import styles from "../../styles/Home.module.css";
+import client from "../graphql/client";
 
 const Home: NextPage = () => {
     const [exploreMode, setExploreMode] = useState(false);

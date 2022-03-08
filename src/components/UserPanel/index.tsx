@@ -1,8 +1,8 @@
 import { useGraph } from "@/context/GraphContext";
-import styles from "./index.module.css";
-import { useEffect, useState } from "react";
-import { Button, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import styles from "./index.module.css";
 
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setGraphAddress } = useGraph();
@@ -12,16 +12,13 @@ export const UserPanel: React.FC = () => {
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
 
-        // console.log(etherscanAPI);
-
         (async () => {
             const a = await fetch(etherscanAPI).then((res) => {
                 return res.json();
             });
-            // console.log(1.0 * a.result/1000000000000000000);
+
             setUserBalance((1.0 * a.result) / 1000000000000000000);
         })();
-        // .then(res => res.json()).then(result => console.log(result));
     }, [selectAddress]);
 
     if (!identity) return null;

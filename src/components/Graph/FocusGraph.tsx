@@ -1,20 +1,9 @@
 // import dynamic from "next/dynamic";
-import React, { useCallback, useRef } from "react";
-import * as THREE from "three";
-import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
-import data from "./data";
 import { useGraph } from "@/context/GraphContext";
+import React, { useCallback, useRef } from "react";
+import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
+import * as THREE from "three";
 
-// const _ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
-// ssr: false
-// });
-/*
-const ForwardGraph3D = forwardRef(
-  (props: ForceGraphProps, ref: MutableRefObject<ForceGraphMethods>) => (
-    <ForceGraph3D {...props} ref={ref} />
-  )
-);
-*/
 const FocusGraph = () => {
     const fgRef = useRef<ForceGraphMethods>();
 
@@ -25,7 +14,6 @@ const FocusGraph = () => {
             const distance = 90;
             const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
             if (fgRef.current) {
-                console.log(fgRef.current);
                 fgRef.current.cameraPosition(
                     {
                         x: node.x * distRatio,
@@ -38,7 +26,7 @@ const FocusGraph = () => {
             }
             setSelectAddress(node.id);
         },
-        [fgRef]
+        [fgRef, setSelectAddress]
     );
 
     function getRandomInt(max: number) {
@@ -70,17 +58,11 @@ const FocusGraph = () => {
                 );
                 const geometry = new THREE.SphereGeometry(2, 6, 6);
 
-                // Solution 1 - Ball
                 const material = new THREE.MeshBasicMaterial({
                     map: imgTexture,
                 });
                 const mesh = new THREE.Mesh(geometry, material);
                 return mesh;
-
-                // Solution 2 - 2D Box
-                // const material = new THREE.SpriteMaterial({ map: imgTexture });
-                // const sprite = new THREE.Sprite(material);
-                // return sprite;
             }}
         />
     );

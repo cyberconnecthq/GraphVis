@@ -1,12 +1,12 @@
+import { AppMode, useGraph } from "@/context/GraphContext";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import React from "react";
 import { SearchBar } from "../SearchBar";
 import { WalletConnectButton } from "../WalletConnectButton";
 import styles from "./index.module.css";
-import { useRouter } from "next/router";
-import { Button, Menu, MenuItem, Typography } from "@mui/material";
-import SettingsIcon from "@mui/icons-material/Settings";
-import React from "react";
-import { AppMode, useGraph } from "@/context/GraphContext";
 
 export const NavBar: React.FC = () => {
     const router = useRouter();
