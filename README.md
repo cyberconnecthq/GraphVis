@@ -4,7 +4,13 @@ CyberGraph is a demo for CyberConnect. It's a tutorial for beginners' integratio
 
 ## Get the app running
 
-To get this app running, run:
+To get this app running,
+
+Set the following variables in `.env`
+
+-   `ETHERSCAN_API_KEY=` EtherScan API key
+
+Then run:
 
 ```
 yarn install
