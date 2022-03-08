@@ -1,19 +1,8 @@
-// import dynamic from "next/dynamic";
 import { useGraph } from "@/context/GraphContext";
 import React, { useCallback, useRef } from "react";
 import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
 import * as THREE from "three";
 
-// const _ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
-// ssr: false
-// });
-/*
-const ForwardGraph3D = forwardRef(
-  (props: ForceGraphProps, ref: MutableRefObject<ForceGraphMethods>) => (
-    <ForceGraph3D {...props} ref={ref} />
-  )
-);
-*/
 const FocusGraph = () => {
     const fgRef = useRef<ForceGraphMethods>();
 
@@ -24,7 +13,6 @@ const FocusGraph = () => {
             const distance = 90;
             const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
             if (fgRef.current) {
-                console.log(fgRef.current);
                 fgRef.current.cameraPosition(
                     {
                         x: node.x * distRatio,
