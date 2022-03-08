@@ -1,22 +1,20 @@
-import {
-    createContext,
-    useState,
-    useContext,
-    useCallback,
-    useEffect,
-} from "react";
-import { useQuery } from "@apollo/client";
-import { GET_IDENTITY } from "@/graphql/queries/get_identity";
-import { Identity } from "../types/identity";
 import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
+import { GET_IDENTITY } from "@/graphql/queries/get_identity";
+import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
 import {
     AllRecommendations,
     AllSocialConnections,
     SocialConnection,
 } from "@/types/AllSocialConnections";
-import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
-import { ConstructionOutlined } from "@mui/icons-material";
-import { useWeb3 } from "./web3Context";
+import { useQuery } from "@apollo/client";
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
+import { Identity } from "../types/identity";
 
 export type GraphNode = {
     id: string;

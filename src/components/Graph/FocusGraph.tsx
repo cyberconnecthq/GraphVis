@@ -1,9 +1,8 @@
 // import dynamic from "next/dynamic";
-import React, { useCallback, useRef } from "react";
-import * as THREE from "three";
-import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
-import data from "./data";
 import { useGraph } from "@/context/GraphContext";
+import React, { useCallback, useRef } from "react";
+import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
+import * as THREE from "three";
 
 // const _ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
 // ssr: false

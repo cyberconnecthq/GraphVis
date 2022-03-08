@@ -1,11 +1,22 @@
 import { useGraph } from "@/context/GraphContext";
-import styles from "./index.module.css";
-import { useEffect, useState } from "react";
-import { Button, Typography } from "@mui/material";
+import { useWeb3 } from "@/context/web3Context";
 import { LoadingButton } from "@mui/lab";
+import { Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import styles from "./index.module.css";
 
 export const UserPanel: React.FC = () => {
-    const { selectAddress, identity, setGraphAddress } = useGraph();
+    const { selectAddress, identity, setSelectAddress, setGraphAddress } =
+        useGraph();
+
+    const { address } = useWeb3();
+
+    useEffect(() => {
+        if (address) {
+            setSelectAddress(address);
+            setGraphAddress(address);
+        }
+    }, [address, setSelectAddress, setGraphAddress]);
 
     const [userBalance, setUserBalance] = useState(0.0);
 

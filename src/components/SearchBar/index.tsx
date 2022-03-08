@@ -1,7 +1,7 @@
-import styles from "./index.module.css";
 import { useGraph } from "@/context/GraphContext";
-import { isValidAddr } from "@/utils/helper";
 import { useWeb3 } from "@/context/web3Context";
+import { isValidAddr } from "@/utils/helper";
+import styles from "./index.module.css";
 
 export const SearchBar: React.FC = () => {
     const { setGraphAddress, setSelectAddress } = useGraph();

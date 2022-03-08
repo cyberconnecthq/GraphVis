@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { useWeb3 } from "@/context/web3Context";
 import { formatAddress } from "@/utils/helper";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useCallback, useState } from "react";
 import styles from "./index.module.css";
 
 export const WalletConnectButton: React.FC = () => {

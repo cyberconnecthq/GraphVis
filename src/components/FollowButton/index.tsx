@@ -5,7 +5,6 @@ export const FollowButton: React.FC = () => {
     return (
         <>
             <LoadingButton
-                // loading={loading}
                 className={styles.followButton}
                 sx={{
                     ":hover": {
