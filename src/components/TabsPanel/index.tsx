@@ -52,7 +52,7 @@ export const TabsPanel: React.FC = () => {
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
                     value={value}
-                    onChange={(e) => handleChange(e.target.value)}
+                    onChange={(e, newValue) => handleChange(newValue)}
                     aria-label="basic tabs example"
                     variant="scrollable"
                     sx={{ border: "white solid", bgcolor: "white" }}

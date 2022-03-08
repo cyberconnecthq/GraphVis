@@ -201,7 +201,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         }
 
         // Three lists filter out redundant elements
-        let friendAddrList = friendList.map((item) => item.address);
+        const friendAddrList = friendList.map((item) => item.address);
         followingList = followingList.filter(
             (item) => !friendAddrList.includes(item.address)
         );
@@ -353,10 +353,10 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         return retGraphData;
     };
 
-    const loadGraphConnections = async (addr: string) => {
+    const loadGraphConnections = useCallback(async () => {
         // queue is to do BFS, set is a hashMap record appeared addresses
-        let bfsQueue = [];
-        let set = new Set();
+        const bfsQueue = [];
+        const set = new Set();
         let retGraphData: GraphData = {
             nodes: [],
             links: [],
@@ -367,12 +367,11 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         count = 0;
 
         while (count < DEFAULT_QUOTA) {
-            console.log(count);
             let headAddr = bfsQueue.shift();
             if (headAddr == undefined) {
                 continue;
             }
-            let recommendGD = await fetchRecommendations(headAddr);
+            const recommendGD = await fetchRecommendations(headAddr);
             let threeFsGD = await fetch3Fs(headAddr, false);
             retGraphData = {
                 nodes: [
@@ -398,33 +397,29 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         }
 
         return retGraphData;
-    };
+    }, [fetch3Fs, fetchRecommendations, graphAddress]);
 
     // For Cyber Mode
     const loadCyberModeConnections = useCallback(async () => {
         await setGraphLoading(true);
         await setGraphData({ nodes: [], links: [] });
-        let newGraphData = await loadGraphConnections(graphAddress);
+        const newGraphData = await loadGraphConnections();
         await setGraphData(newGraphData);
         await setGraphLoading(false);
-        console.log("newGraphData:", newGraphData);
-    }, [graphAddress]);
+    }, [graphAddress, loadGraphConnections]);
 
     // For Focus Mode
     const loadFocusModeConnections = useCallback(async () => {
         await setGraphLoading(true);
         await setGraphData({ nodes: [], links: [] });
-        let recommendGD = await fetchRecommendations(graphAddress);
-        let threeFsGD = await fetch3Fs(graphAddress, true);
-        console.log("recommendGD:", recommendGD);
-        console.log("threeFsGD", threeFsGD);
+        const recommendGD = await fetchRecommendations(graphAddress);
+        const threeFsGD = await fetch3Fs(graphAddress, true);
 
         await setGraphData({
             nodes: [...recommendGD.nodes, ...threeFsGD.nodes],
             links: [...recommendGD.links, ...threeFsGD.links],
         });
         await setGraphLoading(false);
-        console.log("graphData:", graphData);
     }, [graphAddress]);
 
     // Using when mode or graphAddress changed

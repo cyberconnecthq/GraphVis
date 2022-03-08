@@ -9,7 +9,6 @@ export const SearchBar: React.FC = () => {
 
     const handleInputChange = async (e: { target: { value: string } }) => {
         const newValue = e.target.value;
-
         if (newValue.slice(-3) === "eth") {
             try {
                 const ensAddr = await getAddressByEns(newValue);
