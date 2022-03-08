@@ -1,15 +1,17 @@
 .container {
-    background-color: black;
+    background-color: rgba(0, 0, 0);
     color: white;
     width: 700px;
     min-height: 700px;
     max-height: 800px;
-    margin-top: 350px;
-    margin-left: 20px;
+    /* margin-top: 15rem; */
+    margin-left: 2rem;
     position: fixed;
     z-index: 99;
     border: solid 3px;
     border-radius: 20px;
+    position: absolute;
+    bottom: 3rem;
 }
 
 .userInfoSection {
@@ -34,6 +36,7 @@
 .avatar {
     border-radius: 50px;
     margin-top: 5px;
+    background-color: white;
 }
 
 .followSection {
@@ -47,6 +50,12 @@
 .follow {
     padding: 5px 80px;
     text-align: center;
+}
+
+.followList {
+    color: #cecece;
+    background-color: transparent;
+    text-decoration: underline;
 }
 
 .balanceSection {
@@ -72,10 +81,6 @@
     background-color: #116ca5;
 }
 
-/* .socialSection {
-    border-bottom: #535353 solid 1px;
-} */
-
 .social {
     display: flex;
     justify-content: center;
@@ -90,7 +95,7 @@
     width: 50px;
 }
 
-.followButton {
+.exploreButton {
     border: solid white 3px;
     color: white;
     width: 600px;

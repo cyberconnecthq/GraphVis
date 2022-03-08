@@ -1,13 +1,15 @@
 .container {
-    padding: 0 2rem;
     height: 100vh;
     display: flex;
+    position: relative;
 }
 
 .main {
-    min-height: 100vh;
-    padding: 4rem 0;
-    flex: 1;
+    min-height: 20rem;
+    margin-top: 30rem;
+    padding: 4rem 4rem;
+    position: fixed;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -27,47 +29,35 @@
     font-size: 3rem;
 }
 
-.description {
-    margin: 4rem 0;
-    line-height: 1.5;
-    font-size: 1.5rem;
-}
-
-.code {
-    background: #fafafa;
-    border-radius: 5px;
-    padding: 0.75rem;
-    font-size: 1.1rem;
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-        DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-}
-
-.grid {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    max-width: 800px;
-}
-
-.logo {
-    height: 1em;
-    margin-left: 0.5rem;
-}
-
-@media (max-width: 600px) {
-    .grid {
-        width: 100%;
-        flex-direction: column;
-    }
-}
-
 .jumpButton {
-    border: solid white 3px;
-    color: white;
-    width: 400px;
+    color: rgb(0, 0, 0);
+    background: white;
+    width: 250px;
     height: 70px;
     font-size: x-large;
     border-radius: 20px;
     margin: 20px 5px;
+    font-family: "Outfit";
+}
+
+.jumpButton:hover {
+    color: white;
+    background-color: rgb(0, 0, 0);
+    border: solid white 2px;
+}
+
+.loadingSection {
+    position: fixed;
+    display: flex;
+    padding: 80px 50px;
+}
+
+.loadingIcon {
+    margin-right: 10px;
+}
+
+.loadingText {
+    margin-top: 10px;
+    color: "white";
+    font-size: 20px;
 }

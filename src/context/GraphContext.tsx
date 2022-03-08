@@ -4,7 +4,6 @@ import {
     useContext,
     useCallback,
     useEffect,
-    useMemo,
 } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
@@ -48,7 +47,6 @@ interface GraphContextInterface {
     selectAddress: string;
     graphData: GraphData | undefined;
     graphLoading: boolean;
-    connections: any;
     identity: Identity | null;
     appMode: AppMode;
     count: number;
@@ -66,7 +64,6 @@ export const GraphContext = createContext<GraphContextInterface>({
     graphData: undefined,
     graphLoading: true,
     identity: null,
-    connections: null,
     appMode: AppMode.CyberMode,
     count: 0,
 
@@ -85,15 +82,14 @@ export const GraphContextProvider: React.FC = ({ children }) => {
     const [graphAddress, setGraphAddress] = useState<string>(
         "0x148d59faf10b52063071eddf4aaf63a395f2d41c"
     );
-    const [selectAddress, setSelectAddress] = useState<string>("");
+    const [selectAddress, setSelectAddress] = useState<string>(
+        "0x148d59faf10b52063071eddf4aaf63a395f2d41c"
+    );
     const [graphData, setGraphData] = useState<GraphData | undefined>(
         undefined
     );
     const [graphLoading, setGraphLoading] = useState<boolean>(true);
     const [identity, setIdentity] = useState<Identity | null>(null);
-    const [connections, setConnections] = useState<AllSocialConnections | null>(
-        null
-    );
     const [appMode, setAppMode] = useState<AppMode>(AppMode.CyberMode);
 
     //Fetch IdentityData: followers following num
@@ -168,36 +164,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
 
         return retGraphData;
     };
-
-    //Fetch ConnectionsData
-    // const fetchConnectionsData = async (targetAddr: string) => {
-    //     let hasNextPage = true,
-    //         after = "-1";
-
-    //     let allData;
-    //     // TODO: Paginated fetching
-    //     // Currently only load one batch
-    //     // while (hasNextPage) {
-    //     const { data } = await fetchMore({
-    //         variables: {
-    //             address: targetAddr,
-    //             first: 50,
-    //             after,
-    //             namespace: "",
-    //         },
-    //         updateQuery: (prev: any, { fetchMoreResult }) => {
-    //             return fetchMoreResult;
-    //         },
-    //     });
-
-    //     allData = data;
-    //     console.log("allData", allData);
-
-    //     //     break;
-    //     // }
-    //     // setConnections(allData);
-    //     return allData;
-    // };
 
     // Fetch friends, followings, followers
     const fetch3Fs = async (targetAddr: string, isFocusMode: boolean) => {
@@ -472,18 +438,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         }
     }, [graphAddress, appMode]);
 
-    //Using when selectedAddress chnaged
-    // const loadConnections = useCallback(async () => {
-    //     const ConnectionsData = await fetchConnectionsData(selectAddress);
-    //     console.log("ConnectionsData", ConnectionsData);
-    //     console.log("selected", selectAddress);
-    //     setConnections(ConnectionsData);
-    // }, [selectAddress]);
-
-    // useEffect(() => {
-    //     loadConnections();
-    // }, [selectAddress]);
-
     useEffect(() => {
         if (address) {
             setSelectAddress(address);
@@ -500,7 +454,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                 graphAddress,
                 graphLoading,
                 identity,
-                connections,
                 appMode,
                 // setters
                 setGraphData,

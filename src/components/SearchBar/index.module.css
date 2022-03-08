@@ -7,4 +7,13 @@
     padding: 0 30px;
     color: white;
     font-size: large;
+    font-family: "Outfit";
+}
+
+.textField::placeholder {
+    color: white;
+}
+
+.userAddress {
+    font-family: "Outfit";
 }

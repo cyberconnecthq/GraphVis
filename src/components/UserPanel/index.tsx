@@ -1,24 +1,16 @@
-import { GraphContext, useGraph } from "@/context/GraphContext";
-import { useQuery } from "@apollo/client";
+import { useGraph } from "@/context/GraphContext";
 import styles from "./index.module.css";
-import { GET_IDENTITY } from "@/graphql/queries/get_identity";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Identity } from "../../types/identity";
-import { Button, Divider, Switch, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { TabsPanel } from "../TabsPanel";
-import { useWeb3 } from "@/context/web3Context";
-import { ClassNames } from "@emotion/react";
-import { FollowButton } from "../FollowButton";
 
 export const UserPanel: React.FC = () => {
-    const { selectAddress, identity, setSelectAddress, setGraphAddress } =
-        useGraph();
+    const { selectAddress, identity, setGraphAddress } = useGraph();
 
     const [userBalance, setUserBalance] = useState(0.0);
 
     useEffect(() => {
-        const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=WYXGU2Z8IYBK317X2V24IU5KHKBHP4RT41`;
+        const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
 
         // console.log(etherscanAPI);
 
@@ -57,29 +49,33 @@ export const UserPanel: React.FC = () => {
                                 />
                             </a>
                         ) : (
-                            <img
-                                src={
-                                    "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-7.jpg"
+                            <a
+                                rel="noreferrer"
+                                href={
+                                    "https://app.cyberconnect.me/address/" +
+                                    identity?.address
                                 }
-                                alt={""}
-                                width={100}
-                                height={100}
-                                className={styles.avatar}
-                            />
+                                target={"_blank"}
+                            >
+                                <img
+                                    src={"/Sample_User_Icon.png"}
+                                    alt={""}
+                                    width={100}
+                                    height={100}
+                                    className={styles.avatar}
+                                />
+                            </a>
                         )}
-                        {/* <LoadingButton
-                            sx={{ backgroundColor: "white", marginTop: "10px" }}
-                            onClick={() => setGraphAddress(selectAddress)}
-                        >
-                            EXPLORE this one!!
-                        </LoadingButton> */}
                     </div>
 
                     <div className={styles.userName}>
                         {identity.ens ? (
                             <Typography
                                 variant="h3"
-                                sx={{ margin: "10px 20px" }}
+                                sx={{
+                                    margin: "10px 20px",
+                                    fontFamily: "Outfit",
+                                }}
                             >
                                 {identity.ens}
                             </Typography>
@@ -89,7 +85,7 @@ export const UserPanel: React.FC = () => {
                         <Typography
                             variant="h6"
                             paddingLeft={2}
-                            sx={{ color: "gray" }}
+                            sx={{ color: "gray", fontFamily: "Outfit" }}
                         >
                             {identity?.address}
                         </Typography>
@@ -215,12 +211,13 @@ export const UserPanel: React.FC = () => {
                 {/* Follower & Followings Tab Section */}
                 <LoadingButton
                     // loading={loading}
-                    className={styles.followButton}
+                    className={styles.exploreButton}
                     onClick={() => setGraphAddress(selectAddress)}
                     sx={{
                         ":hover": {
                             bgcolor: "#555",
                         },
+                        fontFamily: "Outfit",
                     }}
                 >
                     EXPLORE ME!
