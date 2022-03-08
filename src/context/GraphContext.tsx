@@ -1,21 +1,20 @@
-import {
-    createContext,
-    useState,
-    useContext,
-    useCallback,
-    useEffect,
-} from "react";
-import { useQuery } from "@apollo/client";
-import { GET_IDENTITY } from "@/graphql/queries/get_identity";
-import { Identity } from "../types/identity";
 import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
+import { GET_IDENTITY } from "@/graphql/queries/get_identity";
+import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
 import {
     AllRecommendations,
     AllSocialConnections,
     SocialConnection,
 } from "@/types/AllSocialConnections";
-import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
-import { ConstructionOutlined } from "@mui/icons-material";
+import { useQuery } from "@apollo/client";
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
+import { Identity } from "../types/identity";
 import { useWeb3 } from "./web3Context";
 
 export type GraphNode = {
@@ -114,251 +113,264 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         },
     });
 
-    let { fetchMore: fetchMoreRecommendation } = useQuery(GET_RECOMMENDATION, {
-        variables: {
-            address: graphAddress,
-        },
-    });
+    const { fetchMore: fetchMoreRecommendation } = useQuery(
+        GET_RECOMMENDATION,
+        {
+            variables: {
+                address: graphAddress,
+            },
+        }
+    );
 
     // Fetch Recommendations
-    const fetchRecommendations = async (targetAddr: string) => {
-        const { data: recommendationData } = await fetchMoreRecommendation({
-            variables: { address: targetAddr },
-            updateQuery: (prev: any, { fetchMoreResult }) => {
-                return fetchMoreResult;
-            },
-        });
-        let recommendationList = (recommendationData as AllRecommendations)
-            .recommendations.data?.list;
-        if (!recommendationList) {
-            return { nodes: [], links: [] };
-        }
-        // console.log(re)
-        // Return recommendation list as GraphNode[]
-        let retGraphData: GraphData = { nodes: [], links: [] };
-        retGraphData.nodes = [
-            ...[...recommendationList].map((item: SocialConnection) => {
-                return {
-                    id: item.address,
-                    img: item.avatar,
-                    group: 4,
-                };
-            }),
-        ];
-
-        function getRandomInt(max: number) {
-            return Math.floor(Math.random() * max);
-        }
-
-        for (let i = 0; i < retGraphData.nodes.length / 2; i++) {
-            retGraphData.links.push({
-                source: retGraphData.nodes[
-                    getRandomInt(retGraphData.nodes.length)
-                ].id,
-                target: retGraphData.nodes[
-                    getRandomInt(retGraphData.nodes.length)
-                ].id,
-                value: 0,
-            });
-        }
-
-        return retGraphData;
-    };
-
-    // Fetch friends, followings, followers
-    const fetch3Fs = async (targetAddr: string, isFocusMode: boolean) => {
-        let hasNextPage = true,
-            after = "-1";
-        let followerList: SocialConnection[],
-            followingList: SocialConnection[],
-            friendList: SocialConnection[];
-        followerList = [];
-        followingList = [];
-        friendList = [];
-
-        let allData;
-        // TODO: Paginated fetching
-        // Currently only load one batch
-        while (hasNextPage) {
-            const { data } = await fetchMore({
-                variables: {
-                    address: targetAddr,
-                    first: 50,
-                    after,
-                    namespace: "",
-                },
+    const fetchRecommendations = useCallback(
+        async (targetAddr: string) => {
+            const { data: recommendationData } = await fetchMoreRecommendation({
+                variables: { address: targetAddr },
                 updateQuery: (prev: any, { fetchMoreResult }) => {
                     return fetchMoreResult;
                 },
             });
+            const recommendationList = (
+                recommendationData as AllRecommendations
+            ).recommendations.data?.list;
+            if (!recommendationList) {
+                return { nodes: [], links: [] };
+            }
+            // console.log(re)
+            // Return recommendation list as GraphNode[]
+            const retGraphData: GraphData = { nodes: [], links: [] };
+            retGraphData.nodes = [
+                ...[...recommendationList].map((item: SocialConnection) => {
+                    return {
+                        id: item.address,
+                        img: item.avatar,
+                        group: 4,
+                    };
+                }),
+            ];
 
-            // Process Followers
-            followerList = (data as AllSocialConnections).identity.followers
-                .list;
-            followingList = (data as AllSocialConnections).identity.followings
-                .list;
-            friendList = (data as AllSocialConnections).identity.friends.list;
-            allData = data;
-            break;
-        }
+            function getRandomInt(max: number) {
+                return Math.floor(Math.random() * max);
+            }
 
-        // Three lists filter out redundant elements
-        let friendAddrList = friendList.map((item) => item.address);
-        followingList = followingList.filter(
-            (item) => !friendAddrList.includes(item.address)
-        );
-        followerList = followerList.filter(
-            (item) => !friendAddrList.includes(item.address)
-        );
+            for (let i = 0; i < retGraphData.nodes.length / 2; i++) {
+                retGraphData.links.push({
+                    source: retGraphData.nodes[
+                        getRandomInt(retGraphData.nodes.length)
+                    ].id,
+                    target: retGraphData.nodes[
+                        getRandomInt(retGraphData.nodes.length)
+                    ].id,
+                    value: 0,
+                });
+            }
 
-        // Construct Returning GraphData
-        let retGraphData: GraphData;
-        if (isFocusMode) {
-            retGraphData = {
-                nodes: [
-                    {
-                        id: targetAddr,
-                        img: (allData as AllSocialConnections).identity.avatar,
-                        group: 0,
+            return retGraphData;
+        },
+        [fetchMoreRecommendation]
+    );
+
+    // Fetch friends, followings, followers
+    const fetch3Fs = useCallback(
+        async (targetAddr: string, isFocusMode: boolean) => {
+            const hasNextPage = true,
+                after = "-1";
+            let followerList: SocialConnection[],
+                followingList: SocialConnection[],
+                friendList: SocialConnection[];
+            followerList = [];
+            followingList = [];
+            friendList = [];
+
+            let allData;
+            // TODO: Paginated fetching
+            // Currently only load one batch
+            while (hasNextPage) {
+                const { data } = await fetchMore({
+                    variables: {
+                        address: targetAddr,
+                        first: 50,
+                        after,
+                        namespace: "",
                     },
-                    {
-                        id: "Followings",
-                        img: "",
-                        group: 1,
+                    updateQuery: (prev: any, { fetchMoreResult }) => {
+                        return fetchMoreResult;
                     },
-                    {
-                        id: "Followers",
-                        img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fhotpot.ai%2Fcolorize-picture&psig=AOvVaw0LGfAtY4jm1qGvtp93Wh59&ust=1646331326777000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMivj5-EqPYCFQAAAAAdAAAAABAF",
-                        group: 2,
-                    },
-                    {
-                        id: "Friends",
-                        img: "",
-                        group: 3,
-                    },
-                    ...[...followingList].map((item: SocialConnection) => {
-                        return {
-                            id: item.address,
-                            img: item.avatar,
+                });
+
+                // Process Followers
+                followerList = (data as AllSocialConnections).identity.followers
+                    .list;
+                followingList = (data as AllSocialConnections).identity
+                    .followings.list;
+                friendList = (data as AllSocialConnections).identity.friends
+                    .list;
+                allData = data;
+                break;
+            }
+
+            // Three lists filter out redundant elements
+            const friendAddrList = friendList.map((item) => item.address);
+            followingList = followingList.filter(
+                (item) => !friendAddrList.includes(item.address)
+            );
+            followerList = followerList.filter(
+                (item) => !friendAddrList.includes(item.address)
+            );
+
+            // Construct Returning GraphData
+            let retGraphData: GraphData;
+            if (isFocusMode) {
+                retGraphData = {
+                    nodes: [
+                        {
+                            id: targetAddr,
+                            img: (allData as AllSocialConnections).identity
+                                .avatar,
+                            group: 0,
+                        },
+                        {
+                            id: "Followings",
+                            img: "",
                             group: 1,
-                        };
-                    }),
-                    ...[...followerList].map((item: SocialConnection) => {
-                        return {
-                            id: item.address,
-                            img: item.avatar,
+                        },
+                        {
+                            id: "Followers",
+                            img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fhotpot.ai%2Fcolorize-picture&psig=AOvVaw0LGfAtY4jm1qGvtp93Wh59&ust=1646331326777000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMivj5-EqPYCFQAAAAAdAAAAABAF",
                             group: 2,
-                        };
-                    }),
-                    ...[...friendList].map((item: SocialConnection) => {
-                        return {
-                            id: item.address,
-                            img: item.avatar,
+                        },
+                        {
+                            id: "Friends",
+                            img: "",
                             group: 3,
-                        };
-                    }),
-                ],
-                links: [
-                    ...[...followingList].map((item: SocialConnection) => {
-                        return {
-                            source: item.address,
-                            target: "Followings",
-                            value: 1,
-                        };
-                    }),
-                    ...[...followerList].map((item: SocialConnection) => {
-                        return {
-                            source: item.address,
-                            target: "Followers",
-                            value: 2,
-                        };
-                    }),
-                    ...[...friendList].map((item: SocialConnection) => {
-                        return {
-                            source: item.address,
+                        },
+                        ...[...followingList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 1,
+                            };
+                        }),
+                        ...[...followerList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 2,
+                            };
+                        }),
+                        ...[...friendList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 3,
+                            };
+                        }),
+                    ],
+                    links: [
+                        ...[...followingList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: "Followings",
+                                value: 1,
+                            };
+                        }),
+                        ...[...followerList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: "Followers",
+                                value: 2,
+                            };
+                        }),
+                        ...[...friendList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: "Friends",
+                                value: 3,
+                            };
+                        }),
+                        {
+                            source: targetAddr,
                             target: "Friends",
-                            value: 3,
-                        };
-                    }),
-                    {
-                        source: targetAddr,
-                        target: "Friends",
-                        value: 0,
-                    },
-                    {
-                        source: targetAddr,
-                        target: "Followings",
-                        value: 0,
-                    },
-                    {
-                        source: targetAddr,
-                        target: "Followers",
-                        value: 0,
-                    },
-                ],
-            };
-        } else {
-            retGraphData = {
-                nodes: [
-                    {
-                        id: targetAddr,
-                        img: (allData as AllSocialConnections).identity.avatar,
-                        group: 0,
-                    },
-                    ...[...followingList].map((item: SocialConnection) => {
-                        return {
-                            id: item.address,
-                            img: item.avatar,
-                            group: 1,
-                        };
-                    }),
-                    ...[...followerList].map((item: SocialConnection) => {
-                        return {
-                            id: item.address,
-                            img: item.avatar,
-                            group: 2,
-                        };
-                    }),
-                    ...[...friendList].map((item: SocialConnection) => {
-                        return {
-                            id: item.address,
-                            img: item.avatar,
-                            group: 3,
-                        };
-                    }),
-                ],
-                links: [
-                    ...[...followingList].map((item: SocialConnection) => {
-                        return {
-                            source: item.address,
-                            target: targetAddr,
-                            value: 1,
-                        };
-                    }),
-                    ...[...followerList].map((item: SocialConnection) => {
-                        return {
-                            source: item.address,
-                            target: targetAddr,
-                            value: 2,
-                        };
-                    }),
-                    ...[...friendList].map((item: SocialConnection) => {
-                        return {
-                            source: item.address,
-                            target: targetAddr,
-                            value: 3,
-                        };
-                    }),
-                ],
-            };
-        }
-        return retGraphData;
-    };
+                            value: 0,
+                        },
+                        {
+                            source: targetAddr,
+                            target: "Followings",
+                            value: 0,
+                        },
+                        {
+                            source: targetAddr,
+                            target: "Followers",
+                            value: 0,
+                        },
+                    ],
+                };
+            } else {
+                retGraphData = {
+                    nodes: [
+                        {
+                            id: targetAddr,
+                            img: (allData as AllSocialConnections).identity
+                                .avatar,
+                            group: 0,
+                        },
+                        ...[...followingList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 1,
+                            };
+                        }),
+                        ...[...followerList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 2,
+                            };
+                        }),
+                        ...[...friendList].map((item: SocialConnection) => {
+                            return {
+                                id: item.address,
+                                img: item.avatar,
+                                group: 3,
+                            };
+                        }),
+                    ],
+                    links: [
+                        ...[...followingList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: targetAddr,
+                                value: 1,
+                            };
+                        }),
+                        ...[...followerList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: targetAddr,
+                                value: 2,
+                            };
+                        }),
+                        ...[...friendList].map((item: SocialConnection) => {
+                            return {
+                                source: item.address,
+                                target: targetAddr,
+                                value: 3,
+                            };
+                        }),
+                    ],
+                };
+            }
+            return retGraphData;
+        },
+        [fetchMore]
+    );
 
-    const loadGraphConnections = async (addr: string) => {
+    const loadGraphConnections = useCallback(async () => {
         // queue is to do BFS, set is a hashMap record appeared addresses
-        let bfsQueue = [];
-        let set = new Set();
+        const bfsQueue = [];
+        const set = new Set();
         let retGraphData: GraphData = {
             nodes: [],
             links: [],
@@ -369,13 +381,12 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         count = 0;
 
         while (count < DEFAULT_QUOTA) {
-            console.log(count);
-            let headAddr = bfsQueue.shift();
+            const headAddr = bfsQueue.shift();
             if (headAddr == undefined) {
                 continue;
             }
-            let recommendGD = await fetchRecommendations(headAddr);
-            let threeFsGD = await fetch3Fs(headAddr, false);
+            const recommendGD = await fetchRecommendations(headAddr);
+            const threeFsGD = await fetch3Fs(headAddr, false);
             retGraphData = {
                 nodes: [
                     ...retGraphData.nodes,
@@ -400,34 +411,30 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         }
 
         return retGraphData;
-    };
+    }, [fetch3Fs, fetchRecommendations, graphAddress]);
 
     // For Cyber Mode
     const loadCyberModeConnections = useCallback(async () => {
         await setGraphLoading(true);
         await setGraphData({ nodes: [], links: [] });
-        let newGraphData = await loadGraphConnections(graphAddress);
+        const newGraphData = await loadGraphConnections();
         await setGraphData(newGraphData);
         await setGraphLoading(false);
-        console.log("newGraphData:", newGraphData);
-    }, [graphAddress]);
+    }, [loadGraphConnections]);
 
     // For Focus Mode
     const loadFocusModeConnections = useCallback(async () => {
         await setGraphLoading(true);
         await setGraphData({ nodes: [], links: [] });
-        let recommendGD = await fetchRecommendations(graphAddress);
-        let threeFsGD = await fetch3Fs(graphAddress, true);
-        console.log("recommendGD:", recommendGD);
-        console.log("threeFsGD", threeFsGD);
+        const recommendGD = await fetchRecommendations(graphAddress);
+        const threeFsGD = await fetch3Fs(graphAddress, true);
 
         await setGraphData({
             nodes: [...recommendGD.nodes, ...threeFsGD.nodes],
             links: [...recommendGD.links, ...threeFsGD.links],
         });
         await setGraphLoading(false);
-        console.log("graphData:", graphData);
-    }, [graphAddress]);
+    }, [graphAddress, fetch3Fs, fetchRecommendations]);
 
     // Using when mode or graphAddress changed
     useEffect(() => {
@@ -436,7 +443,12 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         } else {
             loadFocusModeConnections();
         }
-    }, [graphAddress, appMode]);
+    }, [
+        graphAddress,
+        appMode,
+        loadCyberModeConnections,
+        loadFocusModeConnections,
+    ]);
 
     useEffect(() => {
         if (address) {
