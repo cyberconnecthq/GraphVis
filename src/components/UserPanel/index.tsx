@@ -49,15 +49,22 @@ export const UserPanel: React.FC = () => {
                                 />
                             </a>
                         ) : (
-                            <img
-                                src={
-                                    "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-7.jpg"
+                            <a
+                                rel="noreferrer"
+                                href={
+                                    "https://app.cyberconnect.me/address/" +
+                                    identity?.address
                                 }
-                                alt={""}
-                                width={100}
-                                height={100}
-                                className={styles.avatar}
-                            />
+                                target={"_blank"}
+                            >
+                                <img
+                                    src={"/Sample_User_Icon.png"}
+                                    alt={""}
+                                    width={100}
+                                    height={100}
+                                    className={styles.avatar}
+                                />
+                            </a>
                         )}
                     </div>
 
@@ -65,7 +72,10 @@ export const UserPanel: React.FC = () => {
                         {identity.ens ? (
                             <Typography
                                 variant="h3"
-                                sx={{ margin: "10px 20px" }}
+                                sx={{
+                                    margin: "10px 20px",
+                                    fontFamily: "Outfit",
+                                }}
                             >
                                 {identity.ens}
                             </Typography>
@@ -75,7 +85,7 @@ export const UserPanel: React.FC = () => {
                         <Typography
                             variant="h6"
                             paddingLeft={2}
-                            sx={{ color: "gray" }}
+                            sx={{ color: "gray", fontFamily: "Outfit" }}
                         >
                             {identity?.address}
                         </Typography>
@@ -207,6 +217,7 @@ export const UserPanel: React.FC = () => {
                         ":hover": {
                             bgcolor: "#555",
                         },
+                        fontFamily: "Outfit",
                     }}
                 >
                     EXPLORE ME!

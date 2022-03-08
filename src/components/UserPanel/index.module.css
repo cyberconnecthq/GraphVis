@@ -1,15 +1,17 @@
 .container {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: rgba(0, 0, 0);
     color: white;
     width: 700px;
     min-height: 700px;
     max-height: 800px;
-    margin-top: 15rem;
+    /* margin-top: 15rem; */
     margin-left: 2rem;
     position: fixed;
     z-index: 99;
     border: solid 3px;
     border-radius: 20px;
+    position: absolute;
+    bottom: 3rem;
 }
 
 .userInfoSection {
@@ -34,6 +36,7 @@
 .avatar {
     border-radius: 50px;
     margin-top: 5px;
+    background-color: white;
 }
 
 .followSection {

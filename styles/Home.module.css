@@ -1,6 +1,7 @@
 .container {
     height: 100vh;
     display: flex;
+    position: relative;
 }
 
 .main {
@@ -29,13 +30,20 @@
 }
 
 .jumpButton {
-    border: solid white 3px;
-    color: white;
+    color: rgb(0, 0, 0);
+    background: white;
     width: 250px;
     height: 70px;
     font-size: x-large;
     border-radius: 20px;
     margin: 20px 5px;
+    font-family: "Outfit";
+}
+
+.jumpButton:hover {
+    color: white;
+    background-color: rgb(0, 0, 0);
+    border: solid white 2px;
 }
 
 .loadingSection {

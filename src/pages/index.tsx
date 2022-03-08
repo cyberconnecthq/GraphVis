@@ -60,7 +60,7 @@ const Home: NextPage = () => {
             </div>
             {!exploreMode ? (
                 <main className={styles.main}>
-                    <p className={styles.subtitle}>HOW PEOPLE</p>
+                    <p className={styles.subtitle}>HOW PEOPLE ARE</p>
                     <h1 className={styles.title}>CYBERCONNECTED IN </h1>
                     <h1 className={styles.title}>METAVERSE</h1>
 
@@ -68,11 +68,6 @@ const Home: NextPage = () => {
                         // loading={loading}
                         className={styles.jumpButton}
                         onClick={() => setExploreMode(true)}
-                        sx={{
-                            ":hover": {
-                                bgcolor: "#555",
-                            },
-                        }}
                     >
                         Let&apos;s jump in!
                     </LoadingButton>
