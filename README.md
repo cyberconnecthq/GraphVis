@@ -32,13 +32,17 @@ This project is inspired from Gitcoin [Scheduling Point Virtual Hackathon](https
 
 ## About Gitcoin Hackathon
 
-We want to make this project as a unique Web3 explorer experience since it has so much protentials. We decide to open source the code and let the whole community to BUIDL this amazing project and share credits!
+CyberGraph is still well under improvement with many features in the pipeline. This is a perfect scenario for the whole community to join us and BUIDL together.
+
+<br>
+
+We invite the community to experiment with it and add innovative features or make constructive product suggestions. A few examples that sprung to our mind: adding node visual effects to make it easier to read user info; differentiating connection & nodes visually, maybe on the basis of connection types, connection quantity, etc, and in terms of color, brightness, distance, etc; enabling continuous exploration where users can track their path of connections; adding subgroups; enabling exploring the connections between two queried nodes; optimizing graph filtering and visualization so to balance between UX and informative efficiency.
 
 ### Sub-tasks
 
 -   POAP Fetching & NFT Fetching
 -   Following & Follower List Display
--   Innovative Features & Product Suggestions
+-   Innovative Features & Product Suggestions (Like adding node visual effects features to make it easier to read user information)
 
 Welcome to discuss and learn in our discord Hackathon channel and make your submission. CyberConnect team welcomes anyone who wants to join Web3 world and is happy to transfer development knowledge.
 
@@ -46,9 +50,9 @@ Welcome to discuss and learn in our discord Hackathon channel and make your subm
 
 ## Run the App
 
-(Optional) Set the following variables in `.env`
+Set the following variables in `.env`
 
--   `ETHERSCAN_API_KEY=` [`EtherScan API`](https://etherscan.io/apis) KEY
+-   `ETHERSCAN_API_KEY=`[`EtherScan API KEY`](https://docs.etherscan.io/getting-started/viewing-api-usage-statistics)
 
 Then run:
 
@@ -93,3 +97,9 @@ Orders are in **no particular rank**. Co-authors & contributors work together an
 | <a href="https://github.com/cyberconnecthq"><img width="100" src="https://avatars.githubusercontent.com/u/81209593?s=200&v=4"></a>                                                                                                              | All CyberConnect Teams & Community: providing all kinds of supports |
 
 Participants from Gitcoin SPVH hackathon and other contributors please contact brucew@cybertinolab.com to append to the list. We are looking forward to more people's participation!
+
+## Follow Us
+
+-   [Twitter](https://twitter.com/CyberConnectHQ)
+-   [Discord](https://discord.com/invite/bYJ3cB7bbC)
+-   [Website](https://cyberconnect.me/)
