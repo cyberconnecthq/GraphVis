@@ -2,7 +2,7 @@
 
 ![`CyberGraph`](/public/CyberGraph-screenshot.jpg)
 
-<img align="center" width="900" height="450" src="./public/CyberGraph-screenshot.jpg">
+<!-- <img align="center" width="900" height="450" src="./public/CyberGraph-screenshot.jpg"> -->
 
 ## [`Live Site`](https://cyber-graph.vercel.app/)
 
