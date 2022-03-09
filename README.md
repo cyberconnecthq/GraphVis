@@ -66,7 +66,7 @@ Open the browser, open [Localhost](https://localhost:3000/) and you will see the
 
 ## ✨Contribution
 
-CyberGraph is an open-source, community-driven project, with three co-authors and contributors from CyberConnect dev team and community.
+CyberGraph is an open-source, community-driven project, with co-authors and contributors from CyberConnect dev team and community.
 
 Lists are in **no particular order**. All co-authors & contributors work together and share the credits.
 
@@ -77,7 +77,8 @@ Lists are in **no particular order**. All co-authors & contributors work togethe
 | <a href="https://github.com/WildSaoFeng"><img width="256" src="https://avatars.githubusercontent.com/u/24604477?s=96&v=4" ></a> | WildSaoFeng: Initiated the project, set up tech framework, worked on MetaVerse building, the 3d-model generation, graph building, connection data fetching & processing, dynamic loading bar, two-mode proposer and implementer |
 | <a href="https://github.com/BruceWangyq"><img width="256" src="https://avatars.githubusercontent.com/u/88688323?v=4" ></a>      | Bruce: Created page layout and UI components like User Panel, Navbar, Search Bar, Wallet Connect Button. Data fetching through different components. Researched and set up the 3d-Graph library.                   |
 | <a href="https://www.behance.net/wanghanyang"><img width="256" src="https://i.ibb.co/HxmvMJc/newUI.jpg"></a>                    | Hanyang: A talent and pushy UI designer and PM, who designed the product and insisted on using 3D display, so we can have this current version of product                                                                                                           |
-| <a href="https://github.com/jiayi1992"><img width="100" src="https://avatars.githubusercontent.com/u/17503721?v=4"></a>         | Jiayi: Fix minor issues and give detailed and patient instructions to other co-authors                              |
+| <a href="https://github.com/jiayi1992"><img width="256" src="https://avatars.githubusercontent.com/u/17503721?v=4"></a>         | Jiayi: Fix issues and give detailed and patient instructions to other co-authors                              |
+
 **Contributors**
 
 | Contributors                                                                                                                                                                                                                                    | Description                                                         |
