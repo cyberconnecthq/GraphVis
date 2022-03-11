@@ -46,6 +46,8 @@ We invite the community to experiment with it and add innovative features or mak
 
 Welcome to discuss and learn in our discord Hackathon channel and make your submission. CyberConnect team welcomes anyone who wants to join Web3 world and is happy to transfer development knowledge.
 
+Participants from Gitcoin SPVH hackathon and other contributors please contact brucew@cybertinolab.com to append to the list. We are looking forward to more people's participation!
+
 <br>
 
 ## Run the App
@@ -64,7 +66,7 @@ yarn run dev
 
 Open the browser, open [Localhost](https://localhost:3000/) and you will see the UI of the project.
 
-## ✨Contribution
+<!-- ## ✨Contribution
 
 CyberGraph is an open-source, community-driven project, with co-authors and contributors from CyberConnect dev team and community.
 
@@ -95,9 +97,7 @@ Lists are in **no particular order**. All co-authors & contributors work togethe
 | <img width="80" src="https://media-exp1.licdn.com/dms/image/C4D0BAQGXpWlyiCcCnA/company-logo_100_100/0/1637107512709?e=1654732800&v=beta&t=zuQHFq3S_WXDLPxzfggzracq95E9caueEyOjnuuNDCM"> | Wenyi: Providing professional proofreading help                     |
 | <a href="https://github.com/HaoPeiwen"><img width="80" src="https://avatars.githubusercontent.com/u/44077572?v=4"></a>                                                                   | Peiwen: Providing indexer tech support                              |
 | <a href="https://github.com/cc-fruit"><img width="80" src="https://avatars.githubusercontent.com/u/89375075?v=4"></a>                                                                    | CC_Fruit: Providing indexer tech support                            |
-| <a href="https://github.com/cyberconnecthq"><img width="80" src="https://avatars.githubusercontent.com/u/81209593?s=200&v=4"></a>                                                        | All CyberConnect Teams & Community: providing all kinds of supports |
-
-Participants from Gitcoin SPVH hackathon and other contributors please contact brucew@cybertinolab.com to append to the list. We are looking forward to more people's participation!
+| <a href="https://github.com/cyberconnecthq"><img width="80" src="https://avatars.githubusercontent.com/u/81209593?s=200&v=4"></a>                                                        | All CyberConnect Teams & Community: providing all kinds of supports | -->
 
 ## Follow Us
 
