@@ -1,11 +1,22 @@
 // import dynamic from "next/dynamic";
 import { useGraph } from "@/context/GraphContext";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import * as THREE from "three";
+import { Vector2 } from "three";
 
 const FocusGraph = () => {
     const fgRef = useRef<ForceGraphMethods>();
+
+    useEffect(() => {
+        const bloomPass = new UnrealBloomPass(new Vector2(256, 256), 1, 1, 0.1);
+        const fg = fgRef.current;
+        fg?.postProcessingComposer().addPass(bloomPass);
+        return () => {
+            fg?.postProcessingComposer().removePass(bloomPass);
+        };
+    }, []);
 
     const { graphData, setSelectAddress } = useGraph();
 
