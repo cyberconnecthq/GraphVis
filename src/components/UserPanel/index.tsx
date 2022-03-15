@@ -94,13 +94,33 @@ export const UserPanel: React.FC = () => {
                         <Typography variant="h3">
                             {identity.followerCount}
                         </Typography>
-                        <Typography color={"#989898"}>Followers</Typography>
+                        <Typography
+                            color={"#989898"}
+                            sx={{
+                                ":hover": {
+                                    color: "#555",
+                                    cursor: "pointer",
+                                },
+                            }}
+                        >
+                            Followers
+                        </Typography>
                     </div>
                     <div className={styles.follow}>
                         <Typography variant="h3">
                             {identity.followingCount}
                         </Typography>
-                        <Typography color={"#989898"}>Followings</Typography>
+                        <Typography
+                            color={"#989898"}
+                            sx={{
+                                ":hover": {
+                                    color: "#555",
+                                    cursor: "pointer",
+                                },
+                            }}
+                        >
+                            Followings
+                        </Typography>
                     </div>
                 </div>
                 {/* Balance Sections */}
