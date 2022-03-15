@@ -1,0 +1,14 @@
+.goToYouButton {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    border: solid white 2px;
+    font-size: x-large;
+    border-radius: 10px;
+}
+
+.goToYouButton:hover {
+    background-color: #555;
+}
