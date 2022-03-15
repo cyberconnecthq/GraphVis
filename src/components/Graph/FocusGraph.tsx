@@ -1,6 +1,6 @@
 // import dynamic from "next/dynamic";
-import { useGraph } from "@/context/GraphContext";
-import React, { useCallback, useEffect, useRef } from "react";
+import { GraphLink, useGraph } from "@/context/GraphContext";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import * as THREE from "three";
@@ -8,20 +8,38 @@ import { Vector2 } from "three";
 
 const FocusGraph = () => {
     const fgRef = useRef<ForceGraphMethods>();
+    const { graphData, setSelectAddress } = useGraph();
+
+    const [highlightNodes, setHighlightNodes] = useState(new Set());
+    const [highlightLinks, setHighlightLinks] = useState(new Set());
+
+    console.log(highlightNodes, highlightLinks);
 
     useEffect(() => {
-        const bloomPass = new UnrealBloomPass(new Vector2(256, 256), 1, 1, 0.1);
         const fg = fgRef.current;
+        // add bloom effect
+        const bloomPass = new UnrealBloomPass(new Vector2(256, 256), 1, 1, 0.1);
         fg?.postProcessingComposer().addPass(bloomPass);
         return () => {
             fg?.postProcessingComposer().removePass(bloomPass);
         };
     }, []);
 
-    const { graphData, setSelectAddress } = useGraph();
-
     const handleClick = useCallback(
         (node) => {
+            highlightNodes.clear();
+            highlightLinks.clear();
+            if (node) {
+                highlightNodes.add(node.id);
+                node.neighbors.forEach((neighbor: string) =>
+                    highlightNodes.add(neighbor)
+                );
+                node.links.forEach((link: GraphLink) =>
+                    highlightLinks.add(link)
+                );
+            }
+            updateHighlight();
+
             const distance = 90;
             const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
             if (fgRef.current) {
@@ -40,17 +58,49 @@ const FocusGraph = () => {
         [fgRef, setSelectAddress]
     );
 
+    const updateHighlight = () => {
+        setHighlightNodes(highlightNodes);
+        setHighlightLinks(highlightLinks);
+    };
+
     function getRandomInt(max: number) {
         return Math.floor(Math.random() * max);
     }
 
-    const localImgs = [
-        "/red.jpg",
-        "/blue.png",
-        "/brown.png",
-        "/green.png",
-        "/grey.png",
-    ];
+    const getLinkLabel = useCallback((link: any) => {
+        const categories = {
+            0: "Others",
+            1: "Followings",
+            2: "Followers",
+            3: "Friends",
+        };
+        // @ts-ignore
+        return categories[link.value];
+    }, []);
+
+    const getNodeThreeObject = useCallback(
+        (node: any) => {
+            const localImgs = [
+                "/red.jpg",
+                "/blue.png",
+                "/brown.png",
+                "/green.png",
+                "/grey.png",
+            ];
+
+            const imgTexture = new THREE.TextureLoader().load(
+                node.img || localImgs[getRandomInt(localImgs.length)]
+                // Randomly give one
+            );
+            const geometry = new THREE.SphereGeometry(2, 6, 6);
+
+            const material = new THREE.MeshBasicMaterial({
+                map: imgTexture,
+            });
+            return new THREE.Mesh(geometry, material);
+        },
+        [graphData]
+    );
 
     return (
         <ForceGraph3D
@@ -59,22 +109,18 @@ const FocusGraph = () => {
             nodeLabel="id"
             nodeAutoColorBy="group"
             onNodeClick={handleClick}
-            linkColor="#458888"
-            linkWidth={0.5}
+            linkLabel={getLinkLabel}
+            linkColor={(link) =>
+                highlightLinks.has(link) ? "#ec407a" : "#458888"
+            }
+            linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 1.0)}
+            linkDirectionalParticles={2}
+            linkDirectionalParticleSpeed={0.001}
+            linkDirectionalParticleWidth={(link) =>
+                highlightLinks.has(link) ? 1.0 : 0.0
+            }
             backgroundColor="#000000"
-            nodeThreeObject={(node: any) => {
-                const imgTexture = new THREE.TextureLoader().load(
-                    node.img || localImgs[getRandomInt(localImgs.length)]
-                    // Randomly give one
-                );
-                const geometry = new THREE.SphereGeometry(2, 6, 6);
-
-                const material = new THREE.MeshBasicMaterial({
-                    map: imgTexture,
-                });
-                const mesh = new THREE.Mesh(geometry, material);
-                return mesh;
-            }}
+            nodeThreeObject={getNodeThreeObject}
         />
     );
 };

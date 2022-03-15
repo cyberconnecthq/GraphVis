@@ -21,6 +21,8 @@ export type GraphNode = {
     id: string;
     img: string;
     group: number;
+    neighbors: string[];
+    links: GraphLink[];
 };
 
 export type GraphLink = {
@@ -146,6 +148,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                         id: item.address,
                         img: item.avatar,
                         group: 4,
+                        neighbors: [],
+                        links: [],
                     };
                 }),
             ];
@@ -229,27 +233,37 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                             img: (allData as AllSocialConnections).identity
                                 .avatar,
                             group: 0,
+                            neighbors: [],
+                            links: [],
                         },
                         {
                             id: "Followings",
                             img: "",
                             group: 1,
+                            neighbors: [],
+                            links: [],
                         },
                         {
                             id: "Followers",
                             img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fhotpot.ai%2Fcolorize-picture&psig=AOvVaw0LGfAtY4jm1qGvtp93Wh59&ust=1646331326777000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMivj5-EqPYCFQAAAAAdAAAAABAF",
                             group: 2,
+                            neighbors: [],
+                            links: [],
                         },
                         {
                             id: "Friends",
                             img: "",
                             group: 3,
+                            neighbors: [],
+                            links: [],
                         },
                         ...[...followingList].map((item: SocialConnection) => {
                             return {
                                 id: item.address,
                                 img: item.avatar,
                                 group: 1,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                         ...[...followerList].map((item: SocialConnection) => {
@@ -257,6 +271,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                                 id: item.address,
                                 img: item.avatar,
                                 group: 2,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                         ...[...friendList].map((item: SocialConnection) => {
@@ -264,6 +280,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                                 id: item.address,
                                 img: item.avatar,
                                 group: 3,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                     ],
@@ -314,12 +332,16 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                             img: (allData as AllSocialConnections).identity
                                 .avatar,
                             group: 0,
+                            neighbors: [],
+                            links: [],
                         },
                         ...[...followingList].map((item: SocialConnection) => {
                             return {
                                 id: item.address,
                                 img: item.avatar,
                                 group: 1,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                         ...[...followerList].map((item: SocialConnection) => {
@@ -327,6 +349,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                                 id: item.address,
                                 img: item.avatar,
                                 group: 2,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                         ...[...friendList].map((item: SocialConnection) => {
@@ -334,6 +358,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                                 id: item.address,
                                 img: item.avatar,
                                 group: 3,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                     ],
@@ -343,6 +369,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                                 source: item.address,
                                 target: targetAddr,
                                 value: 1,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                         ...[...followerList].map((item: SocialConnection) => {
@@ -350,6 +378,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                                 source: item.address,
                                 target: targetAddr,
                                 value: 2,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                         ...[...friendList].map((item: SocialConnection) => {
@@ -357,6 +387,8 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                                 source: item.address,
                                 target: targetAddr,
                                 value: 3,
+                                neighbors: [],
+                                links: [],
                             };
                         }),
                     ],
@@ -413,12 +445,35 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         return retGraphData;
     }, [fetch3Fs, fetchRecommendations, graphAddress]);
 
+    const preprocessGraphNeighbors = (graphData: GraphData) => {
+        graphData.links.forEach((link) => {
+            const aNodes = graphData.nodes.filter(
+                (node) => node.id === link.source
+            );
+            const bNodes = graphData.nodes.filter(
+                (node) => node.id === link.target
+            );
+            for (const bNode of bNodes) {
+                for (const aNode of aNodes) {
+                    aNode.neighbors.push(bNode.id);
+                    bNode.neighbors.push(aNode.id);
+
+                    aNode.links.push(link);
+                    bNode.links.push(link);
+                }
+            }
+        });
+
+        return graphData;
+    };
+
     // For Cyber Mode
     const loadCyberModeConnections = useCallback(async () => {
         await setGraphLoading(true);
         await setGraphData({ nodes: [], links: [] });
         const newGraphData = await loadGraphConnections();
-        await setGraphData(newGraphData);
+        const processedGraphData = preprocessGraphNeighbors(newGraphData);
+        await setGraphData(processedGraphData);
         await setGraphLoading(false);
     }, [loadGraphConnections]);
 
@@ -428,11 +483,12 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         await setGraphData({ nodes: [], links: [] });
         const recommendGD = await fetchRecommendations(graphAddress);
         const threeFsGD = await fetch3Fs(graphAddress, true);
-
-        await setGraphData({
+        const newGraphData = {
             nodes: [...recommendGD.nodes, ...threeFsGD.nodes],
             links: [...recommendGD.links, ...threeFsGD.links],
-        });
+        };
+        const processedGraphData = preprocessGraphNeighbors(newGraphData);
+        await setGraphData(processedGraphData);
         await setGraphLoading(false);
     }, [graphAddress, fetch3Fs, fetchRecommendations]);
 
