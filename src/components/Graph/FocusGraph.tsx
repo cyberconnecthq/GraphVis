@@ -13,8 +13,6 @@ const FocusGraph = () => {
     const [highlightNodes, setHighlightNodes] = useState(new Set());
     const [highlightLinks, setHighlightLinks] = useState(new Set());
 
-    console.log(highlightNodes, highlightLinks);
-
     useEffect(() => {
         const fg = fgRef.current;
         // add bloom effect
