@@ -6,6 +6,7 @@ import styles from "./index.module.css";
 
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setGraphAddress } = useGraph();
+
     const [userBalance, setUserBalance] = useState(0.0);
 
     useEffect(() => {

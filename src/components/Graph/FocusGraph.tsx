@@ -12,6 +12,8 @@ const FocusGraph = () => {
 
     const { graphData, setSelectAddress, graphAddress } = useGraph();
 
+    const [graphAddressNode, setGraphAddressNode] = useState<any>(null);
+
     const focusOnNode = (node: any, distance: number) => {
         const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
         if (fgRef.current) {
@@ -34,8 +36,6 @@ const FocusGraph = () => {
         },
         [fgRef, setSelectAddress]
     );
-
-    const [graphAddressNode, setGraphAddressNode] = useState<any>(null);
 
     function getRandomInt(max: number) {
         return Math.floor(Math.random() * max);
