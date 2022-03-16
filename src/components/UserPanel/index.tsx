@@ -2,12 +2,14 @@ import { useGraph } from "@/context/GraphContext";
 import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { ListModal } from "../ListModal";
 import styles from "./index.module.css";
-
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setGraphAddress } = useGraph();
 
     const [userBalance, setUserBalance] = useState(0.0);
+
+    const [showList, setShowList] = useState(false);
 
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
@@ -118,11 +120,16 @@ export const UserPanel: React.FC = () => {
                                     cursor: "pointer",
                                 },
                             }}
+                            onClick={() => setShowList(true)}
                         >
                             Followings
                         </Typography>
                     </div>
                 </div>
+
+                {/*Follower/followings list*/}
+                <ListModal open={showList} changeOpen={setShowList} />
+
                 {/* Balance Sections */}
                 <div className={styles.balanceSection}>
                     <Typography color={"#989898"} margin={1}>

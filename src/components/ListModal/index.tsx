@@ -1,9 +1,10 @@
+import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
+import { useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-
+import { useEffect } from "react";
 const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -16,32 +17,41 @@ const style = {
     p: 4,
 };
 
-export const ListModal: React.FC = () => {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+export const ListModal: React.FC = (props) => {
+    useEffect(() => {
+        refetch();
+    });
+    const handleClose = () => props.changeOpen(false);
+
+    const { loading, error, data, refetch } = useQuery(
+        GET_ADDR_CONNECTION_QUERY,
+        {
+            variables: {
+                address: "0x148d59faf10b52063071eddf4aaf63a395f2d41c",
+                first: 50,
+                after: "-1",
+                namespace: "",
+            },
+        }
+    );
+
+    if (loading) return null;
+    if (error) return `Error! ${error}`;
 
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
+            <Modal open={props.open} onClose={handleClose}>
                 <Box sx={style}>
-                    <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                    >
-                        Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor
-                        ligula.
-                    </Typography>
+                    {data.identity.followings.list.map((value, index) => {
+                        return (
+                            <Typography
+                                id="modal-modal-description"
+                                sx={{ mt: 2 }}
+                            >
+                                {value.address}
+                            </Typography>
+                        );
+                    })}
                 </Box>
             </Modal>
         </div>
