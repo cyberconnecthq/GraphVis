@@ -128,7 +128,11 @@ export const UserPanel: React.FC = () => {
                 </div>
 
                 {/*Follower/followings list*/}
-                <ListModal open={showList} changeOpen={setShowList} />
+                <ListModal
+                    open={showList}
+                    changeOpen={setShowList}
+                    address={selectAddress}
+                />
 
                 {/* Balance Sections */}
                 <div className={styles.balanceSection}>

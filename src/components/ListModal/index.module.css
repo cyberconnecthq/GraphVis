@@ -1,0 +1,22 @@
+.userName {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    justify-content: center;
+}
+.avatarSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.avatar {
+    border-radius: 50px;
+    margin-top: 5px;
+    background-color: white;
+}
+.userInfoSection {
+    display: flex;
+    padding: 10px;
+    margin: 20px 20px;
+    border-bottom: #535353 solid 1px;
+}

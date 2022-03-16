@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useEffect } from "react";
-import "./index.module.css";
+import styles from "./index.module.css";
 
 const style = {
     position: "absolute",
@@ -46,7 +46,7 @@ export const ListModal: React.FC = (props) => {
         GET_ADDR_CONNECTION_QUERY,
         {
             variables: {
-                address: "0x148d59faf10b52063071eddf4aaf63a395f2d41c",
+                address: props.address,
                 first: 50,
                 after: "-1",
                 namespace: "",
@@ -77,18 +77,80 @@ export const ListModal: React.FC = (props) => {
 
                     {data.identity.followings.list.map((value, index) => {
                         return (
-                            <Typography
-                                id="modal-modal-description"
-                                sx={{
-                                    mt: 2,
-                                    color: "#fff",
-                                    paddingLeft: "5%",
-                                }}
-                                // The key prop is just a placeholder (value needs to be replaced)
-                                key={index}
-                            >
-                                {value.address}
-                            </Typography>
+                            <div className={styles.userInfoSection}>
+                                <div className={styles.avatarSection}>
+                                    {value.avatar ? (
+                                        <a
+                                            rel="noreferrer"
+                                            href={
+                                                "https://app.cyberconnect.me/address/" +
+                                                value?.address
+                                            }
+                                            target={"_blank"}
+                                        >
+                                            <img
+                                                src={value.avatar}
+                                                alt={""}
+                                                width={100}
+                                                height={100}
+                                                className={styles.avatar}
+                                            />
+                                        </a>
+                                    ) : (
+                                        <a
+                                            rel="noreferrer"
+                                            href={
+                                                "https://app.cyberconnect.me/address/" +
+                                                value?.address
+                                            }
+                                            target={"_blank"}
+                                        >
+                                            <img
+                                                src={"/Sample_User_Icon.png"}
+                                                alt={""}
+                                                width={100}
+                                                height={100}
+                                                className={styles.avatar}
+                                            />
+                                        </a>
+                                    )}
+                                </div>
+                                <div className={styles.userName}>
+                                    {value.ens ? (
+                                        <Typography
+                                            variant="h3"
+                                            sx={{
+                                                margin: "10px 20px",
+                                                fontFamily: "Outfit",
+                                                color: "#fff",
+                                            }}
+                                        >
+                                            {value.ens}
+                                        </Typography>
+                                    ) : (
+                                        <Typography
+                                            variant="h3"
+                                            sx={{
+                                                margin: "10px 20px",
+                                                fontFamily: "Outfit",
+                                                color: "#fff",
+                                            }}
+                                        >
+                                            No ENS
+                                        </Typography>
+                                    )}
+                                    <Typography
+                                        variant="h6"
+                                        paddingLeft={2}
+                                        sx={{
+                                            color: "gray",
+                                            fontFamily: "Outfit",
+                                        }}
+                                    >
+                                        {value?.address}
+                                    </Typography>
+                                </div>
+                            </div>
                         );
                     })}
                 </Box>
