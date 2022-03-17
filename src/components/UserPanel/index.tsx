@@ -10,6 +10,7 @@ export const UserPanel: React.FC = () => {
     const [userBalance, setUserBalance] = useState(0.0);
 
     const [showList, setShowList] = useState(false);
+    const [listType, setListType] = useState();
 
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
@@ -92,38 +93,47 @@ export const UserPanel: React.FC = () => {
                 </div>
                 {/* Followings & Followers Section */}
                 <div className={styles.followSection}>
-                    <div className={styles.follow}>
-                        <Typography variant="h3">
+                    <div
+                        className={styles.follow}
+                        onClick={() => [
+                            setListType(false), //sets list modal to show followers
+                            setShowList(true),
+                        ]}
+                    >
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                ":hover": {
+                                    color: "#555",
+                                    cursor: "pointer",
+                                },
+                            }}
+                            onClick={() => [
+                                setListType(true), //sets list modal to show followings
+                                setShowList(true),
+                            ]}
+                        >
                             {identity.followerCount}
                         </Typography>
-                        <Typography
-                            color={"#989898"}
-                            sx={{
-                                ":hover": {
-                                    color: "#555",
-                                    cursor: "pointer",
-                                },
-                            }}
-                        >
-                            Followers
-                        </Typography>
+                        <Typography color={"#989898"}>Followers</Typography>
                     </div>
                     <div className={styles.follow}>
-                        <Typography variant="h3">
-                            {identity.followingCount}
-                        </Typography>
                         <Typography
-                            color={"#989898"}
+                            variant="h3"
                             sx={{
                                 ":hover": {
                                     color: "#555",
                                     cursor: "pointer",
                                 },
                             }}
-                            onClick={() => setShowList(true)}
+                            onClick={() => [
+                                setListType(true), //sets list modal to show followings
+                                setShowList(true),
+                            ]}
                         >
-                            Followings
+                            {identity.followingCount}
                         </Typography>
+                        <Typography color={"#989898"}>Followings</Typography>
                     </div>
                 </div>
 
@@ -132,6 +142,7 @@ export const UserPanel: React.FC = () => {
                     open={showList}
                     changeOpen={setShowList}
                     address={selectAddress}
+                    listType={listType}
                 />
 
                 {/* Balance Sections */}

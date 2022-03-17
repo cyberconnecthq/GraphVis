@@ -1,8 +1,8 @@
 import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
 import { useQuery } from "@apollo/client";
+import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useEffect } from "react";
 import styles from "./index.module.css";
@@ -42,7 +42,7 @@ export const ListModal: React.FC = (props) => {
     });
     const handleClose = () => props.changeOpen(false);
 
-    const { loading, error, data, refetch } = useQuery(
+    const { loading, error, data, refetch, fetchMore } = useQuery(
         GET_ADDR_CONNECTION_QUERY,
         {
             variables: {
@@ -56,6 +56,10 @@ export const ListModal: React.FC = (props) => {
 
     if (loading) return null;
     if (error) return `Error! ${error}`;
+
+    const test = props.listType
+        ? data.identity.followings.list
+        : data.identity.followers.list;
 
     return (
         <>
@@ -72,10 +76,10 @@ export const ListModal: React.FC = (props) => {
                             borderBottom: "#272727 solid 2px",
                         }}
                     >
-                        Followings
+                        {props.listType ? "Followings" : "Followers"}
                     </Typography>
 
-                    {data.identity.followings.list.map((value, index) => {
+                    {test.map((value, index) => {
                         return (
                             <div className={styles.userInfoSection}>
                                 <div className={styles.avatarSection}>
