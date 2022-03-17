@@ -7,7 +7,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import styles from "./index.module.css";
 
-const style = {
+const modalStyle = {
     position: "absolute",
     display: "flex",
     flexDirection: "column",
@@ -60,7 +60,7 @@ export const ListModal: React.FC = (props) => {
     return (
         <>
             <Modal open={props.open} onClose={handleClose}>
-                <Box sx={style}>
+                <Box sx={modalStyle}>
                     <Typography
                         sx={{
                             color: "#fff",
@@ -91,8 +91,6 @@ export const ListModal: React.FC = (props) => {
                                             <img
                                                 src={value.avatar}
                                                 alt={""}
-                                                width={100}
-                                                height={100}
                                                 className={styles.avatar}
                                             />
                                         </a>
@@ -108,8 +106,6 @@ export const ListModal: React.FC = (props) => {
                                             <img
                                                 src={"/Sample_User_Icon.png"}
                                                 alt={""}
-                                                width={100}
-                                                height={100}
                                                 className={styles.avatar}
                                             />
                                         </a>
@@ -119,6 +115,7 @@ export const ListModal: React.FC = (props) => {
                                     {value.ens ? (
                                         <Typography
                                             variant="h3"
+                                            fontSize={25}
                                             sx={{
                                                 margin: "10px 20px",
                                                 fontFamily: "Outfit",
@@ -130,6 +127,7 @@ export const ListModal: React.FC = (props) => {
                                     ) : (
                                         <Typography
                                             variant="h3"
+                                            fontSize={25}
                                             sx={{
                                                 margin: "10px 20px",
                                                 fontFamily: "Outfit",
@@ -142,6 +140,7 @@ export const ListModal: React.FC = (props) => {
                                     <Typography
                                         variant="h6"
                                         paddingLeft={2}
+                                        fontSize={13}
                                         sx={{
                                             color: "gray",
                                             fontFamily: "Outfit",

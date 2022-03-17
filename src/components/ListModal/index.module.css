@@ -1,7 +1,7 @@
 .userName {
     display: flex;
     flex-direction: column;
-    margin-left: 15px;
+    margin-left: 5px;
     justify-content: center;
 }
 .avatarSection {
@@ -13,10 +13,13 @@
     border-radius: 50px;
     margin-top: 5px;
     background-color: white;
+    width: 50px;
+    height: 50px;
 }
 .userInfoSection {
     display: flex;
+    align-items: center;
     padding: 10px;
-    margin: 20px 20px;
-    border-bottom: #535353 solid 1px;
+    margin: 10px 5px;
+    width: fit-content;
 }
