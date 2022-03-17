@@ -10,7 +10,7 @@ export const UserPanel: React.FC = () => {
     const [userBalance, setUserBalance] = useState(0.0);
 
     const [showList, setShowList] = useState(false);
-    const [listType, setListType] = useState();
+    const [listType, setListType] = useState(false);
 
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
