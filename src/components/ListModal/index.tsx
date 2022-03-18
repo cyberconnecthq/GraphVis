@@ -20,14 +20,20 @@ export const ListModal = ({ open, changeOpen, address, listType }: Props) => {
     });
     const handleClose = () => changeOpen(false);
 
-    const { data, refetch } = useQuery(GET_ADDR_CONNECTION_QUERY, {
-        variables: {
-            address: address,
-            first: 50,
-            after: "-1",
-            namespace: "",
-        },
-    });
+    const { data, refetch, loading, error } = useQuery(
+        GET_ADDR_CONNECTION_QUERY,
+        {
+            variables: {
+                address: address,
+                first: 50,
+                after: "-1",
+                namespace: "",
+            },
+        }
+    );
+
+    if (loading) return null;
+    if (error) return `Error! ${error}`;
 
     const test = listType
         ? data.identity.followings.list
