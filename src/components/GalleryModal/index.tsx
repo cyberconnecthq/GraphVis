@@ -45,7 +45,7 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        width: 1000,
+                        width: 1030,
                         height: 600,
                         bgcolor: "#000",
                         border: "1px solid #fff",
@@ -68,22 +68,35 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                         NFTs
                     </Typography>
 
-                    {data.result.map(
-                        (
-                            value: {
-                                image: string;
-                                name: string;
-                            },
-                            index: number
-                        ) => {
-                            return (
-                                <div key={index} style={{ color: "#fff" }}>
-                                    Name: {value.name}
-                                    <img src={value.image} />
-                                </div>
-                            );
-                        }
-                    )}
+                    <div>
+                        {data.result.map(
+                            (
+                                value: {
+                                    image: string;
+                                    name: string;
+                                },
+                                index: number
+                            ) => {
+                                if (!value.image) return null;
+                                return (
+                                    <div
+                                        key={index}
+                                        style={{
+                                            color: "#fff",
+                                            display: "inline-block",
+                                            padding: 10,
+                                        }}
+                                    >
+                                        <img
+                                            width={300}
+                                            height={300}
+                                            src={value.image}
+                                        />
+                                    </div>
+                                );
+                            }
+                        )}
+                    </div>
                 </Box>
             </Modal>
         </>
