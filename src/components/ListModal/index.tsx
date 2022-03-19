@@ -35,7 +35,7 @@ export const ListModal = ({ open, changeOpen, address, listType }: Props) => {
     if (loading) return null;
     if (error) return `Error! ${error}`;
 
-    const test = listType
+    const modalType = listType
         ? data.identity.followings.list
         : data.identity.followers.list;
 
@@ -86,7 +86,7 @@ export const ListModal = ({ open, changeOpen, address, listType }: Props) => {
                         Top 50 {listType ? "Followings" : "Followers"}
                     </Typography>
 
-                    {test.map(
+                    {modalType.map(
                         (
                             value: {
                                 avatar: string;

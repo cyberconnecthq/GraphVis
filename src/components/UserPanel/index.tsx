@@ -2,6 +2,8 @@ import { useGraph } from "@/context/GraphContext";
 import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNFTBalances } from "react-moralis";
+import { GalleryModal } from "../GalleryModal";
 import { ListModal } from "../ListModal";
 import styles from "./index.module.css";
 export const UserPanel: React.FC = () => {
@@ -10,7 +12,10 @@ export const UserPanel: React.FC = () => {
     const [userBalance, setUserBalance] = useState(0.0);
 
     const [showList, setShowList] = useState(false);
+    const [showGallery, setShowGallery] = useState(false);
     const [listType, setListType] = useState(false);
+
+    const { getNFTBalances, data } = useNFTBalances();
 
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
@@ -22,9 +27,13 @@ export const UserPanel: React.FC = () => {
 
             setUserBalance((1.0 * a.result) / 1000000000000000000);
         })();
+
+        getNFTBalances({ params: { address: selectAddress } });
     }, [selectAddress]);
 
-    if (!identity) return null;
+    if (!identity) return null; //only shows UserPanel if all data has loaded
+    if (!data) return null;
+
     return (
         <>
             <div className={styles.container}>
@@ -93,13 +102,7 @@ export const UserPanel: React.FC = () => {
                 </div>
                 {/* Followings & Followers Section */}
                 <div className={styles.followSection}>
-                    <div
-                        className={styles.follow}
-                        onClick={() => [
-                            setListType(false), //sets list modal to show followers
-                            setShowList(true),
-                        ]}
-                    >
+                    <div className={styles.follow}>
                         <Typography
                             variant="h3"
                             sx={{
@@ -109,7 +112,7 @@ export const UserPanel: React.FC = () => {
                                 },
                             }}
                             onClick={() => [
-                                setListType(true), //sets list modal to show followings
+                                setListType(false), //sets list modal to show followers
                                 setShowList(true),
                             ]}
                         >
@@ -135,14 +138,34 @@ export const UserPanel: React.FC = () => {
                         </Typography>
                         <Typography color={"#989898"}>Followings</Typography>
                     </div>
+                    <div className={styles.follow}>
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                ":hover": {
+                                    color: "#555",
+                                    cursor: "pointer",
+                                },
+                            }}
+                            onClick={() => setShowGallery(true)}
+                        >
+                            {data.total}
+                        </Typography>
+                        <Typography color={"#989898"}>NFTs</Typography>
+                    </div>
                 </div>
-
                 {/*Follower/followings list*/}
                 <ListModal
                     open={showList}
                     changeOpen={setShowList}
                     address={selectAddress}
                     listType={listType}
+                />
+                {/*NFT gallery*/}
+                <GalleryModal
+                    open={showGallery}
+                    changeOpen={setShowGallery}
+                    selectAddress={selectAddress}
                 />
 
                 {/* Balance Sections */}
