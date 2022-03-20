@@ -11,15 +11,24 @@ interface Props {
     selectAddress: string;
 }
 
+function imgUrlFormat(url) {
+    //fixes up the url for a few images which redirect
+    if ((url.match(/ipfs/g) || []).length == 3) {
+        const new_url = url.replace("/ipfs", "");
+        return new_url;
+    }
+
+    return url;
+}
+
 export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
     const { getNFTBalances, data } = useNFTBalances();
 
     useEffect(() => {
-        getNFTBalances({ params: { address: selectAddress } });
+        getNFTBalances({ params: { address: selectAddress, chain: "eth" } });
     }, [selectAddress]);
     const handleClose = () => changeOpen(false);
 
-    const test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     if (!data) return null;
     return (
         <>
@@ -87,11 +96,18 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                                             padding: 10,
                                         }}
                                     >
-                                        <img
-                                            width={300}
-                                            height={300}
-                                            src={value.image}
-                                        />
+                                        <a
+                                            href={imgUrlFormat(value.image)}
+                                            target={"_blank"}
+                                        >
+                                            <img
+                                                width={300}
+                                                height={300}
+                                                src={imgUrlFormat(value.image)}
+                                                alt="Error loading file.
+                                                Click to view in new browser tab."
+                                            />
+                                        </a>
                                     </div>
                                 );
                             }

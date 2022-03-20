@@ -15,7 +15,7 @@ export const UserPanel: React.FC = () => {
     const [showGallery, setShowGallery] = useState(false);
     const [listType, setListType] = useState(false);
 
-    const { getNFTBalances, data } = useNFTBalances();
+    const { getNFTBalances, data, isLoading } = useNFTBalances();
 
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
@@ -28,11 +28,12 @@ export const UserPanel: React.FC = () => {
             setUserBalance((1.0 * a.result) / 1000000000000000000);
         })();
 
-        getNFTBalances({ params: { address: selectAddress } });
+        getNFTBalances({ params: { address: selectAddress, chain: "eth" } });
     }, [selectAddress]);
 
     if (!identity) return null; //only shows UserPanel if all data has loaded
     if (!data) return null;
+    if (isLoading) return null;
 
     return (
         <>
