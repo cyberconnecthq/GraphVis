@@ -14,6 +14,7 @@ import {
     useCallback,
     useContext,
     useEffect,
+    useRef,
     useState,
 } from "react";
 import { Identity } from "../types/identity";
@@ -85,9 +86,12 @@ export const GraphContextProvider: React.FC = ({ children }) => {
     const [graphAddress, setGraphAddress] = useState<string>(
         "0x148d59faf10b52063071eddf4aaf63a395f2d41c"
     );
-    const [selectAddress, setSelectAddress] = useState<string>(
+    const selectAddress = useRef<string>(
         "0x148d59faf10b52063071eddf4aaf63a395f2d41c"
     );
+    const setSelectAddress = (address: string) => {
+        selectAddress.current = address
+    }
     const [graphData, setGraphData] = useState<GraphData | undefined>(
         undefined
     );
@@ -96,9 +100,10 @@ export const GraphContextProvider: React.FC = ({ children }) => {
     const [appMode, setAppMode] = useState<AppMode>(AppMode.CyberMode);
 
     //Fetch IdentityData: followers following num
+
     const identityData = useQuery(GET_IDENTITY, {
         variables: {
-            address: selectAddress,
+            address: selectAddress.current,
         },
     }).data;
 
@@ -519,7 +524,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             value={{
                 // values
                 graphData,
-                selectAddress,
+                selectAddress: selectAddress.current,
                 graphAddress,
                 graphLoading,
                 identity,
