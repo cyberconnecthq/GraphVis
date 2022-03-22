@@ -1,10 +1,9 @@
-import { Typography } from "@mui/material";
+import { Link, Menu, MenuItem, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNFTBalances } from "react-moralis";
-
 interface Props {
     open: boolean;
     changeOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,13 +20,33 @@ function imgUrlFormat(url) {
     return url;
 }
 
+function countImg(data) {
+    //const [imgCount, setImgCount] = useState(0);
+    let imgCount = 0;
+    data.result.map((value: { image: string }) => {
+        if (value.image) {
+            imgCount++;
+        }
+    });
+    return imgCount;
+}
 export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
     const { getNFTBalances, data } = useNFTBalances();
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const menuOpen = Boolean(anchorEl);
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         getNFTBalances({ params: { address: selectAddress, chain: "eth" } });
     }, [selectAddress]);
+
     const handleClose = () => changeOpen(false);
+
+    const [selectedName, setSelectedName] = useState("");
+    const [selectedUrl, setSelectedUrl] = useState("");
 
     if (!data) return null;
     return (
@@ -54,7 +73,7 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        width: 1030,
+                        width: 1040,
                         height: 600,
                         bgcolor: "#000",
                         border: "1px solid #fff",
@@ -74,8 +93,28 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                             borderBottom: "#272727 solid 2px",
                         }}
                     >
-                        NFTs
+                        {countImg(data)} NFTs with images
                     </Typography>
+                    <Menu
+                        sx={{ background: "red" }}
+                        anchorEl={anchorEl}
+                        open={menuOpen}
+                        onClose={handleMenuClose}
+                        MenuListProps={{
+                            "aria-labelledby": "basic-button",
+                        }}
+                    >
+                        <MenuItem>
+                            <Typography fontSize={24}>
+                                Name: {selectedName}
+                            </Typography>
+                        </MenuItem>
+                        <MenuItem>
+                            <a href={selectedUrl} target="_blank">
+                                <Link>Open image in new tab</Link>
+                            </a>
+                        </MenuItem>
+                    </Menu>
 
                     <div>
                         {data.result.map(
@@ -87,6 +126,7 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                                 index: number
                             ) => {
                                 if (!value.image) return null;
+                                // setImgCount(imgCount + 1);
                                 return (
                                     <div
                                         key={index}
@@ -96,18 +136,21 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                                             padding: 10,
                                         }}
                                     >
-                                        <a
-                                            href={imgUrlFormat(value.image)}
-                                            target={"_blank"}
-                                        >
-                                            <img
-                                                width={300}
-                                                height={300}
-                                                src={imgUrlFormat(value.image)}
-                                                alt="Error loading file.
-                                                Click to view in new browser tab."
-                                            />
-                                        </a>
+                                        <img
+                                            width={300}
+                                            height={300}
+                                            style={{ cursor: "pointer" }}
+                                            src={imgUrlFormat(value.image)}
+                                            onClick={(
+                                                event: React.MouseEvent<HTMLButtonElement>
+                                            ) => [
+                                                setSelectedName(value.name),
+                                                setSelectedUrl(value.image),
+                                                setAnchorEl(
+                                                    event.currentTarget
+                                                ),
+                                            ]}
+                                        />
                                     </div>
                                 );
                             }
