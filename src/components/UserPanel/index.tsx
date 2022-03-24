@@ -6,8 +6,9 @@ import { useNFTBalances } from "react-moralis";
 import { GalleryModal } from "../GalleryModal";
 import { ListModal } from "../ListModal";
 import styles from "./index.module.css";
+
 export const UserPanel: React.FC = () => {
-    const { selectAddress, identity, setGraphAddress } = useGraph();
+    const { selectAddress, identity } = useGraph();
 
     const [userBalance, setUserBalance] = useState(0.0);
 
@@ -101,7 +102,7 @@ export const UserPanel: React.FC = () => {
                         </Typography>
                     </div>
                 </div>
-                {/* Followings & Followers Section */}
+                {/* Following & Followers Section */}
                 <div className={styles.followSection}>
                     <div className={styles.follow}>
                         <Typography
@@ -131,13 +132,13 @@ export const UserPanel: React.FC = () => {
                                 },
                             }}
                             onClick={() => [
-                                setListType(true), //sets list modal to show followings
+                                setListType(true), //sets list modal to show following
                                 setShowList(true),
                             ]}
                         >
                             {identity.followingCount}
                         </Typography>
-                        <Typography color={"#989898"}>Followings</Typography>
+                        <Typography color={"#989898"}>Following</Typography>
                     </div>
                     <div className={styles.follow}>
                         <Typography
@@ -271,11 +272,17 @@ export const UserPanel: React.FC = () => {
                         </a>
                     </div>
                 </div>
-                {/* Follower & Followings Tab Section */}
+                {/* Explore me button */}
+
                 <LoadingButton
                     // loading={loading}
                     className={styles.exploreButton}
-                    onClick={() => setGraphAddress(selectAddress)}
+                    onClick={() =>
+                        window.open(
+                            "https://app.cyberconnect.me/address/" +
+                                identity?.address
+                        )
+                    }
                     sx={{
                         ":hover": {
                             bgcolor: "#555",
@@ -285,7 +292,6 @@ export const UserPanel: React.FC = () => {
                 >
                     EXPLORE ME!
                 </LoadingButton>
-                {/* <TabsPanel /> */}
             </div>
         </>
     );

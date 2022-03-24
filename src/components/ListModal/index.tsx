@@ -83,7 +83,7 @@ export const ListModal = ({ open, changeOpen, address, listType }: Props) => {
                             borderBottom: "#272727 solid 2px",
                         }}
                     >
-                        Top 50 {listType ? "Followings" : "Followers"}
+                        Top 50 {listType ? "Following" : "Followers"}
                     </Typography>
 
                     {modalType.map(

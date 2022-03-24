@@ -39,38 +39,52 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <NavBar />
-            <div className={styles.loadingSection}>
-                {count != 10 && (
+            {exploreMode ? (
+                <div className={styles.loadingSection}>
                     <ReactLoading
                         type="bars"
                         color="#FFFFFF"
                         className={styles.loadingIcon}
                     />
-                )}
-                <div
-                    className={styles.loadingText}
-                    style={{
-                        color: "white",
-                        fontSize: "28px",
-                    }}
-                >
-                    {" "}
-                    Loading {(100 * count) / DEFAULT_QUOTA} %
+
+                    <div
+                        className={styles.loadingText}
+                        style={{
+                            color: "white",
+                            fontSize: "28px",
+                        }}
+                    >
+                        {" "}
+                        Loading {(100 * count) / DEFAULT_QUOTA} %
+                    </div>
                 </div>
-            </div>
+            ) : null}
             {!exploreMode ? (
                 <main className={styles.main}>
                     <p className={styles.subtitle}>HOW WE ARE</p>
                     <h1 className={styles.title}>CYBERCONNECTED IN </h1>
-                    <h1 className={styles.title}>METAVERSE</h1>
-
-                    <LoadingButton
-                        // loading={loading}
-                        className={styles.jumpButton}
-                        onClick={() => setExploreMode(true)}
-                    >
-                        Let&apos;s jump in!
-                    </LoadingButton>
+                    <h1 className={styles.title}>THE METAVERSE</h1>
+                    {count < 10 ? ( //moves loading bar onto button to make it easier for the user to understand
+                        <LoadingButton
+                            disabled={true}
+                            className={styles.jumpButton}
+                        >
+                            <ReactLoading
+                                type="bars"
+                                color="lightgray"
+                                className={styles.loadingIcon}
+                            />
+                            Loading {(100 * count) / DEFAULT_QUOTA} %
+                        </LoadingButton>
+                    ) : (
+                        <LoadingButton
+                            // loading={loading}
+                            className={styles.jumpButton}
+                            onClick={() => setExploreMode(true)}
+                        >
+                            Let&apos;s jump in!
+                        </LoadingButton>
+                    )}
                 </main>
             ) : (
                 <UserPanel />
