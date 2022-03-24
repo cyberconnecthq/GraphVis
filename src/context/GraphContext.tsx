@@ -42,10 +42,10 @@ export enum AppMode {
 export const DEFAULT_QUOTA = 10;
 
 interface GraphContextInterface {
-    graphAddress: string;
-    selectAddress: string;
-    graphData: GraphData | undefined;
-    graphLoading: boolean;
+    graphAddress: string; //the address which generate the 3d graph based on it
+    selectAddress: string; //the address which to be shown in the User Panel
+    graphData: GraphData | undefined; //the data which to create the graph based on graphAddress
+    graphLoading: boolean; //
     identity: Identity | null;
     appMode: AppMode;
     count: number;

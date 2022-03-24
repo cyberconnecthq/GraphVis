@@ -69,7 +69,9 @@ export const NavBar: React.FC = () => {
                             setAppMode(AppMode.CyberMode);
                         }}
                     >
-                        <Typography fontSize={24}>USE CYBER MODE</Typography>
+                        <Typography fontSize={18} sx={{ fontFamily: "Outfit" }}>
+                            USE CYBER MODE
+                        </Typography>
                     </MenuItem>
                     <MenuItem
                         onClick={() => {
@@ -77,7 +79,9 @@ export const NavBar: React.FC = () => {
                             setAppMode(AppMode.FocusMode);
                         }}
                     >
-                        <Typography fontSize={24}>USE FOCUS MODE</Typography>
+                        <Typography fontSize={18} sx={{ fontFamily: "Outfit" }}>
+                            USE FOCUS MODE
+                        </Typography>
                     </MenuItem>
                 </Menu>
                 <WalletConnectButton />

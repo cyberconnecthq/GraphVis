@@ -71,6 +71,13 @@ const Home: NextPage = () => {
                     >
                         Let&apos;s jump in!
                     </LoadingButton>
+                    <h3 className={styles.footer}>
+                        Powered by{" "}
+                        <a href="https://cyberconnect.me" target="_blank">
+                            CyberConnect
+                        </a>
+                        . Checkout the GitHub Repo here
+                    </h3>
                 </main>
             ) : (
                 <UserPanel />

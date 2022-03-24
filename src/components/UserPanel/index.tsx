@@ -9,6 +9,7 @@ export const UserPanel: React.FC = () => {
 
     const [userBalance, setUserBalance] = useState(0.0);
 
+    //fetch the user ether balance from ehterscan API
     useEffect(() => {
         const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
 
@@ -27,6 +28,7 @@ export const UserPanel: React.FC = () => {
             <div className={styles.container}>
                 {/* userInfoSection */}
                 <div className={styles.userInfoSection}>
+                    {/* User Avatar from ENS */}
                     <div className={styles.avatarSection}>
                         {identity.avatar ? (
                             <a
@@ -64,7 +66,7 @@ export const UserPanel: React.FC = () => {
                             </a>
                         )}
                     </div>
-
+                    {/* User Name from ENS or therir address*/}
                     <div className={styles.userName}>
                         {identity.ens ? (
                             <Typography
