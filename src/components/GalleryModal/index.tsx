@@ -10,7 +10,7 @@ interface Props {
     selectAddress: string;
 }
 
-function imgUrlFormat(url) {
+function imgUrlFormat(url: string) {
     //fixes up the url for a few images which redirect
     if ((url.match(/ipfs/g) || []).length == 3) {
         const new_url = url.replace("/ipfs", "");
@@ -20,8 +20,8 @@ function imgUrlFormat(url) {
     return url;
 }
 
+// @ts-ignore
 function countImg(data) {
-    //const [imgCount, setImgCount] = useState(0);
     let imgCount = 0;
     data.result.map((value: { image: string }) => {
         if (value.image) {
@@ -41,7 +41,7 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
 
     useEffect(() => {
         getNFTBalances({ params: { address: selectAddress, chain: "eth" } });
-    }, [selectAddress]);
+    }, [getNFTBalances, selectAddress]);
 
     const handleClose = () => changeOpen(false);
 
@@ -96,7 +96,6 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                         {countImg(data)} NFTs with images
                     </Typography>
                     <Menu
-                        sx={{ background: "red" }}
                         anchorEl={anchorEl}
                         open={menuOpen}
                         onClose={handleMenuClose}
@@ -117,7 +116,8 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                     </Menu>
 
                     <div>
-                        {data.result.map(
+                        {data.result?.map(
+                            // @ts-ignore
                             (
                                 value: {
                                     image: string;
@@ -141,9 +141,7 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                                             height={300}
                                             style={{ cursor: "pointer" }}
                                             src={imgUrlFormat(value.image)}
-                                            onClick={(
-                                                event: React.MouseEvent<HTMLButtonElement>
-                                            ) => [
+                                            onClick={(event: any) => [
                                                 setSelectedName(value.name),
                                                 setSelectedUrl(value.image),
                                                 setAnchorEl(
