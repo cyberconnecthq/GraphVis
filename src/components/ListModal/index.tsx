@@ -33,7 +33,7 @@ export const ListModal = ({ open, changeOpen, address, listType }: Props) => {
     );
 
     if (loading) return null;
-    if (error) return `Error! ${error}`;
+    if (error) return null;
 
     const modalType = listType
         ? data.identity.followings.list

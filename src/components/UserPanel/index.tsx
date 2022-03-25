@@ -30,6 +30,7 @@ export const UserPanel: React.FC = () => {
         })();
 
         getNFTBalances({ params: { address: selectAddress, chain: "eth" } });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectAddress]);
 
     if (!identity) return null; //only shows UserPanel if all data has loaded

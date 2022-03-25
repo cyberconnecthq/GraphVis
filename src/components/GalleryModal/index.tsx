@@ -126,7 +126,6 @@ export const GalleryModal = ({ open, changeOpen, selectAddress }: Props) => {
                                 index: number
                             ) => {
                                 if (!value.image) return null;
-                                // setImgCount(imgCount + 1);
                                 return (
                                     <div
                                         key={index}
