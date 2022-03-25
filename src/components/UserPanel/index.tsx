@@ -180,7 +180,20 @@ export const UserPanel: React.FC = () => {
                         color={"white"}
                         variant={"h2"}
                         margin={2}
-                        sx={{ fontWeight: "bold", textAlign: "center" }}
+                        sx={{
+                            fontWeight: "bold",
+                            textAlign: "center",
+                            ":hover": {
+                                color: "#555",
+                                cursor: "pointer",
+                            },
+                        }}
+                        onClick={() =>
+                            window.open(
+                                "https://etherscan.io/address/" +
+                                    identity.address
+                            )
+                        }
                     >
                         {userBalance.toFixed(4)} ETH
                     </Typography>
