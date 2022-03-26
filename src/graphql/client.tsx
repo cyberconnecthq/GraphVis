@@ -1,5 +1,6 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+// src\graphql\client.tsx
 
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { CYBERCONNECT_ENDPOINT } from "../config/config";
 
 const client = new ApolloClient({
