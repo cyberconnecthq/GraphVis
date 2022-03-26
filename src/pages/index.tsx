@@ -76,7 +76,14 @@ const Home: NextPage = () => {
                         <a href="https://cyberconnect.me" target="_blank">
                             CyberConnect
                         </a>
-                        . Checkout the GitHub Repo here
+                        . Checkout the{" "}
+                        <a
+                            href="https://github.com/cyberconnecthq/CyberGraph"
+                            target="_blank"
+                        >
+                            GitHub Repo{" "}
+                        </a>
+                        here
                     </h3>
                 </main>
             ) : (

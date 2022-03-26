@@ -1,3 +1,5 @@
+// src\pages\_app.tsx
+
 import { GraphContextProvider } from "@/context/GraphContext";
 import { Web3ContextProvider } from "@/context/web3Context";
 import client from "@/graphql/client";

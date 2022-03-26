@@ -1,3 +1,5 @@
+// src\context\GraphContext.tsx
+
 import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
 import { GET_IDENTITY } from "@/graphql/queries/get_identity";
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
@@ -45,9 +47,9 @@ interface GraphContextInterface {
     graphAddress: string; //the address which generate the 3d graph based on it
     selectAddress: string; //the address which to be shown in the User Panel
     graphData: GraphData | undefined; //the data which to create the graph based on graphAddress
-    graphLoading: boolean; //
-    identity: Identity | null;
-    appMode: AppMode;
+    graphLoading: boolean; //graph loading status
+    identity: Identity | null; //user indentity info including the ens, avatar, twitter etc.
+    appMode: AppMode; //for changing the app mode between cyber mode or focus mode
     count: number;
 
     setGraphAddress: (address: string) => void;
