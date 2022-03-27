@@ -1,3 +1,5 @@
+// src\components\UserPanel\index.tsx
+
 import { useGraph } from "@/context/GraphContext";
 import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";

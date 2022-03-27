@@ -1,3 +1,5 @@
+// src\graphql\queries\get_recommendation.tsx
+
 import { gql } from "@apollo/client";
 
 export const GET_RECOMMENDATION = gql`

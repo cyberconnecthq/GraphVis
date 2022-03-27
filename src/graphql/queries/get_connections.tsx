@@ -1,3 +1,5 @@
+// src\graphql\queries\get_connections.tsx
+
 import { gql } from "@apollo/client";
 
 export const GET_ADDR_CONNECTION_QUERY = gql`

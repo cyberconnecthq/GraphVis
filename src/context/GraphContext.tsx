@@ -50,7 +50,7 @@ interface GraphContextInterface {
     graphLoading: boolean; //graph loading status
     identity: Identity | null; //user indentity info including the ens, avatar, twitter etc.
     appMode: AppMode; //for changing the app mode between cyber mode or focus mode
-    count: number;
+    count: number; //
 
     setGraphAddress: (address: string) => void;
     setSelectAddress: (address: string) => void;
@@ -139,7 +139,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             if (!recommendationList) {
                 return { nodes: [], links: [] };
             }
-            // console.log(re)
             // Return recommendation list as GraphNode[]
             const retGraphData: GraphData = { nodes: [], links: [] };
             retGraphData.nodes = [

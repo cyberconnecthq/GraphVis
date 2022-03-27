@@ -1,3 +1,5 @@
+// src\types\AllSocialConnections.ts
+
 export type SocialConnection = {
     address: string;
     alias: string;

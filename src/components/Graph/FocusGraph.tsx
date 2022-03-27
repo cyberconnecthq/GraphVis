@@ -1,3 +1,5 @@
+// src\components\Graph\FocusGraph.tsx
+
 // import dynamic from "next/dynamic";
 import { useGraph } from "@/context/GraphContext";
 import React, { useCallback, useRef } from "react";
@@ -9,6 +11,7 @@ const FocusGraph = () => {
 
     const { graphData, setSelectAddress } = useGraph();
 
+    // set up click event when we click node, set the address shown in user panel as selectAddress
     const handleClick = useCallback(
         (node) => {
             const distance = 90;
@@ -29,6 +32,7 @@ const FocusGraph = () => {
         [fgRef, setSelectAddress]
     );
 
+    // set the without avatar address to random color
     function getRandomInt(max: number) {
         return Math.floor(Math.random() * max);
     }

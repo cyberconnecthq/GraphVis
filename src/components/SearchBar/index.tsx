@@ -1,3 +1,5 @@
+// src\components\SearchBar\index.tsx
+
 import { useGraph } from "@/context/GraphContext";
 import { useWeb3 } from "@/context/web3Context";
 import { isValidAddr } from "@/utils/helper";

@@ -1,3 +1,5 @@
+// src\components\NavBar\index.tsx
+
 import { AppMode, useGraph } from "@/context/GraphContext";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Button, Menu, MenuItem, Typography } from "@mui/material";
