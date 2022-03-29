@@ -3,6 +3,7 @@ import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
+import { NftSections } from "./NftSections";
 
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setGraphAddress } = useGraph();
@@ -117,6 +118,8 @@ export const UserPanel: React.FC = () => {
                         {userBalance.toFixed(4)} ETH
                     </Typography>
                 </div>
+                {/* POAPs and NFTs */}
+                <NftSections />
                 {/* Social Section */}
                 <div className={styles.socialSection}>
                     <Typography color={"#989898"} marginLeft={2}>
