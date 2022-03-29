@@ -24,13 +24,6 @@
     color: white;
 }
 
-.subtitle {
-    color: rgb(196, 193, 193);
-    margin: 0;
-    line-height: 1.15;
-    font-size: 3rem;
-}
-
 .jumpButton {
     color: rgb(0, 0, 0);
     background: white;
@@ -68,4 +61,5 @@
     color: white;
     font-weight: 300;
     margin-left: 6px;
+    margin-top: 30rem;
 }
