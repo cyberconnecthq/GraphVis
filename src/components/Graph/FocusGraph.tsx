@@ -4,6 +4,7 @@
 import { GraphLink, useGraph } from "@/context/GraphContext";
 import { formatAddress } from "@/utils/helper";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { addressStore } from "@/store/address";
 import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
 import * as THREE from "three";
 import { Vector2 } from "three";
@@ -55,6 +56,7 @@ const FocusGraph = () => {
                 );
             }
             setSelectAddress(node.id);
+            addressStore.setAddress(node.id);
         },
         [fgRef, setSelectAddress, highlightLinks, highlightNodes]
     );

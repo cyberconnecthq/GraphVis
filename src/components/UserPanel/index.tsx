@@ -3,10 +3,49 @@
 import { useGraph } from "@/context/GraphContext";
 import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
+import { useEffect, useLayoutEffect, useState } from "react";
 import styles from "./index.module.css";
+import { useQuery } from "@apollo/client";
+import { GET_IDENTITY } from "@/graphql/queries/get_identity";
+import { addressStore } from "@/store/address";
+import { Identity } from "@/types/identity";
 
 export const UserPanel: React.FC = () => {
-    const { selectAddress, identity, setGraphAddress } = useGraph();
+    const { setGraphAddress } = useGraph();
+    const [identity, setIdentity] = useState<Identity | null>(null);
+
+    const [userBalance, setUserBalance] = useState(0.0);
+    const [address, setAddress] = useState(addressStore.initialState);
+
+    useLayoutEffect(() => {
+        addressStore.subscribe(setAddress);
+        addressStore.init();
+    }, []);
+
+    const identityData = useQuery(GET_IDENTITY, {
+        variables: {
+            address,
+        },
+    }).data;
+
+    //fetch the user ether balance from ehterscan API
+    useEffect(() => {
+        if (identityData) {
+            setIdentity(identityData.identity);
+        }
+    }, [identityData]);
+
+    useEffect(() => {
+        const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
+
+        (async () => {
+            const a = await fetch(etherscanAPI).then((res) => {
+                return res.json();
+            });
+
+            setUserBalance((1.0 * a.result) / 1000000000000000000);
+        })();
+    }, [address]);
 
     if (!identity) return null;
     return (
@@ -184,7 +223,7 @@ export const UserPanel: React.FC = () => {
                 <LoadingButton
                     // loading={loading}
                     className={styles.exploreButton}
-                    onClick={() => setGraphAddress(selectAddress)}
+                    onClick={() => setGraphAddress(address)}
                     sx={{
                         ":hover": {
                             bgcolor: "#555",

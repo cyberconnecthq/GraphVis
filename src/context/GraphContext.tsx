@@ -1,7 +1,6 @@
 // src\context\GraphContext.tsx
 
 import { GET_ADDR_CONNECTION_QUERY } from "@/graphql/queries/get_connections";
-import { GET_IDENTITY } from "@/graphql/queries/get_identity";
 import { GET_RECOMMENDATION } from "@/graphql/queries/get_recommendation";
 import {
     AllRecommendations,
@@ -17,7 +16,6 @@ import {
     useRef,
     useState,
 } from "react";
-import { Identity } from "../types/identity";
 import { useWeb3 } from "./web3Context";
 
 export type GraphNode = {
@@ -51,7 +49,6 @@ interface GraphContextInterface {
     selectAddress: string; //the address which to be shown in the User Panel
     graphData: GraphData | undefined; //the data which to create the graph based on graphAddress
     graphLoading: boolean; //graph loading status
-    identity: Identity | null; //user indentity info including the ens, avatar, twitter etc.
     appMode: AppMode; //for changing the app mode between cyber mode or focus mode
     count: number; //
 
@@ -67,7 +64,6 @@ export const GraphContext = createContext<GraphContextInterface>({
     selectAddress: "",
     graphData: undefined,
     graphLoading: true,
-    identity: null,
     appMode: AppMode.CyberMode,
     count: 0,
 
@@ -96,22 +92,7 @@ export const GraphContextProvider: React.FC = ({ children }) => {
         undefined
     );
     const [graphLoading, setGraphLoading] = useState<boolean>(true);
-    const [identity, setIdentity] = useState<Identity | null>(null);
     const [appMode, setAppMode] = useState<AppMode>(AppMode.CyberMode);
-
-    //Fetch IdentityData: followers following num
-
-    const identityData = useQuery(GET_IDENTITY, {
-        variables: {
-            address: selectAddress.current,
-        },
-    }).data;
-
-    useEffect(() => {
-        if (identityData) {
-            setIdentity(identityData.identity);
-        }
-    }, [identityData]);
 
     const { fetchMore } = useQuery(GET_ADDR_CONNECTION_QUERY, {
         variables: {
@@ -527,7 +508,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                 selectAddress: selectAddress.current,
                 graphAddress,
                 graphLoading,
-                identity,
                 appMode,
                 // setters
                 setGraphData,
