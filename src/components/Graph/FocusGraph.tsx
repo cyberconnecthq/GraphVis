@@ -3,14 +3,25 @@
 // import dynamic from "next/dynamic";
 import { useGraph } from "@/context/GraphContext";
 import { LoadingButton } from "@mui/lab";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
 import * as THREE from "three";
+import { Vector2 } from "three";
 import SpriteText from "three-spritetext";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import styles from "./FocusGraph.module.css";
 
 const FocusGraph = () => {
     const fgRef = useRef<ForceGraphMethods>();
+
+    useEffect(() => {
+        const bloomPass = new UnrealBloomPass(new Vector2(256, 256), 1, 1, 0.1);
+        const fg = fgRef.current;
+        fg?.postProcessingComposer().addPass(bloomPass);
+        return () => {
+            fg?.postProcessingComposer().removePass(bloomPass);
+        };
+    }, []);
 
     const { graphData, setSelectAddress, graphAddress } = useGraph();
 
@@ -67,7 +78,7 @@ const FocusGraph = () => {
                 nodeThreeObject={(node: any) => {
                     if (node.id === graphAddress) {
                         setGraphAddressNode(node);
-                        return new SpriteText("You");
+                        return new SpriteText("YOU");
                     }
 
                     const imgTexture = new THREE.TextureLoader().load(
