@@ -2,15 +2,17 @@
 
 // import dynamic from "next/dynamic";
 import { GraphLink, useGraph } from "@/context/GraphContext";
+import { formatAddress } from "@/utils/helper";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import ForceGraph3D, { ForceGraphMethods } from "react-force-graph-3d";
 import * as THREE from "three";
 import { Vector2 } from "three";
+import SpriteText from "three-spritetext";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 const FocusGraph = () => {
     const fgRef = useRef<ForceGraphMethods>();
-    const { graphData, setSelectAddress } = useGraph();
+    const { graphData, setSelectAddress, graphAddress } = useGraph();
 
     const [highlightNodes, setHighlightNodes] = useState(new Set());
     const [highlightLinks, setHighlightLinks] = useState(new Set());
@@ -18,16 +20,6 @@ const FocusGraph = () => {
     useEffect(() => {
         const bloomPass = new UnrealBloomPass(new Vector2(256, 256), 1, 1, 0.1);
         const fg = fgRef.current;
-        fg?.postProcessingComposer().addPass(bloomPass);
-        return () => {
-            fg?.postProcessingComposer().removePass(bloomPass);
-        };
-    }, []);
-
-    useEffect(() => {
-        const fg = fgRef.current;
-        // add bloom effect
-        const bloomPass = new UnrealBloomPass(new Vector2(256, 256), 1, 1, 0.1);
         fg?.postProcessingComposer().addPass(bloomPass);
         return () => {
             fg?.postProcessingComposer().removePass(bloomPass);
@@ -101,14 +93,23 @@ const FocusGraph = () => {
                 node.img || localImgs[getRandomInt(localImgs.length)]
                 // Randomly give one
             );
+
             const geometry = new THREE.SphereGeometry(2, 6, 6);
+
+            if (node.id === graphAddress) {
+                const sprite = new SpriteText(formatAddress(graphAddress));
+                sprite.textHeight = 8;
+                sprite.backgroundColor = "#000000";
+                return sprite;
+            }
 
             const material = new THREE.MeshBasicMaterial({
                 map: imgTexture,
             });
+
             return new THREE.Mesh(geometry, material);
         },
-        [graphData]
+        [graphAddress]
     );
 
     return (
@@ -122,7 +123,7 @@ const FocusGraph = () => {
             linkColor={(link) =>
                 highlightLinks.has(link) ? "#ec407a" : "#458888"
             }
-            linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 1.0)}
+            linkWidth={(link) => (highlightLinks.has(link) ? 2.5 : 1.0)}
             linkDirectionalParticles={2}
             linkDirectionalParticleSpeed={0.001}
             linkDirectionalParticleWidth={(link) =>
