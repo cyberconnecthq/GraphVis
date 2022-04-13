@@ -1,5 +1,5 @@
 .container {
-    background-color: rgba(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.699);
     color: white;
     width: 700px;
     min-height: 700px;
@@ -48,7 +48,7 @@
 }
 
 .follow {
-    padding: 5px 80px;
+    padding: 5px 50px;
     text-align: center;
 }
 

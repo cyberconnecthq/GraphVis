@@ -70,20 +70,6 @@ const Home: NextPage = () => {
                     >
                         Let&apos;s jump in!
                     </LoadingButton>
-                    <h3 className={styles.footer}>
-                        Powered by{" "}
-                        <a href="https://cyberconnect.me" target="_blank">
-                            CyberConnect
-                        </a>
-                        . Checkout the{" "}
-                        <a
-                            href="https://github.com/cyberconnecthq/CyberGraph"
-                            target="_blank"
-                        >
-                            GitHub Repo{" "}
-                        </a>
-                        here
-                    </h3>
                 </main>
             ) : (
                 <UserPanel />
