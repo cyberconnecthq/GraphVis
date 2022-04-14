@@ -14,7 +14,7 @@ export const UserPanel: React.FC = () => {
     const { setGraphAddress } = useGraph();
     const [identity, setIdentity] = useState<Identity | null>(null);
 
-    const [userBalance, setUserBalance] = useState(0.0);
+    const [, setUserBalance] = useState(0.0);
     const [address, setAddress] = useState(addressStore.initialState);
 
     useLayoutEffect(() => {
