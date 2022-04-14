@@ -1,8 +1,8 @@
 .container {
-    background-color: rgba(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.65);
     color: white;
     width: 700px;
-    min-height: 700px;
+    min-height: 550px;
     max-height: 800px;
     /* margin-top: 15rem; */
     margin-left: 2rem;

@@ -3,26 +3,10 @@
 import { useGraph } from "@/context/GraphContext";
 import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setGraphAddress } = useGraph();
-
-    const [userBalance, setUserBalance] = useState(0.0);
-
-    //fetch the user ether balance from ehterscan API
-    useEffect(() => {
-        const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
-
-        (async () => {
-            const a = await fetch(etherscanAPI).then((res) => {
-                return res.json();
-            });
-
-            setUserBalance((1.0 * a.result) / 1000000000000000000);
-        })();
-    }, [selectAddress]);
 
     if (!identity) return null;
     return (
@@ -107,20 +91,7 @@ export const UserPanel: React.FC = () => {
                         <Typography color={"#989898"}>Followings</Typography>
                     </div>
                 </div>
-                {/* Balance Sections */}
-                <div className={styles.balanceSection}>
-                    <Typography color={"#989898"} margin={1}>
-                        Balance
-                    </Typography>
-                    <Typography
-                        color={"white"}
-                        variant={"h2"}
-                        margin={2}
-                        sx={{ fontWeight: "bold", textAlign: "center" }}
-                    >
-                        {userBalance.toFixed(4)} ETH
-                    </Typography>
-                </div>
+
                 {/* Social Section */}
                 <div className={styles.socialSection}>
                     <Typography color={"#989898"} marginLeft={2}>

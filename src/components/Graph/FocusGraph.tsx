@@ -121,9 +121,9 @@ const FocusGraph = () => {
             onNodeClick={handleClick}
             linkLabel={getLinkLabel}
             linkColor={(link) =>
-                highlightLinks.has(link) ? "#ec407a" : "#458888"
+                highlightLinks.has(link) ? "#ec407a" : "#5f9ea0"
             }
-            linkWidth={(link) => (highlightLinks.has(link) ? 2.5 : 1.0)}
+            linkWidth={(link) => (highlightLinks.has(link) ? 1.5 : 1.0)}
             linkDirectionalParticles={2}
             linkDirectionalParticleSpeed={0.001}
             linkDirectionalParticleWidth={(link) =>
