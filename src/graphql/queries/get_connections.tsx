@@ -23,6 +23,7 @@ export const GET_ADDR_CONNECTION_QUERY = gql`
                 list {
                     address
                     avatar
+                    ens
                 }
             }
             followers(
@@ -37,6 +38,7 @@ export const GET_ADDR_CONNECTION_QUERY = gql`
                 list {
                     address
                     avatar
+                    ens
                 }
             }
             friends(
@@ -51,6 +53,7 @@ export const GET_ADDR_CONNECTION_QUERY = gql`
                 list {
                     address
                     avatar
+                    ens
                 }
             }
         }
