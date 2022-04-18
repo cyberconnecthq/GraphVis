@@ -1,9 +1,8 @@
 .container {
-    background-color: rgba(0, 0, 0, 0.65);
+    background-color: rgba(0, 0, 0, 0.699);
     color: white;
     width: 700px;
-    min-height: 700px;
-    max-height: 1100px;
+    max-height: 40rem;
     /* margin-top: 15rem; */
     margin-left: 2rem;
     position: fixed;
@@ -12,6 +11,7 @@
     border-radius: 20px;
     position: absolute;
     bottom: 3rem;
+    overflow-y: scroll;
 }
 
 .userInfoSection {
@@ -48,7 +48,7 @@
 }
 
 .follow {
-    padding: 5px 80px;
+    padding: 5px 50px;
     text-align: center;
 }
 
