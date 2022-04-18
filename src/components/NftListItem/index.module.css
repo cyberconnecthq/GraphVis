@@ -1,0 +1,28 @@
+.button {
+    margin-right: 12px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+}
+
+.button:hover {
+    outline: solid;
+    outline-offset: 2px;
+}
+
+.image {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.tooltipTitle {
+    font-family: "Outfit";
+    text-align: center;
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.tooltipSubtitle {
+    font-family: "Outfit";
+    text-align: center;
+}

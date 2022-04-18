@@ -2,8 +2,8 @@
     background-color: rgba(0, 0, 0, 0.65);
     color: white;
     width: 700px;
-    min-height: 550px;
-    max-height: 800px;
+    min-height: 700px;
+    max-height: 1100px;
     /* margin-top: 15rem; */
     margin-left: 2rem;
     position: fixed;
@@ -103,4 +103,38 @@
     font-size: x-large;
     border-radius: 20px;
     margin-left: 50px;
+    margin-bottom: 28px;
+}
+
+.nftSection {
+    margin: 20px 20px;
+    border-bottom: #272727 solid 1px;
+}
+
+.noNftsInSection {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 8px;
+}
+
+.nftList {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 12px 10px;
+    padding: 6px;
+    overflow-y: auto;
+    height: 84px;
+}
+.nftList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.nftList::-webkit-scrollbar-thumb {
+    width: 12px;
+    height: 2px;
+    background-color: rgb(208, 208, 208);
+}
+
+.nftList::-webkit-scrollbar-track {
+    background: rgb(87, 87, 87);
 }
