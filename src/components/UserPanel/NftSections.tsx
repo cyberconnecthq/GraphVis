@@ -126,4 +126,3 @@ export const NftSections: React.FC = () => {
         </>
     );
 };
-//davidhoffman.eth
