@@ -17,7 +17,7 @@ import styles from "./index.module.css";
 import { NftSections } from "./NftSections";
 
 export const UserPanel: React.FC = () => {
-    const { selectAddress, identity } = useGraph();
+    const { selectAddress, identity, setGraphAddress } = useGraph();
     const { address } = useWeb3();
 
     const [showList, setShowList] = useState(false);
@@ -86,12 +86,6 @@ export const UserPanel: React.FC = () => {
                                 toAddr={selectAddress}
                                 env={Env.PRODUCTION}
                                 chain={Blockchain.ETH}
-                                onSuccess={(e) => {
-                                    console.log(e);
-                                }}
-                                onFailure={(e) => {
-                                    console.log(e);
-                                }}
                             />
                         )}
                     </div>
@@ -157,7 +151,7 @@ export const UserPanel: React.FC = () => {
                         </Typography>
                         <Typography color={"#989898"}>Following</Typography>
                     </div>
-                    <div className={styles.follow}>
+                    {/* <div className={styles.follow}>
                         <Typography
                             variant="h3"
                             sx={{
@@ -171,7 +165,7 @@ export const UserPanel: React.FC = () => {
                             {data.total}
                         </Typography>
                         <Typography color={"#989898"}>NFTs</Typography>
-                    </div>
+                    </div> */}
                 </div>
                 {/* POAPs and NFTs */}
                 <NftSections />
@@ -282,12 +276,7 @@ export const UserPanel: React.FC = () => {
                 <LoadingButton
                     // loading={loading}
                     className={styles.exploreButton}
-                    onClick={() =>
-                        window.open(
-                            "https://app.cyberconnect.me/address/" +
-                                identity?.address
-                        )
-                    }
+                    onClick={() => setGraphAddress(selectAddress)}
                     sx={{
                         ":hover": {
                             bgcolor: "#555",

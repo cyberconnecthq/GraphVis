@@ -36,9 +36,10 @@ export const WalletConnectButton: React.FC = () => {
                     Connect Wallet
                 </LoadingButton>
             ) : (
-                <div className={styles.userAddress}>
-                    Address:
-                    {ens || formatAddress(address)}
+                <div className={styles.walletInfo}>
+                    {formatAddress(address)}
+                    <br></br>
+                    {ens || null}
                 </div>
             )}
         </>
