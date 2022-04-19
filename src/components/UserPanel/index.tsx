@@ -13,8 +13,6 @@ import { NftSections } from "./NftSections";
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity } = useGraph();
 
-    const [userBalance, setUserBalance] = useState(0.0);
-
     const [showList, setShowList] = useState(false);
     const [showGallery, setShowGallery] = useState(false);
     const [listType, setListType] = useState(false);
@@ -24,16 +22,6 @@ export const UserPanel: React.FC = () => {
     //fetch the user ether balance from ehterscan API
 
     useEffect(() => {
-        const etherscanAPI = `https://api.etherscan.io/api?module=account&action=balance&address=${selectAddress}&tag=latest&apikey=${process.env.ETHERSCAN_API_KEY}`;
-
-        (async () => {
-            const a = await fetch(etherscanAPI).then((res) => {
-                return res.json();
-            });
-
-            setUserBalance((1.0 * a.result) / 1000000000000000000);
-        })();
-
         getNFTBalances({ params: { address: selectAddress, chain: "eth" } });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectAddress]);
@@ -179,33 +167,6 @@ export const UserPanel: React.FC = () => {
                     selectAddress={selectAddress}
                 />
 
-                {/* Balance Sections */}
-                <div className={styles.balanceSection}>
-                    <Typography color={"#989898"} margin={1}>
-                        Balance
-                    </Typography>
-                    <Typography
-                        color={"white"}
-                        variant={"h2"}
-                        margin={2}
-                        sx={{
-                            fontWeight: "bold",
-                            textAlign: "center",
-                            ":hover": {
-                                color: "#555",
-                                cursor: "pointer",
-                            },
-                        }}
-                        onClick={() =>
-                            window.open(
-                                "https://etherscan.io/address/" +
-                                    identity.address
-                            )
-                        }
-                    >
-                        {userBalance.toFixed(4)} ETH
-                    </Typography>
-                </div>
                 {/* Social Section */}
                 <div className={styles.socialSection}>
                     <Typography color={"#989898"} marginLeft={2}>
@@ -312,7 +273,7 @@ export const UserPanel: React.FC = () => {
                         fontFamily: "Outfit",
                     }}
                 >
-                    EXPLORE ME!
+                    EXPLORE THIS ADDRESS!
                 </LoadingButton>
             </div>
         </>
