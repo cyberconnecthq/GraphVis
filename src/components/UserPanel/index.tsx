@@ -1,15 +1,42 @@
 // src\components\UserPanel\index.tsx
 
 import { useGraph } from "@/context/GraphContext";
+import { useWeb3 } from "@/context/web3Context";
+import {
+    Blockchain,
+    Env,
+    FollowButton,
+} from "@cyberconnect/react-follow-button";
 import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNFTBalances } from "react-moralis";
+import { GalleryModal } from "../GalleryModal";
+import { ListModal } from "../ListModal";
 import styles from "./index.module.css";
 import { NftSections } from "./NftSections";
 
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity, setGraphAddress } = useGraph();
+    const { address } = useWeb3();
 
-    if (!identity) return null;
+    const [showList, setShowList] = useState(false);
+    const [showGallery, setShowGallery] = useState(false);
+    const [listType, setListType] = useState(false);
+
+    const { getNFTBalances, data, isLoading } = useNFTBalances();
+
+    //fetch the user ether balance from ehterscan API
+
+    useEffect(() => {
+        getNFTBalances({ params: { address: selectAddress, chain: "eth" } });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectAddress]);
+
+    if (!identity) return null; //only shows UserPanel if all data has loaded
+    if (!data) return null;
+    if (isLoading) return null;
+
     return (
         <>
             <div className={styles.container}>
@@ -46,11 +73,20 @@ export const UserPanel: React.FC = () => {
                                 <img
                                     src={"/Sample_User_Icon.png"}
                                     alt={""}
-                                    width={100}
-                                    height={100}
+                                    width={60}
+                                    height={60}
                                     className={styles.avatar}
                                 />
                             </a>
+                        )}
+                        {address && (
+                            <FollowButton
+                                provider={window.ethereum}
+                                namespace="CyberConnect"
+                                toAddr={selectAddress}
+                                env={Env.PRODUCTION}
+                                chain={Blockchain.ETH}
+                            />
                         )}
                     </div>
                     {/* User Name from ENS or therir address*/}
@@ -77,23 +113,76 @@ export const UserPanel: React.FC = () => {
                         </Typography>
                     </div>
                 </div>
-                {/* Followings & Followers Section */}
+                {/* Following & Followers Section */}
                 <div className={styles.followSection}>
                     <div className={styles.follow}>
-                        <Typography variant="h3">
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                ":hover": {
+                                    color: "#555",
+                                    cursor: "pointer",
+                                },
+                            }}
+                            onClick={() => [
+                                setListType(false), //sets list modal to show followers
+                                setShowList(true),
+                            ]}
+                        >
                             {identity.followerCount}
                         </Typography>
                         <Typography color={"#989898"}>Followers</Typography>
                     </div>
                     <div className={styles.follow}>
-                        <Typography variant="h3">
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                ":hover": {
+                                    color: "#555",
+                                    cursor: "pointer",
+                                },
+                            }}
+                            onClick={() => [
+                                setListType(true), //sets list modal to show following
+                                setShowList(true),
+                            ]}
+                        >
                             {identity.followingCount}
                         </Typography>
-                        <Typography color={"#989898"}>Followings</Typography>
+                        <Typography color={"#989898"}>Following</Typography>
                     </div>
+                    {/* <div className={styles.follow}>
+                        <Typography
+                            variant="h3"
+                            sx={{
+                                ":hover": {
+                                    color: "#555",
+                                    cursor: "pointer",
+                                },
+                            }}
+                            onClick={() => setShowGallery(true)}
+                        >
+                            {data.total}
+                        </Typography>
+                        <Typography color={"#989898"}>NFTs</Typography>
+                    </div> */}
                 </div>
                 {/* POAPs and NFTs */}
                 <NftSections />
+                {/*Follower/followings list*/}
+                <ListModal
+                    open={showList}
+                    changeOpen={setShowList}
+                    address={selectAddress}
+                    listType={listType}
+                />
+                {/*NFT gallery*/}
+                <GalleryModal
+                    open={showGallery}
+                    changeOpen={setShowGallery}
+                    selectAddress={selectAddress}
+                />
+
                 {/* Social Section */}
                 <div className={styles.socialSection}>
                     <Typography color={"#989898"} marginLeft={2}>
@@ -182,7 +271,8 @@ export const UserPanel: React.FC = () => {
                         </a>
                     </div>
                 </div>
-                {/* Follower & Followings Tab Section */}
+                {/* Explore me button */}
+
                 <LoadingButton
                     // loading={loading}
                     className={styles.exploreButton}
@@ -194,9 +284,8 @@ export const UserPanel: React.FC = () => {
                         fontFamily: "Outfit",
                     }}
                 >
-                    EXPLORE ME!
+                    EXPLORE THIS ADDRESS!
                 </LoadingButton>
-                {/* <TabsPanel /> */}
             </div>
         </>
     );

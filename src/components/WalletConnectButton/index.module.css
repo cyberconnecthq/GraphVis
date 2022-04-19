@@ -1,8 +1,11 @@
 /* src\components\WalletConnectButton\index.module.css */
-.userAddress {
+.walletInfo {
     font-weight: bold;
     padding: 1rem;
     color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 .connectWalletButton {

@@ -93,7 +93,7 @@ export const NftSections: React.FC = () => {
             </div>
             <div className={styles.nftSection}>
                 <Typography color={"#989898"} margin={1}>
-                    Other NFTs
+                    NFTs Gallery
                 </Typography>
                 <div className={styles.nftList}>
                     {isLoading ? (
