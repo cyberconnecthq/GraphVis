@@ -1,6 +1,12 @@
 // src\components\UserPanel\index.tsx
 
 import { useGraph } from "@/context/GraphContext";
+import { useWeb3 } from "@/context/web3Context";
+import {
+    Blockchain,
+    Env,
+    FollowButton,
+} from "@cyberconnect/react-follow-button";
 import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -12,6 +18,7 @@ import { NftSections } from "./NftSections";
 
 export const UserPanel: React.FC = () => {
     const { selectAddress, identity } = useGraph();
+    const { address } = useWeb3();
 
     const [showList, setShowList] = useState(false);
     const [showGallery, setShowGallery] = useState(false);
@@ -66,11 +73,26 @@ export const UserPanel: React.FC = () => {
                                 <img
                                     src={"/Sample_User_Icon.png"}
                                     alt={""}
-                                    width={100}
-                                    height={100}
+                                    width={60}
+                                    height={60}
                                     className={styles.avatar}
                                 />
                             </a>
+                        )}
+                        {address && (
+                            <FollowButton
+                                provider={window.ethereum}
+                                namespace="CyberConnect"
+                                toAddr={selectAddress}
+                                env={Env.PRODUCTION}
+                                chain={Blockchain.ETH}
+                                onSuccess={(e) => {
+                                    console.log(e);
+                                }}
+                                onFailure={(e) => {
+                                    console.log(e);
+                                }}
+                            />
                         )}
                     </div>
                     {/* User Name from ENS or therir address*/}
