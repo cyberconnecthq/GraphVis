@@ -3,7 +3,15 @@
 import { AppMode, useGraph } from "@/context/GraphContext";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { Box, Button, Menu, MenuItem, Modal, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Link,
+    Menu,
+    MenuItem,
+    Modal,
+    Typography,
+} from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -122,6 +130,7 @@ export const NavBar: React.FC = () => {
                             borderRadius: "5px",
                             boxShadow: 24,
                             p: 4,
+                            overflowY: "scroll",
                         }}
                     >
                         {" "}
@@ -160,11 +169,51 @@ export const NavBar: React.FC = () => {
                             }}
                         >
                             CyberGraph is a 3D-graph based, user based social
-                            connection explorer. It has some cool features like
-                            3d node graph, dynamic loading bar, immersive user
-                            experience, cyber mode(10-hops friendship network
-                            display) and focus mode(aggregated connection
-                            display)
+                            connection explorer powered by{" "}
+                            <Link
+                                href={"http://cyberconnect.me/"}
+                                rel="noopener"
+                                target="_blank"
+                            >
+                                CyberConnect
+                            </Link>
+                            .{" "}
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: "#999",
+                                fontSize: "1.2em",
+                                paddingLeft: "5%",
+                                paddingTop: "8px",
+                                width: "100%",
+                            }}
+                        >
+                            It has some cool features like 3d node graph,
+                            dynamic loading bar, immersive user experience,
+                            cyber mode(10-hops friendship network display) and
+                            focus mode(aggregated connection display)
+                        </Typography>
+                        <Typography
+                            sx={{
+                                color: "#999",
+                                fontSize: "1.2em",
+                                paddingLeft: "5%",
+                                paddingTop: "8px",
+                                width: "100%",
+                            }}
+                        >
+                            This is an open-sourced project. Please feel free to
+                            check and contribute on the{" "}
+                            <Link
+                                href={
+                                    "https://github.com/cyberconnecthq/CyberGraph/"
+                                }
+                                rel="noopener"
+                                target="_blank"
+                            >
+                                GitHub
+                            </Link>{" "}
+                            page.
                         </Typography>
                         <Typography
                             sx={{

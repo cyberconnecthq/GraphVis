@@ -54,7 +54,8 @@ Participants from Gitcoin SPVH hackathon and other contributors please contact b
 
 Set the following variables in `.env`
 
--   `ETHERSCAN_API_KEY=`[`EtherScan API KEY`](https://docs.etherscan.io/getting-started/viewing-api-usage-statistics)
+-   `NEXT_PUBLIC_MORALIS_SERVER_URL = `[`Moralis Server URL`](https://docs.moralis.io/moralis-dapp/connect-the-sdk/connect-with-reacts)
+-   `NEXT_PUBLIC_MORALIS_APP_ID = `[`Moralis App ID`](https://docs.moralis.io/moralis-dapp/connect-the-sdk/connect-with-reacts)
 
 Then run:
 
