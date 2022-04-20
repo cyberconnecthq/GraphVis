@@ -56,8 +56,8 @@ export const UserPanel: React.FC = () => {
                                 <img
                                     src={identity.avatar}
                                     alt={""}
-                                    width={100}
-                                    height={100}
+                                    width={60}
+                                    height={60}
                                     className={styles.avatar}
                                 />
                             </a>
@@ -86,6 +86,7 @@ export const UserPanel: React.FC = () => {
                                 toAddr={selectAddress}
                                 env={Env.PRODUCTION}
                                 chain={Blockchain.ETH}
+                                key={selectAddress}
                             />
                         )}
                     </div>
