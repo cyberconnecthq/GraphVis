@@ -87,12 +87,6 @@ export const UserPanel: React.FC = () => {
                                 env={Env.PRODUCTION}
                                 chain={Blockchain.ETH}
                                 key={selectAddress}
-                                onSuccess={(e) => {
-                                    console.log(e);
-                                }}
-                                onFailure={(e) => {
-                                    console.log(e);
-                                }}
                             />
                         )}
                     </div>

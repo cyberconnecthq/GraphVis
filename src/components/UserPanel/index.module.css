@@ -3,12 +3,11 @@
     color: white;
     width: 700px;
     max-height: 40rem;
-    /* margin-top: 15rem; */
     margin-left: 2rem;
     position: fixed;
     z-index: 99;
     border: solid 3px;
-    border-radius: 6px;
+    border-radius: 11px;
     position: absolute;
     bottom: 3rem;
     overflow-y: scroll;
