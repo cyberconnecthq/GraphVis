@@ -11,7 +11,6 @@ import { LoadingButton } from "@mui/lab";
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNFTBalances } from "react-moralis";
-import { GalleryModal } from "../GalleryModal";
 import { ListModal } from "../ListModal";
 import styles from "./index.module.css";
 import { NftSections } from "./NftSections";
@@ -21,7 +20,7 @@ export const UserPanel: React.FC = () => {
     const { address } = useWeb3();
 
     const [showList, setShowList] = useState(false);
-    const [showGallery, setShowGallery] = useState(false);
+
     const [listType, setListType] = useState(false);
 
     const { getNFTBalances, data, isLoading } = useNFTBalances();
@@ -152,36 +151,17 @@ export const UserPanel: React.FC = () => {
                         </Typography>
                         <Typography color={"#989898"}>Following</Typography>
                     </div>
-                    {/* <div className={styles.follow}>
-                        <Typography
-                            variant="h3"
-                            sx={{
-                                ":hover": {
-                                    color: "#555",
-                                    cursor: "pointer",
-                                },
-                            }}
-                            onClick={() => setShowGallery(true)}
-                        >
-                            {data.total}
-                        </Typography>
-                        <Typography color={"#989898"}>NFTs</Typography>
-                    </div> */}
                 </div>
+
                 {/* POAPs and NFTs */}
                 <NftSections />
+
                 {/*Follower/followings list*/}
                 <ListModal
                     open={showList}
                     changeOpen={setShowList}
                     address={selectAddress}
                     listType={listType}
-                />
-                {/*NFT gallery*/}
-                <GalleryModal
-                    open={showGallery}
-                    changeOpen={setShowGallery}
-                    selectAddress={selectAddress}
                 />
 
                 {/* Social Section */}
