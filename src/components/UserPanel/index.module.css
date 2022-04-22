@@ -1,161 +1,107 @@
+/* src\components\UserPanel\index.module.css */
+
 .container {
-    background-color: rgba(0, 0, 0, 0.699);
-    color: white;
-    width: 700px;
-    max-height: 40rem;
-    margin-left: 2rem;
-    position: fixed;
-    z-index: 99;
-    border: solid 3px;
-    border-radius: 11px;
-    position: absolute;
-    bottom: 3rem;
-    overflow-y: scroll;
-}
-
-.container::-webkit-scrollbar-track {
-    box-shadow: "inset 0 0 6px #000";
-    -webkit-box-shadow: "inset 0 0 6px #000";
-    background: rgb(87, 87, 87);
-    margin-right: 10px;
-}
-
-.container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.container::-webkit-scrollbar-thumb {
-    width: 22px;
-    height: 22px;
-    background-color: rgb(208, 208, 208);
-    border-radius: 50px;
+  background-color: rgba(0, 0, 0);
+  color: white;
+  width: 700px;
+  max-height: 40rem;
+  margin-left: 2rem;
+  position: fixed;
+  z-index: 99;
+  border: solid 3px;
+  border-radius: 20px;
+  position: absolute;
+  bottom: 3rem;
 }
 
 .userInfoSection {
-    display: flex;
-    padding: 10px;
-    margin: 10px 20px;
-    border-bottom: #535353 solid 1px;
+  display: flex;
+  padding: 10px;
+  margin: 20px 20px;
+  border-bottom: #535353 solid 1px;
 }
 
 .userName {
-    display: flex;
-    flex-direction: column;
-    margin-left: 15px;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  justify-content: center;
 }
 
 .avatarSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 120px;
-    width: 100px;
-    padding-top: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 .avatar {
-    border-radius: 50px;
-    margin-top: 5px;
-    background-color: white;
+  border-radius: 50px;
+  margin-top: 5px;
+  background-color: white;
 }
 
 .followSection {
-    display: flex;
-    border-bottom: #272727 solid 1px;
-    padding: 10px;
-    margin: 10px 20px;
-    justify-content: center;
+  display: flex;
+  border-bottom: #272727 solid 1px;
+  padding: 10px;
+  margin: 10px 20px;
+  justify-content: center;
 }
 
 .follow {
-    padding: 5px 50px;
-    text-align: center;
+  padding: 5px 80px;
+  text-align: center;
 }
 
 .followList {
-    color: #cecece;
-    background-color: transparent;
-    text-decoration: underline;
+  color: #cecece;
+  background-color: transparent;
+  text-decoration: underline;
 }
 
 .balanceSection {
-    margin: 20px 20px;
-    border-bottom: #272727 solid 1px;
+  margin: 20px 20px;
+  border-bottom: #272727 solid 1px;
 }
 
 .twitter {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .twitterButton {
-    background-color: #1da1f2;
-    color: white;
-    width: 280px;
-    height: 60px;
-    margin: 10px 5px;
-    border-radius: 55px;
+  background-color: #1da1f2;
+  color: white;
+  width: 280px;
+  height: 60px;
+  margin: 10px 5px;
+  border-radius: 55px;
 }
 
 .twitterButton:hover {
-    background-color: #116ca5;
+  background-color: #116ca5;
 }
 
 .social {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
 }
 
 .socialIcon {
-    margin: 2px;
-    border: solid 2px white;
-    border-radius: 100%;
-    width: 50px;
+  margin: 2px;
+  border: solid 2px white;
+  border-radius: 100%;
+  width: 50px;
 }
 
 .exploreButton {
-    border: solid white 3px;
-    color: white;
-    width: 600px;
-    height: 70px;
-    font-size: x-large;
-    border-radius: 20px;
-    margin-left: 50px;
-    margin-bottom: 28px;
-}
-
-.nftSection {
-    margin: 20px 20px;
-    border-bottom: #272727 solid 1px;
-}
-
-.noNftsInSection {
-    text-align: center;
-    width: 100%;
-    padding-bottom: 8px;
-}
-
-.nftList {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 12px 10px;
-    padding: 6px;
-    overflow-y: auto;
-    height: 84px;
-}
-.nftList::-webkit-scrollbar {
-    width: 6px;
-}
-
-.nftList::-webkit-scrollbar-thumb {
-    width: 12px;
-    height: 2px;
-    background-color: rgb(208, 208, 208);
-}
-
-.nftList::-webkit-scrollbar-track {
-    background: rgb(87, 87, 87);
+  border: solid white 3px;
+  color: white;
+  width: 600px;
+  height: 70px;
+  font-size: x-large;
+  border-radius: 20px;
+  margin-left: 50px;
+  margin-bottom: 10px;
 }

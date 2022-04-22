@@ -1,21 +1,21 @@
 /* src\components\SearchBar\index.module.css */
 
 .textField {
-    border: solid white 2px;
-    border-radius: 50px;
-    height: 60px;
-    background-color: transparent;
-    width: 500px;
-    padding: 0 30px;
-    color: white;
-    font-size: large;
-    font-family: "Outfit";
+  border: solid white 2px;
+  border-radius: 50px;
+  height: 60px;
+  background-color: transparent;
+  width: 500px;
+  padding: 0 30px;
+  color: white;
+  font-size: large;
+  font-family: "Outfit";
 }
 
 .textField::placeholder {
-    color: white;
+  color: white;
 }
 
 .userAddress {
-    font-family: "Outfit";
+  font-family: "Outfit";
 }
