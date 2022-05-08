@@ -149,17 +149,7 @@ export const ListModal = ({ open, changeOpen, address, listType }: Props) => {
                                                 {value.ens}
                                             </Typography>
                                         ) : (
-                                            <Typography
-                                                variant="h3"
-                                                fontSize={25}
-                                                sx={{
-                                                    margin: "10px 20px",
-                                                    fontFamily: "Outfit",
-                                                    color: "#fff",
-                                                }}
-                                            >
-                                                No ENS
-                                            </Typography>
+                                            <span></span>
                                         )}
                                         <Typography
                                             variant="h6"
