@@ -23,7 +23,7 @@ export const UserPanel: React.FC = () => {
 
     const [listType, setListType] = useState(false);
 
-    const { getNFTBalances, data, isLoading } = useNFTBalances();
+    const { getNFTBalances, isLoading } = useNFTBalances();
 
     //fetch the user ether balance from ehterscan API
 
@@ -32,8 +32,7 @@ export const UserPanel: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectAddress]);
 
-    if (!identity) return null; //only shows UserPanel if all data has loaded
-    if (!data) return null;
+    // if (!identity) return null; //only shows UserPanel if all data has loaded
     if (isLoading) return null;
 
     return (
