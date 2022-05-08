@@ -32,7 +32,7 @@ export const UserPanel: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectAddress]);
 
-    // if (!identity) return null; //only shows UserPanel if all data has loaded
+    if (!identity) return null; //only shows UserPanel if all data has loaded
     if (isLoading) return null;
 
     return (
