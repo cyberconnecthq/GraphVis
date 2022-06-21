@@ -196,7 +196,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
                         address: targetAddr,
                         first: 50,
                         after,
-                        namespace: "",
                     },
                     updateQuery: (prev: any, { fetchMoreResult }) => {
                         return fetchMoreResult;
