@@ -28,7 +28,7 @@ export const Web3ContextProvider: React.FC = ({ children }) => {
     const initCyberConnect = useCallback((provider: any) => {
         const cyberConnect = new CyberConnect({
             provider,
-            namespace: "CyberConnect",
+            namespace: "CyberGraph",
         });
 
         setCyberConnect(cyberConnect);

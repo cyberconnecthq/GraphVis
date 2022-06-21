@@ -27,7 +27,6 @@ export const ListModal = ({ open, changeOpen, address, listType }: Props) => {
                 address: address,
                 first: 50,
                 after: "-1",
-                namespace: "",
             },
         }
     );
