@@ -80,7 +80,7 @@ export const UserPanel: React.FC = () => {
                         {address && (
                             <FollowButton
                                 provider={window.ethereum}
-                                namespace="CyberConnect"
+                                namespace="CyberGraph"
                                 toAddr={selectAddress}
                                 env={Env.PRODUCTION}
                                 chain={Blockchain.ETH}

@@ -113,7 +113,6 @@ export const GraphContextProvider: React.FC = ({ children }) => {
             address: graphAddress,
             first: 50,
             after: "-1",
-            namespace: "",
         },
     });
 
