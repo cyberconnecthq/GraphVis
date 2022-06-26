@@ -77,7 +77,7 @@ export const UserPanel: React.FC = () => {
                                 />
                             </a>
                         )}
-                        {address && (
+                        {address && address !== selectAddress && (
                             <FollowButton
                                 provider={window.ethereum}
                                 namespace="CyberGraph"
