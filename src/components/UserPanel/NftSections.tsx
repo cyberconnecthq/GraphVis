@@ -12,7 +12,7 @@ export const NftSections: React.FC = () => {
     const { account } = useMoralisWeb3Api();
 
     const [poaps, setPoaps] = useState<any>();
-    const [otherNfts, setOtherNfts] = useState<any>();
+    const [nfts, setnfts] = useState<any>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [nftModalInfo, setNftModalInfo] = useState<any>(null);
     const [poapModalInfo, setPoapModalInfo] = useState<any>(null);
@@ -27,11 +27,7 @@ export const NftSections: React.FC = () => {
                     metadata: nft.metadata ? JSON.parse(nft.metadata) : null,
                 }));
 
-                const _otherNfts = nfts.filter(
-                    (nft) => !nft.metadata?.tags?.includes("poap")
-                );
-
-                setOtherNfts(_otherNfts);
+                setnfts(nfts);
                 setIsLoading(false);
             }
         })();
@@ -120,8 +116,8 @@ export const NftSections: React.FC = () => {
                 <div className={styles.nftList}>
                     {isLoading ? (
                         <CircularProgress />
-                    ) : otherNfts?.length ? (
-                        otherNfts.map((nft: any) => (
+                    ) : nfts?.length ? (
+                        nfts.map((nft: any) => (
                             <NftListItem
                                 key={nft.id}
                                 name={getName(nft)}
@@ -156,4 +152,3 @@ export const NftSections: React.FC = () => {
         </>
     );
 };
-//davidhoffman.eth
