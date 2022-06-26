@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useMoralisWeb3Api } from "react-moralis";
 import { NftListItem } from "../NftListItem";
 import { NftModal } from "../NftModal";
+import { PoapModal } from "../PoapModal";
 import styles from "./index.module.css";
 
 export const NftSections: React.FC = () => {
@@ -11,9 +12,10 @@ export const NftSections: React.FC = () => {
     const { account } = useMoralisWeb3Api();
 
     const [poaps, setPoaps] = useState<any>();
-    const [otherNfts, setOtherNfts] = useState<any>();
+    const [nfts, setnfts] = useState<any>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [nftModalInfo, setNftModalInfo] = useState<any>(null);
+    const [poapModalInfo, setPoapModalInfo] = useState<any>(null);
 
     useEffect(() => {
         (async () => {
@@ -25,18 +27,26 @@ export const NftSections: React.FC = () => {
                     metadata: nft.metadata ? JSON.parse(nft.metadata) : null,
                 }));
 
-                const _poaps = nfts.filter((nft) =>
-                    nft.metadata?.tags?.includes("poap")
-                );
-                const _otherNfts = nfts.filter(
-                    (nft) => !nft.metadata?.tags?.includes("poap")
-                );
-                setPoaps(_poaps);
-                setOtherNfts(_otherNfts);
+                setnfts(nfts);
                 setIsLoading(false);
             }
         })();
     }, [selectAddress, account]);
+
+    useEffect(() => {
+        (async () => {
+            setIsLoading(true);
+            const res = await fetch(
+                `https://api.poap.xyz/actions/scan/${selectAddress}`
+            );
+            let response;
+            if (res.status === 200) {
+                response = await res.json();
+            }
+            setPoaps(response);
+            setIsLoading(false);
+        })();
+    }, [selectAddress]);
 
     const getName = (nft: any) => nft.metadata?.name || nft.name || null;
 
@@ -66,6 +76,14 @@ export const NftSections: React.FC = () => {
         });
     };
 
+    const handleClickPoap = (poap: any) => {
+        setPoapModalInfo({
+            name: poap.event.name,
+            imageUrl: poap.event.image_url,
+            description: poap.event.description,
+        });
+    };
+
     return (
         <>
             <div className={styles.nftSection}>
@@ -78,10 +96,10 @@ export const NftSections: React.FC = () => {
                     ) : poaps?.length ? (
                         poaps.map((poap: any) => (
                             <NftListItem
-                                key={poap.id}
-                                name={getName(poap)}
-                                imageUrl={getImageUrl(poap)}
-                                onClick={() => handleClickNft(poap)}
+                                key={poap.tokenId}
+                                name={poap.event.name}
+                                imageUrl={poap.event.image_url}
+                                onClick={() => handleClickPoap(poap)}
                             />
                         ))
                     ) : (
@@ -98,8 +116,8 @@ export const NftSections: React.FC = () => {
                 <div className={styles.nftList}>
                     {isLoading ? (
                         <CircularProgress />
-                    ) : otherNfts?.length ? (
-                        otherNfts.map((nft: any) => (
+                    ) : nfts?.length ? (
+                        nfts.map((nft: any) => (
                             <NftListItem
                                 key={nft.id}
                                 name={getName(nft)}
@@ -121,6 +139,14 @@ export const NftSections: React.FC = () => {
                     description={nftModalInfo.description}
                     imageUrl={nftModalInfo.imageUrl}
                     openseaUrl={nftModalInfo.openseaUrl}
+                />
+            )}
+            {poapModalInfo && (
+                <PoapModal
+                    onClose={() => setPoapModalInfo(null)}
+                    name={poapModalInfo.name}
+                    description={poapModalInfo.description}
+                    imageUrl={poapModalInfo.imageUrl}
                 />
             )}
         </>
