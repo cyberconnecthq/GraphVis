@@ -1,7 +1,7 @@
 import { useGraph } from "@/context/GraphContext";
 import { CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useMoralisWeb3Api } from "react-moralis";
+
 import { NftListItem } from "../NftListItem";
 import { NftModal } from "../NftModal";
 import { PoapModal } from "../PoapModal";
@@ -9,10 +9,9 @@ import styles from "./index.module.css";
 
 export const NftSections: React.FC = () => {
     const { selectAddress } = useGraph();
-    const { account } = useMoralisWeb3Api();
 
     const [poaps, setPoaps] = useState<any>();
-    const [nfts, setnfts] = useState<any>();
+    const [nfts, setNfts] = useState<any>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [nftModalInfo, setNftModalInfo] = useState<any>(null);
     const [poapModalInfo, setPoapModalInfo] = useState<any>(null);
@@ -20,18 +19,18 @@ export const NftSections: React.FC = () => {
     useEffect(() => {
         (async () => {
             setIsLoading(true);
-            const res = await account.getNFTs({ address: selectAddress });
-            if (res.result) {
-                const nfts = res.result.map((nft) => ({
-                    ...nft,
-                    metadata: nft.metadata ? JSON.parse(nft.metadata) : null,
-                }));
-
-                setnfts(nfts);
-                setIsLoading(false);
+            const res = await fetch(
+                `https://eth-mainnet.alchemyapi.io/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}/getNFTs/?owner=${selectAddress}`
+            );
+            let response;
+            if (res.status === 200) {
+                response = await res.json();
             }
+            setNfts(response.ownedNfts);
+
+            setIsLoading(false);
         })();
-    }, [selectAddress, account]);
+    }, [selectAddress]);
 
     useEffect(() => {
         (async () => {
@@ -62,7 +61,13 @@ export const NftSections: React.FC = () => {
     };
 
     const getOpenseaUrl = (nft: any) =>
-        `https://opensea.io/assets/${nft.token_address}/${nft.token_id}`;
+        `https://opensea.io/assets/${nft.contract.address}/${
+            nft.metadata?.tokenId ||
+            nft.metadata?.token_id ||
+            nft.metadata?.id ||
+            nft.metadata?.edition ||
+            nft.metadata?.name?.substring(nft.metadata?.name?.indexOf("#") + 1)
+        }`;
 
     const getDescription = (nft: any) => nft.metadata?.description || null;
 
@@ -71,7 +76,7 @@ export const NftSections: React.FC = () => {
             name: getName(nft),
             imageUrl: getImageUrl(nft),
             openseaUrl: getOpenseaUrl(nft),
-            tokenAddress: nft.token_address,
+            tokenAddress: nft.contract.address,
             description: getDescription(nft),
         });
     };
