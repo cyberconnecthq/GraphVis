@@ -66,7 +66,7 @@ export const NftSections: React.FC = () => {
             nft.metadata?.token_id ||
             nft.metadata?.id ||
             nft.metadata?.edition ||
-            nft.metadata?.name
+            nft.metadata?.name?.substring(nft.metadata?.name?.indexOf("#") + 1)
         }`;
 
     const getDescription = (nft: any) => nft.metadata?.description || null;
