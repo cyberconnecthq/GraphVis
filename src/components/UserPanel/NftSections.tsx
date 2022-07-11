@@ -79,7 +79,6 @@ export const NftSections: React.FC = () => {
             tokenAddress: nft.contract.address,
             description: getDescription(nft),
         });
-        console.log(nfts);
     };
 
     const handleClickPoap = (poap: any) => {

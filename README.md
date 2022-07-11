@@ -30,26 +30,6 @@ This project is inspired from Gitcoin [Scheduling Point Virtual Hackathon](https
 
 <br>
 
-## About Gitcoin Hackathon
-
-CyberGraph is still well under improvement with many features in the pipeline. This is a perfect scenario for the whole community to join us and BUIDL together. Please see more information on Gitcoin [Grants Round 13 Hackathon CyberConnect Task 1](https://gitcoin.co/issue/cyberconnecthq/gitcoin-gr13-hackathon/1/)
-
-<br>
-
-We invite the community to experiment with it and add innovative features or make constructive product suggestions. A few examples that sprung to our mind: adding node visual effects to make it easier to read user info; differentiating connection & nodes visually, maybe on the basis of connection types, connection quantity, etc, and in terms of color, brightness, distance, etc; enabling continuous exploration where users can track their path of connections; adding subgroups; enabling exploring the connections between two queried nodes; optimizing graph filtering and visualization so to balance between UX and informative efficiency.
-
-### Sub-tasks
-
--   POAP Fetching & NFT Fetching
--   Following & Follower List Display
--   Innovative Features & Product Suggestions (Like adding node visual effects features to make it easier to read user information)
-
-Welcome to discuss and learn in our discord Hackathon channel and make your submission. CyberConnect team welcomes anyone who wants to join Web3 world and is happy to transfer development knowledge.
-
-Participants from Gitcoin SPVH hackathon and other contributors please contact brucew@cybertinolab.com to append to the list. We are looking forward to more people's participation!
-
-<br>
-
 ## Run the App
 
 Set the following variables in `.env`
