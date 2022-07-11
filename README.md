@@ -54,8 +54,7 @@ Participants from Gitcoin SPVH hackathon and other contributors please contact b
 
 Set the following variables in `.env`
 
--   `NEXT_PUBLIC_MORALIS_SERVER_URL = `[`Moralis Server URL`](https://docs.moralis.io/moralis-dapp/connect-the-sdk/connect-with-reacts)
--   `NEXT_PUBLIC_MORALIS_APP_ID = `[`Moralis App ID`](https://docs.moralis.io/moralis-dapp/connect-the-sdk/connect-with-reacts)
+-   `NEXT_PUBLIC_ALCHEMY_ID = `[`Alchemy NFT API`](https://docs.alchemy.com/alchemy/enhanced-apis/nft-api)
 
 Then run:
 
